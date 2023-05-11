@@ -205,7 +205,7 @@ func run(c *cli.Context) error {
 						continue
 					}
 
-					fmt.Printf("Decoded hex signature: %v\n", decodedHexSignature)
+					fmt.Printf("Decoded hex signature: %s\n", string(decodedHexSignature))
 
 					// encrypt the signature and srHash
 					exitSignatureEncrypted, err := crypto.EncryptUsingPublicKey(decodedHexSignature, publicKey)
