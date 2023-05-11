@@ -42,7 +42,7 @@ import (
 )
 
 // Config
-var preSignedCooldown, _ = time.ParseDuration("12h")
+var preSignedCooldown, _ = time.ParseDuration("30m")
 var preSignedBatchCooldown, _ = time.ParseDuration("5s")
 var preSignBatchSize = 10 // Go thru 100 keys in each pass
 var reloadInterval, _ = time.ParseDuration("2m")
