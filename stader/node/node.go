@@ -213,7 +213,7 @@ func run(c *cli.Context) error {
 						errorLog.Printf("Failed to encrypt exit signature for validator: %s\n", validatorPubKey)
 						continue
 					}
-					fmt.Printf("Encrypted exit signature: %v\n", exitSignatureEncrypted)
+					//fmt.Printf("Encrypted exit signature: %v\n", exitSignatureEncrypted)
 					exitSignatureEncryptedString := crypto.EncodeBase64(exitSignatureEncrypted)
 					fmt.Printf("base64 encoded exit signature string: %s\n", exitSignatureEncryptedString)
 
