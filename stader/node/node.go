@@ -208,7 +208,7 @@ func run(c *cli.Context) error {
 					fmt.Printf("decoded hex Signature: %v\n", signature)
 
 					// encrypt the signature and srHash
-					exitSignatureEncrypted, err := crypto.EncryptUsingPublicKey(signature.Bytes(), publicKey)
+					exitSignatureEncrypted, err := crypto.EncryptUsingPublicKey([]byte(signature.String()), publicKey)
 					if err != nil {
 						errorLog.Printf("Failed to encrypt exit signature for validator: %s\n", validatorPubKey)
 						continue
