@@ -191,6 +191,7 @@ func run(c *cli.Context) error {
 					}
 
 					exitEpoch := currentHead.Epoch
+					fmt.Printf("Exit epoch: %d\n", exitEpoch)
 
 					signature, err := w3signer.GetVoluntaryExitSignature(validatorPubKey.String(), validatorStatus.Index, exitEpoch, forkInfo, eth2Config)
 					if err != nil {
