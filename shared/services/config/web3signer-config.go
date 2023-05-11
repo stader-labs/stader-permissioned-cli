@@ -33,40 +33,23 @@ const defaultWeb3SignerPort uint16 = 9000
 type Web3SignerConfig struct {
 	Title string `yaml:"-"`
 
-	// The HTTP port to serve on
-	Port config.Parameter `yaml:"port,omitempty"`
-
-	// The Docker Hub tag for Grafana
-	ContainerTag config.Parameter `yaml:"containerTag,omitempty"`
+	// The URL of the HTTP endpoint
+	HttpUrl config.Parameter `yaml:"httpUrl,omitempty"`
 }
 
 // Generates a new Grafana config
 func NewWeb3SignerConfig(cfg *StaderConfig) *Web3SignerConfig {
 	return &Web3SignerConfig{
 		Title: "Web3Signer Settings",
-
-		Port: config.Parameter{
-			ID:                   "port",
-			Name:                 "Web3Signer Port",
-			Description:          "The port Grafana should run its HTTP server on - this is the port you will connect to in your browser.",
-			Type:                 config.ParameterType_Uint16,
-			Default:              map[config.Network]interface{}{config.Network_All: defaultWeb3SignerPort},
-			AffectsContainers:    []config.ContainerID{config.ContainerID_Web3Signer},
-			EnvironmentVariables: []string{"WEB3SIGNER_HTTP_LISTEN_PORT"},
-			CanBeBlank:           false,
-			OverwriteOnUpgrade:   false,
-		},
-
-		ContainerTag: config.Parameter{
-			ID:                   "containerTag",
-			Name:                 "Web3Signer Container Tag",
-			Description:          "The tag name of the Web3Signer container you want to use on Docker Hub.",
-			Type:                 config.ParameterType_String,
-			Default:              map[config.Network]interface{}{config.Network_All: web3SignerTag},
-			AffectsContainers:    []config.ContainerID{config.ContainerID_Web3Signer},
-			EnvironmentVariables: []string{"WEB3SIGNER_CONTAINER_TAG"},
-			CanBeBlank:           false,
-			OverwriteOnUpgrade:   true,
+		HttpUrl: config.Parameter{
+			ID:                 "httpUrl",
+			Name:               "HTTP URL",
+			Description:        "The URL of the HTTP RPC endpoint for your external Web3Signer.\nNOTE: If you are running it on the same machine as the Stadernode, addresses like `localhost` and `127.0.0.1` will not work due to Docker limitations. Enter your machine's LAN IP address instead.",
+			Type:               config.ParameterType_String,
+			Default:            map[config.Network]interface{}{config.Network_All: ""},
+			AffectsContainers:  []config.ContainerID{config.ContainerID_Api},
+			CanBeBlank:         false,
+			OverwriteOnUpgrade: false,
 		},
 	}
 }
@@ -74,8 +57,7 @@ func NewWeb3SignerConfig(cfg *StaderConfig) *Web3SignerConfig {
 // Get the parameters for this config
 func (cfg *Web3SignerConfig) GetParameters() []*config.Parameter {
 	return []*config.Parameter{
-		&cfg.Port,
-		&cfg.ContainerTag,
+		&cfg.HttpUrl,
 	}
 }
 

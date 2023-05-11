@@ -21,17 +21,17 @@ package config
 
 import (
 	"fmt"
-	"github.com/alessio/shellescape"
-	"github.com/pbnjay/memory"
-	"github.com/stader-labs/stader-node/shared"
-	"github.com/stader-labs/stader-node/shared/types/config"
-	"gopkg.in/yaml.v2"
 	"io/ioutil"
 	"net/url"
 	"os"
 	"path/filepath"
 	"reflect"
-	"strconv"
+
+	"github.com/alessio/shellescape"
+	"github.com/pbnjay/memory"
+	"github.com/stader-labs/stader-node/shared"
+	"github.com/stader-labs/stader-node/shared/types/config"
+	"gopkg.in/yaml.v2"
 )
 
 // Constants
@@ -78,8 +78,6 @@ type StaderConfig struct {
 	ExternalBeacon    *ExternalBeaconConfig    `yaml:"externalBeacon,omitempty"`
 
 	// Web3 Signer
-	Web3SignerMode     config.Parameter          `yaml:"web3SignerMode,omitempty"`
-	Web3Signer         *Web3SignerConfig         `yaml:"web3Signer,omitempty"`
 	ExternalWeb3Signer *ExternalWeb3SignerConfig `yaml:"externalWeb3Signer,omitempty"`
 }
 
@@ -117,39 +115,14 @@ func LoadFromFile(path string) (*StaderConfig, error) {
 
 // Creates a new Stader configuration instance
 func NewStaderConfig(staderDir string) *StaderConfig {
-
-	clientModes := []config.ParameterOption{{
-		Name:        "Locally Managed",
-		Description: "Allow the Stadernode to manage the Execution and Consensus clients for you (Docker Mode)",
-		Value:       config.Mode_Local,
-	}, {
-		Name:        "Externally Managed",
-		Description: "Use existing Execution and Consensus clients that you manage on your own (Hybrid Mode)",
-		Value:       config.Mode_External,
-	}}
-
 	cfg := &StaderConfig{
 		Title:           "Top-level Settings",
 		StaderDirectory: staderDir,
-
-		Web3SignerMode: config.Parameter{
-			ID:                   "web3SignerMode",
-			Name:                 "Web3 Signer Mode",
-			Description:          "Choose which mode to use for your Web3 Signer - locally managed (Docker Mode), or externally managed",
-			Type:                 config.ParameterType_Choice,
-			Default:              map[config.Network]interface{}{config.Network_All: config.Mode_Local},
-			AffectsContainers:    []config.ContainerID{config.ContainerID_Api},
-			EnvironmentVariables: []string{},
-			CanBeBlank:           false,
-			OverwriteOnUpgrade:   false,
-			Options:              clientModes,
-		},
 	}
 
 	cfg.StaderNode = NewStadernodeConfig(cfg)
 	cfg.ExternalExecution = NewExternalExecutionConfig(cfg)
 	cfg.ExternalBeacon = NewExternalBeaconConfig(cfg)
-	cfg.Web3Signer = NewWeb3SignerConfig(cfg)
 	cfg.ExternalWeb3Signer = NewExternalWeb3Signer(cfg)
 
 	// Apply the default values for mainnet
@@ -202,9 +175,7 @@ func (cfg *StaderConfig) CreateCopy() *StaderConfig {
 
 // Get the parameters for this config
 func (cfg *StaderConfig) GetParameters() []*config.Parameter {
-	return []*config.Parameter{
-		&cfg.Web3SignerMode,
-	}
+	return []*config.Parameter{}
 }
 
 // Get the subconfigurations for this config
@@ -213,7 +184,6 @@ func (cfg *StaderConfig) GetSubconfigs() map[string]config.Config {
 		"stadernode":         cfg.StaderNode,
 		"externalExecution":  cfg.ExternalExecution,
 		"externalBeacon":     cfg.ExternalBeacon,
-		"web3signer":         cfg.Web3Signer,
 		"externalWeb3Signer": cfg.ExternalWeb3Signer,
 	}
 }
@@ -353,14 +323,6 @@ func (cfg *StaderConfig) GenerateEnvironmentVariables() map[string]string {
 	if err == nil && ccUrl != nil {
 		envVars["CC_HOSTNAME"] = ccUrl.Hostname()
 	}
-
-	// Web3 Signer parameters
-	// TODO - bchain - read these params from the config
-	envVars["WEB3SIGNER_ETH2_KEYSTORES_PASSWORDS_PATH"] = cfg.StaderNode.GetWeb3SignerKeyStoresPasswordPath(true)
-	envVars["WEB3SIGNER_ETH2_KEYSTORES_PATH"] = cfg.StaderNode.GetWeb3SignerKeyStorePath(true)
-	envVars["WEB3SIGNER_CONTAINER_TAG"] = cfg.Web3Signer.GetContainerTag()
-	envVars["WEB3SIGNER_HTTP_LISTEN_PORT"] = strconv.Itoa(int(cfg.Web3Signer.GetHttpListenPort()))
-	//config.AddParametersToEnvVars(cfg.Web3Signer.GetParameters(), envVars)
 
 	return envVars
 

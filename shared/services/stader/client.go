@@ -1075,6 +1075,7 @@ func (c *Client) deployTemplates(cfg *config.StaderConfig, staderDir string, set
 	// Read and substitute the templates
 	deployedContainers := []string{}
 
+	// return deployedContainers, nil
 	// API
 	contents, err := envsubst.ReadFile(filepath.Join(templatesFolder, config.ApiContainerName+templateSuffix))
 	if err != nil {
@@ -1115,19 +1116,19 @@ func (c *Client) deployTemplates(cfg *config.StaderConfig, staderDir string, set
 	//deployedContainers = append(deployedContainers, filepath.Join(overrideFolder, config.GuardianContainerName+composeFileSuffix))
 
 	// web3signer
-	contents, err = envsubst.ReadFile(filepath.Join(templatesFolder, config.Web3SignerContainerName+templateSuffix))
-	if err != nil {
-		return []string{}, fmt.Errorf("error reading and substituting web3signer container template: %w", err)
-	}
-	web3signerComposePath := filepath.Join(runtimeFolder, config.Web3SignerContainerName+composeFileSuffix)
-	err = ioutil.WriteFile(web3signerComposePath, contents, 0664)
-	if err != nil {
-		return []string{}, fmt.Errorf("could not write web3signer container file to %s: %w", web3signerComposePath, err)
-	}
-	deployedContainers = append(deployedContainers, web3signerComposePath)
-	deployedContainers = append(deployedContainers, filepath.Join(overrideFolder, config.Web3SignerContainerName+composeFileSuffix))
-	fmt.Printf("web3signer compose path is %s\n", web3signerComposePath)
-	fmt.Printf("web3signer override path is %s\n", filepath.Join(overrideFolder, config.Web3SignerContainerName+composeFileSuffix))
+	// contents, err = envsubst.ReadFile(filepath.Join(templatesFolder, config.Web3SignerContainerName+templateSuffix))
+	// if err != nil {
+	// 	return []string{}, fmt.Errorf("error reading and substituting web3signer container template: %w", err)
+	// }
+	// web3signerComposePath := filepath.Join(runtimeFolder, config.Web3SignerContainerName+composeFileSuffix)
+	// err = ioutil.WriteFile(web3signerComposePath, contents, 0664)
+	// if err != nil {
+	// 	return []string{}, fmt.Errorf("could not write web3signer container file to %s: %w", web3signerComposePath, err)
+	// }
+	// deployedContainers = append(deployedContainers, web3signerComposePath)
+	// deployedContainers = append(deployedContainers, filepath.Join(overrideFolder, config.Web3SignerContainerName+composeFileSuffix))
+	// fmt.Printf("web3signer compose path is %s\n", web3signerComposePath)
+	// fmt.Printf("web3signer override path is %s\n", filepath.Join(overrideFolder, config.Web3SignerContainerName+composeFileSuffix))
 
 	// Validator
 	//contents, err = envsubst.ReadFile(filepath.Join(templatesFolder, config.ValidatorContainerName+templateSuffix))
