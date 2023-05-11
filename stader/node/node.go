@@ -197,12 +197,15 @@ func run(c *cli.Context) error {
 						errorLog.Printf("Failed to generate the SignedExitMessage for validator with pub key: %s\n", validatorPubKey.String())
 						continue
 					}
+					fmt.Printf("Signature: %s\n", signature)
 
 					decodedHexSignature, err := hex.DecodeString(signature[2:])
 					if err != nil {
 						errorLog.Printf("Failed to decode the hex string: %s\n", signature[2:])
 						continue
 					}
+
+					fmt.Printf("Decoded hex signature: %v\n", decodedHexSignature)
 
 					// encrypt the signature and srHash
 					exitSignatureEncrypted, err := crypto.EncryptUsingPublicKey(decodedHexSignature, publicKey)
