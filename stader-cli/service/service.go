@@ -21,6 +21,7 @@ package service
 
 import (
 	"fmt"
+
 	"github.com/mitchellh/go-homedir"
 	"github.com/stader-labs/stader-node/shared/services/config"
 	"github.com/stader-labs/stader-node/shared/services/stader"
@@ -106,14 +107,21 @@ func installService(c *cli.Context) error {
 	// printPatchNotes(c)
 
 	// Reload the config after installation
-	_, isNew, err = staderClient.LoadConfig()
+	cfg, isNew, err = staderClient.LoadConfig()
 	if err != nil {
 		return fmt.Errorf("error loading new configuration: %w", err)
 	}
 
+	fmt.Printf("%s\n=== Saved default Config ===\n", colorLightBlue)
+	if isNew {
+		err = staderClient.SaveConfig(cfg)
+		if err != nil {
+			return fmt.Errorf("error saveConfig: %w", err)
+		}
+	}
 	// Report next steps
 	fmt.Printf("%s\n=== Next Steps ===\n", colorLightBlue)
-	fmt.Printf("Run 'stader-cli service config' to review the settings changes for this update, or to continue setting up your node.%s\n", colorReset)
+	fmt.Printf("Open %s.user-settings.yml review the settings, or to continue setting up your node.%s\n", cfg.StaderDirectory, colorReset)
 
 	// Print the docker permissions notice
 	if isNew {
@@ -121,8 +129,8 @@ func installService(c *cli.Context) error {
 		fmt.Printf("This is necessary for your user account to have permissions to use Docker.%s", colorReset)
 	}
 
-	return nil
-
+	// Remove the upgrade flag if it's there
+	return staderClient.RemoveUpgradeFlagFile()
 }
 
 // View the Stader service status

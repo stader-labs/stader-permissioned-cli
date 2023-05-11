@@ -21,6 +21,12 @@ package node
 
 import (
 	"fmt"
+
+	"net/http"
+	"strconv"
+	"sync"
+	"time"
+
 	"github.com/stader-labs/stader-node/shared/services"
 	stader_backend "github.com/stader-labs/stader-node/shared/types/stader-backend"
 	"github.com/stader-labs/stader-node/shared/utils/crypto"
@@ -30,10 +36,6 @@ import (
 	"github.com/stader-labs/stader-node/shared/utils/stdr"
 	"github.com/stader-labs/stader-node/stader-lib/node"
 	"github.com/stader-labs/stader-node/stader-lib/types"
-	"net/http"
-	"strconv"
-	"sync"
-	"time"
 
 	"github.com/fatih/color"
 	"github.com/urfave/cli"
@@ -65,11 +67,6 @@ func RegisterCommands(app *cli.App, name string, aliases []string) {
 
 // Run daemon
 func run(c *cli.Context) error {
-
-	//cfg, err := services.GetConfig(c)
-	//if err != nil {
-	//	return err
-	//}
 	w, err := services.GetWallet(c)
 	if err != nil {
 		return err
@@ -112,7 +109,7 @@ func run(c *cli.Context) error {
 
 	// Wait group to handle the various threads
 	wg := new(sync.WaitGroup)
-	wg.Add(2)
+	wg.Add(1)
 
 	// validator presigned loop
 	go func() {
@@ -252,26 +249,6 @@ func run(c *cli.Context) error {
 
 		wg.Done()
 	}()
-
-	//go func() {
-	//	for {
-	//		if cfg.Web3SignerMode.Value.(cfgtypes.Mode) != cfgtypes.Mode_Local {
-	//			continue
-	//		}
-	//
-	//		infoLog.Println("Reloading web3signer keys")
-	//
-	//		err = w3signer.ReloadKeys()
-	//		if err != nil {
-	//			errorLog.Printf("Could not reload keys: %s\n", err)
-	//			continue
-	//		}
-	//
-	//		time.Sleep(reloadInterval)
-	//	}
-	//
-	//	wg.Done()
-	//}()
 
 	// Wait for both threads to stop
 	wg.Wait()

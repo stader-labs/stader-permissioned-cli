@@ -23,11 +23,12 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
-	"github.com/mitchellh/go-homedir"
-	stader_backend "github.com/stader-labs/stader-node/shared/types/stader-backend"
 	"math/big"
 	"os"
 	"path/filepath"
+
+	"github.com/mitchellh/go-homedir"
+	stader_backend "github.com/stader-labs/stader-node/shared/types/stader-backend"
 
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/stader-labs/stader-node/shared"
@@ -71,10 +72,6 @@ type StaderNodeConfig struct {
 
 	// The path of the data folder where everything is stored
 	DataPath config.Parameter `yaml:"dataPath,omitempty"`
-
-	Web3SignerKeyStorePath config.Parameter `yaml:"web3SignerKeyStorePath,omitempty"`
-
-	Web3SignerKeyStorePasswordPath config.Parameter `yaml:"web3SignerKeyStorePasswordPath,omitempty"`
 
 	// The path of the guardians's persistent state storage
 	GuardianStatePath config.Parameter `yaml:"guardianStatePath"`
@@ -123,30 +120,6 @@ func NewStadernodeConfig(cfg *StaderConfig) *StaderNodeConfig {
 			Default:              map[config.Network]interface{}{config.Network_All: defaultProjectName},
 			AffectsContainers:    []config.ContainerID{config.ContainerID_Api},
 			EnvironmentVariables: []string{"COMPOSE_PROJECT_NAME"},
-			CanBeBlank:           false,
-			OverwriteOnUpgrade:   false,
-		},
-
-		Web3SignerKeyStorePath: config.Parameter{
-			ID:                   "webSignerKeyStorePath",
-			Name:                 "Path where web3signer keys are stored",
-			Description:          "The web3signer key store path",
-			Type:                 config.ParameterType_String,
-			Default:              map[config.Network]interface{}{config.Network_All: GetDefaultWeb3SignerKeyStorePath(cfg)},
-			AffectsContainers:    []config.ContainerID{config.ContainerID_Api},
-			EnvironmentVariables: []string{"WEB3_SIGNER_KEY_STORE_PATH"},
-			CanBeBlank:           false,
-			OverwriteOnUpgrade:   false,
-		},
-
-		Web3SignerKeyStorePasswordPath: config.Parameter{
-			ID:                   "webSignerKeyStorePasswordPath",
-			Name:                 "Path where web3signer passwords are stored",
-			Description:          "The web3signer key store passwords path",
-			Type:                 config.ParameterType_String,
-			Default:              map[config.Network]interface{}{config.Network_All: GetDefaultWeb3SignerKeyStorePasswordPath(cfg)},
-			AffectsContainers:    []config.ContainerID{config.ContainerID_Api},
-			EnvironmentVariables: []string{"WEB3_SIGNER_KEY_STORE_PASSWORD_PATH"},
 			CanBeBlank:           false,
 			OverwriteOnUpgrade:   false,
 		},
@@ -330,8 +303,6 @@ func (cfg *StaderNodeConfig) GetParameters() []*config.Parameter {
 		&cfg.DataPath,
 		&cfg.ManualMaxFee,
 		&cfg.PriorityFee,
-		&cfg.Web3SignerKeyStorePasswordPath,
-		&cfg.Web3SignerKeyStorePath,
 	}
 }
 
@@ -431,14 +402,6 @@ func (cfg *StaderNodeConfig) GetGuardianFolder(daemon bool) string {
 func (cfg *StaderNodeConfig) GetSpRewardsMerkleProofFolder(daemon bool) string {
 
 	return filepath.Join(cfg.DataPath.Value.(string), GuardianFolder)
-}
-
-func (cfg *StaderNodeConfig) GetWeb3SignerKeyStorePath(daemon bool) string {
-	return cfg.Web3SignerKeyStorePath.Value.(string)
-}
-
-func (cfg *StaderNodeConfig) GetWeb3SignerKeyStoresPasswordPath(daemon bool) string {
-	return cfg.Web3SignerKeyStorePasswordPath.Value.(string)
 }
 
 func (cfg *StaderNodeConfig) GetSpRewardCyclePath(cycle int64, daemon bool) string {

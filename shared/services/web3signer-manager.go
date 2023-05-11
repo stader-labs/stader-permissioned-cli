@@ -2,12 +2,12 @@ package services
 
 import (
 	"fmt"
+	"math/big"
+
 	"github.com/stader-labs/stader-node/shared/services/beacon"
 	"github.com/stader-labs/stader-node/shared/services/config"
 	"github.com/stader-labs/stader-node/shared/services/web3signer"
 	web3signer_client "github.com/stader-labs/stader-node/shared/services/web3signer/web3signer-client"
-	cfgtypes "github.com/stader-labs/stader-node/shared/types/config"
-	"math/big"
 )
 
 type Web3SignerManager struct {
@@ -16,17 +16,9 @@ type Web3SignerManager struct {
 }
 
 func NewWeb3SignerManager(cfg *config.StaderConfig) (*Web3SignerManager, error) {
-
-	endPoint := ""
-	if cfg.Web3SignerMode.Value.(cfgtypes.Mode) == cfgtypes.Mode_Local {
-		// TODO - bchain - allow user to configure an external endpoint too
-		endPoint = fmt.Sprintf("http://%s:%d", "stader_web3signer", 9000)
-	} else {
-		endPoint = cfg.ExternalWeb3Signer.HttpUrl.Value.(string)
-	}
-
+	endPoint := cfg.ExternalWeb3Signer.HttpUrl.Value.(string)
+	fmt.Printf("Web3Signer endPoint: %s\n", endPoint)
 	client := web3signer_client.NewStandardHttpClient(endPoint)
-
 	return &Web3SignerManager{
 		Web3SignerEndpoint: endPoint,
 		Web3signerClient:   client,
