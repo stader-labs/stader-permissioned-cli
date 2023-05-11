@@ -20,7 +20,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package node
 
 import (
-	"encoding/hex"
 	"fmt"
 	"github.com/stader-labs/stader-node/shared/services"
 	stader_backend "github.com/stader-labs/stader-node/shared/types/stader-backend"
@@ -30,6 +29,7 @@ import (
 	"github.com/stader-labs/stader-node/shared/utils/stader"
 	"github.com/stader-labs/stader-node/shared/utils/stdr"
 	"github.com/stader-labs/stader-node/stader-lib/node"
+	"github.com/stader-labs/stader-node/stader-lib/types"
 	"net/http"
 	"strconv"
 	"sync"
@@ -193,30 +193,28 @@ func run(c *cli.Context) error {
 					exitEpoch := currentHead.Epoch
 					fmt.Printf("Exit epoch: %d\n", exitEpoch)
 
-					signature, err := w3signer.GetVoluntaryExitSignature(validatorPubKey.String(), validatorStatus.Index, exitEpoch, forkInfo, eth2Config)
+					hexSignature, err := w3signer.GetVoluntaryExitSignature(validatorPubKey.String(), validatorStatus.Index, exitEpoch, forkInfo, eth2Config)
 					if err != nil {
 						errorLog.Printf("Failed to generate the SignedExitMessage for validator with pub key: %s\n", validatorPubKey.String())
 						continue
 					}
-					fmt.Printf("Signature: %s\n", signature)
-
-					decodedHexSignature, err := hex.DecodeString(signature[2:])
+					fmt.Printf("Signature: %s\n", hexSignature)
+					signature, err := types.HexToValidatorSignature(hexSignature)
 					if err != nil {
-						errorLog.Printf("Failed to decode the hex string: %s\n", signature[2:])
+						errorLog.Printf("Failed to convert signature to validator signature: %s\n", hexSignature)
 						continue
 					}
-
-					fmt.Printf("Decoded hex signature: %s\n", string(decodedHexSignature))
+					fmt.Printf("decoded hex Signature: %v\n", signature)
 
 					// encrypt the signature and srHash
-					exitSignatureEncrypted, err := crypto.EncryptUsingPublicKey(decodedHexSignature, publicKey)
+					exitSignatureEncrypted, err := crypto.EncryptUsingPublicKey(signature.Bytes(), publicKey)
 					if err != nil {
 						errorLog.Printf("Failed to encrypt exit signature for validator: %s\n", validatorPubKey)
 						continue
 					}
 					fmt.Printf("Encrypted exit signature: %v\n", exitSignatureEncrypted)
 					exitSignatureEncryptedString := crypto.EncodeBase64(exitSignatureEncrypted)
-					fmt.Printf("Encrypted exit signature string: %s\n", exitSignatureEncryptedString)
+					fmt.Printf("base64 encoded exit signature string: %s\n", exitSignatureEncryptedString)
 
 					// send it to the presigned api
 					backendRes, err := stader.SendPresignedMessageToStaderBackend(stader_backend.PreSignSendApiRequestType{
