@@ -42,6 +42,8 @@ type WalletStatusResponse struct {
 	PasswordSet       bool           `json:"passwordSet"`
 	WalletInitialized bool           `json:"walletInitialized"`
 	AccountAddress    common.Address `json:"accountAddress"`
+	CurrentNonce      uint64         `json:"currentNonce"`
+	PendingNonce      uint64         `json:"pendingNonce"`
 }
 
 type SetPasswordResponse struct {
