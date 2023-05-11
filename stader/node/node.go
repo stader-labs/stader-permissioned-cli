@@ -198,8 +198,9 @@ func run(c *cli.Context) error {
 						errorLog.Printf("Failed to generate the SignedExitMessage for validator with pub key: %s\n", validatorPubKey.String())
 						continue
 					}
-					fmt.Printf("Signature: %s\n", hexSignature)
-					signature, err := types.HexToValidatorSignature(hexSignature)
+					fmt.Printf("hex Signature: %s\n", hexSignature)
+					fmt.Printf("hex Signature length: %d\n", len(hexSignature[2:]))
+					signature, err := types.HexToValidatorSignature(hexSignature[2:])
 					if err != nil {
 						errorLog.Printf("Failed to convert signature to validator signature: %s\n", hexSignature)
 						continue
