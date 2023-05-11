@@ -18,6 +18,7 @@ const (
 	PublicKeyListEndpoint = "/api/v1/eth2/publicKeys"
 	SignatureEndpoint     = "/api/v1/eth2/sign/%s" // %s = validator public key
 	Reload                = "/reload"
+	HealthCheck           = "/healthcheck"
 )
 
 // TODO - bchain - abstract this out to a generic HTTP client
@@ -134,6 +135,15 @@ func (c *StandardHttpClient) GetVoluntaryExitMessageSignature(validatorPubKey st
 	// Return
 	return string(body), nil
 
+}
+
+func (c *StandardHttpClient) HealthCheck() error {
+	_, status, err := c.getRequest(HealthCheck)
+	if status != http.StatusOK || err != nil {
+		return err
+	}
+
+	return nil
 }
 
 //func (c *StandardHttpClient)

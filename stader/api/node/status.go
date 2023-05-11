@@ -96,6 +96,14 @@ func getStatus(c *cli.Context) (*api.NodeStatusResponse, error) {
 	if err != nil {
 		return nil, err
 	}
+	w3signer, err := services.GetWeb3SignerClient(c)
+	if err != nil {
+		return nil, err
+	}
+	cfg, err := services.GetConfig(c)
+	if err != nil {
+		return nil, err
+	}
 
 	// Response
 	response := api.NodeStatusResponse{}
@@ -125,6 +133,18 @@ func getStatus(c *cli.Context) (*api.NodeStatusResponse, error) {
 	operatorRegistry, err := node.GetOperatorInfo(pnr, operatorId, nil)
 	if err != nil {
 		return nil, err
+	}
+
+	web3SignerUrl := cfg.ExternalWeb3Signer.HttpUrl.Value.(string)
+	response.Web3SignerUrl = web3SignerUrl
+
+	// get connection status
+	err = w3signer.HealthCheck()
+	if err != nil {
+		response.Web3SignerConnectionSuccess = false
+		response.Web3SignerConnectionError = err.Error()
+	} else {
+		response.Web3SignerConnectionSuccess = true
 	}
 
 	if operatorRegistry.OperatorName != "" {

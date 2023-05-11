@@ -1,7 +1,6 @@
 package services
 
 import (
-	"fmt"
 	"math/big"
 
 	"github.com/stader-labs/stader-node/shared/services/beacon"
@@ -17,7 +16,6 @@ type Web3SignerManager struct {
 
 func NewWeb3SignerManager(cfg *config.StaderConfig) (*Web3SignerManager, error) {
 	endPoint := cfg.ExternalWeb3Signer.HttpUrl.Value.(string)
-	fmt.Printf("Web3Signer endPoint: %s\n", endPoint)
 	client := web3signer_client.NewStandardHttpClient(endPoint)
 	return &Web3SignerManager{
 		Web3SignerEndpoint: endPoint,
@@ -44,4 +42,8 @@ func (w *Web3SignerManager) GetVoluntaryExitSignature(pubKey string, validatorIn
 
 func (w *Web3SignerManager) ReloadKeys() error {
 	return w.Web3signerClient.ReloadKeys()
+}
+
+func (w *Web3SignerManager) HealthCheck() error {
+	return w.Web3signerClient.HealthCheck()
 }

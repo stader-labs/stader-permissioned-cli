@@ -34,6 +34,9 @@ type NodeStatusResponse struct {
 	ValidatorInfos                    []stdr.ValidatorInfo               `json:"validatorInfos"`
 	ClaimedSocializingPoolMerkles     []stader_backend.CycleMerkleProofs `json:"claimedSocializingPoolMerkles"`
 	UnclaimedSocializingPoolMerkles   []stader_backend.CycleMerkleProofs `json:"unclaimedSocializingPoolMerkles"`
+	Web3SignerUrl                     string                             `json:"web3SignerUrl"`
+	Web3SignerConnectionSuccess       bool                               `json:"web3SignerConnectionSuccess"`
+	Web3SignerConnectionError         string                             `json:"web3SignerConnectionError"`
 }
 
 type CanRegisterNodeResponse struct {
