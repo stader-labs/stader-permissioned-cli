@@ -1,0 +1,34 @@
+version: "3.7"
+services:
+  web3signer:
+    image: ${WEB3SIGNER_CONTAINER_TAG}
+    user: root
+    container_name: ${COMPOSE_PROJECT_NAME}_web3signer
+    restart: unless-stopped
+    stop_grace_period: 3m
+    volumes:
+      - ${STADER_FOLDER}:/.stader
+      - ${STADER_FOLDER}/scripts:/setup:ro
+      - ${STADER_DATA_FOLDER}:/.stader/data
+      - ${WEB3SIGNER_ETH2_KEYSTORES_PASSWORDS_PATH}:/.stader/data/web3signer-keystore-password:ro
+      - ${WEB3SIGNER_ETH2_KEYSTORES_PATH}:/.stader/data/web3signer-keystore:ro
+    networks:
+      - net
+    environment:
+      - NETWORK=${NETWORK}
+      - WEB3SIGNER_HTTP_LISTEN_PORT=${WEB3SIGNER_HTTP_LISTEN_PORT}
+      - STADER_VERSION=${STADER_VERSION}
+      - WEB3SIGNER_ETH2_KEYSTORES_PASSWORDS_PATH=/.stader/data/web3signer-keystore-password
+      - WEB3SIGNER_ETH2_KEYSTORES_PATH=/.stader/data/web3signer-keystore
+      - WEB3SIGNER_ETH2_SLASHING_PROTECTION_ENABLED=false
+      - WEB3SIGNER_HTTP_HOST_ALLOWLIST=*
+    entrypoint: sh
+    command: "/setup/start-web3signer.sh"
+    cap_drop:
+      - all
+    cap_add:
+      - dac_override
+    security_opt:
+      - no-new-privileges
+networks:
+  net:

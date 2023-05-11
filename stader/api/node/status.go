@@ -1,0 +1,262 @@
+package node
+
+import (
+	stader_backend "github.com/stader-labs/stader-node/shared/types/stader-backend"
+	"github.com/stader-labs/stader-node/shared/utils/eth1"
+	pool_utils "github.com/stader-labs/stader-node/stader-lib/pool-utils"
+	socializing_pool "github.com/stader-labs/stader-node/stader-lib/socializing-pool"
+	stader_config "github.com/stader-labs/stader-node/stader-lib/stader-config"
+	"github.com/stader-labs/stader-node/stader-lib/types"
+	"math/big"
+	"time"
+
+	"github.com/stader-labs/stader-node/shared/services"
+	"github.com/stader-labs/stader-node/shared/types/api"
+	"github.com/stader-labs/stader-node/shared/utils/stdr"
+	"github.com/stader-labs/stader-node/stader-lib/node"
+	"github.com/stader-labs/stader-node/stader-lib/tokens"
+	"github.com/urfave/cli"
+)
+
+func GetClaimedAndUnclaimedSocializingPoolMerkles(c *cli.Context) ([]stader_backend.CycleMerkleProofs, []stader_backend.CycleMerkleProofs, error) {
+	cfg, err := services.GetConfig(c)
+	if err != nil {
+		return nil, nil, err
+	}
+	sp, err := services.GetSocializingPoolContract(c)
+	if err != nil {
+		return nil, nil, err
+	}
+	w, err := services.GetWallet(c)
+	if err != nil {
+		return nil, nil, err
+	}
+	nodeAccount, err := w.GetNodeAccount()
+	if err != nil {
+		return nil, nil, err
+	}
+
+	rewardDetails, err := socializing_pool.GetRewardDetails(sp, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	unclaimedMerkles := []stader_backend.CycleMerkleProofs{}
+	claimedMerkles := []stader_backend.CycleMerkleProofs{}
+	for i := int64(1); i < rewardDetails.CurrentIndex.Int64(); i++ {
+		cycleMerkleProof, exists, err := cfg.StaderNode.ReadCycleCache(i)
+		if err != nil {
+			return nil, nil, err
+		}
+		if !exists {
+			continue
+		}
+		claimed, err := socializing_pool.HasClaimedRewards(sp, nodeAccount.Address, big.NewInt(i), nil)
+		if err != nil {
+			return nil, nil, err
+		}
+
+		if claimed {
+			claimedMerkles = append(claimedMerkles, cycleMerkleProof)
+		} else {
+			unclaimedMerkles = append(unclaimedMerkles, cycleMerkleProof)
+		}
+	}
+
+	return claimedMerkles, unclaimedMerkles, nil
+}
+
+func getStatus(c *cli.Context) (*api.NodeStatusResponse, error) {
+
+	// Get services
+	if err := services.RequireNodeWallet(c); err != nil {
+		return nil, err
+	}
+	w, err := services.GetWallet(c)
+	if err != nil {
+		return nil, err
+	}
+	pnr, err := services.GetPermissionedNodeRegistry(c)
+	if err != nil {
+		return nil, err
+	}
+	sdcfg, err := services.GetStaderConfigContract(c)
+	if err != nil {
+		return nil, err
+	}
+	putils, err := services.GetPoolUtilsContract(c)
+	if err != nil {
+		return nil, err
+	}
+	bc, err := services.GetBeaconClient(c)
+	if err != nil {
+		return nil, err
+	}
+	sp, err := services.GetSocializingPoolContract(c)
+	if err != nil {
+		return nil, err
+	}
+
+	// Response
+	response := api.NodeStatusResponse{}
+
+	//fmt.Printf("Getting node account...\n")
+	nodeAccount, err := w.GetNodeAccount()
+	if err != nil {
+		return nil, err
+	}
+
+	response.AccountAddress = nodeAccount.Address
+
+	//fmt.Printf("Getting node account balances...\n")
+	accountEthBalance, err := tokens.GetEthBalance(pnr.Client, nodeAccount.Address, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	response.AccountBalances.ETH = accountEthBalance
+
+	//fmt.Printf("Getting operator id...\n")
+	operatorId, err := node.GetOperatorId(pnr, nodeAccount.Address, nil)
+	if err != nil {
+		return nil, err
+	}
+	//fmt.Printf("Getting operator info...\n")
+	operatorRegistry, err := node.GetOperatorInfo(pnr, operatorId, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if operatorRegistry.OperatorName != "" {
+		response.Registered = true
+		response.OperatorId = operatorId
+		response.OperatorName = operatorRegistry.OperatorName
+		response.OperatorActive = operatorRegistry.Active
+		response.OperatorAddress = operatorRegistry.OperatorAddress
+		response.OperatorRewardAddress = operatorRegistry.OperatorRewardAddress
+
+		//fmt.Printf("Getting operator reward address balance\n")
+		operatorReward, err := tokens.GetEthBalance(pnr.Client, operatorRegistry.OperatorRewardAddress, nil)
+		if err != nil {
+			return nil, err
+		}
+		response.OperatorRewardInETH = operatorReward
+
+		//fmt.Printf("Getting reward details\n")
+		rewardCycleDetails, err := socializing_pool.GetRewardDetails(sp, nil)
+		if err != nil {
+			return nil, err
+		}
+		response.SocializingPoolRewardCycleDetails = rewardCycleDetails
+		socializingPoolStartTimestamp := time.Now()
+		response.SocializingPoolStartTime = socializingPoolStartTimestamp
+
+		//fmt.Printf("Get total validator keys\n")
+		totalValidatorKeys, err := node.GetTotalValidatorKeys(pnr, operatorId, nil)
+		if err != nil {
+			return nil, err
+		}
+
+		//fmt.Printf("Get total non terminal validator keys\n")
+		totalNonTerminalValidatorKeys, err := node.GetTotalNonTerminalValidatorKeys(pnr, nodeAccount.Address, totalValidatorKeys, nil)
+		if err != nil {
+			return nil, err
+		}
+		//fmt.Printf("Total non terminal validators %d\n", totalNonTerminalValidatorKeys)
+
+		response.TotalNonTerminalValidators = big.NewInt(int64(totalNonTerminalValidatorKeys))
+
+		validatorInfoArray := make([]stdr.ValidatorInfo, totalValidatorKeys.Int64())
+
+		for i := int64(0); i < totalValidatorKeys.Int64(); i++ {
+			//fmt.Printf("Getting validator id by operator id and index %d\n", i)
+			validatorIndex, err := node.GetValidatorIdByOperatorId(pnr, operatorId, big.NewInt(i), nil)
+			if err != nil {
+				return nil, err
+			}
+			//fmt.Printf("Getting validator info by operator id and index %d\n", i)
+			validatorContractInfo, err := node.GetValidatorInfo(pnr, validatorIndex, nil)
+			if err != nil {
+				return nil, err
+			}
+			withdrawVaultBalance, err := tokens.GetEthBalance(pnr.Client, validatorContractInfo.WithdrawVaultAddress, nil)
+			if err != nil {
+				return nil, err
+			}
+			withdrawVaultRewardShares, err := pool_utils.CalculateRewardShare(putils, 1, withdrawVaultBalance, nil)
+			if err != nil {
+				return nil, err
+			}
+			rewardsThreshold, err := stader_config.GetRewardsThreshold(sdcfg, nil)
+			if err != nil {
+				return nil, err
+			}
+			crossedRewardThreshold := false
+			if withdrawVaultBalance.Cmp(rewardsThreshold) > 0 {
+				crossedRewardThreshold = true
+			}
+
+			withdrawVaultWithdrawShares, err := node.CalculateValidatorWithdrawVaultWithdrawShare(pnr.Client, validatorContractInfo.WithdrawVaultAddress, nil)
+			if err != nil {
+				return nil, err
+			}
+			validatorWithdrawVaultWithdrawShares := withdrawVaultWithdrawShares.OperatorShare
+
+			validatorBeaconStatus, err := bc.GetValidatorStatus(types.BytesToValidatorPubkey(validatorContractInfo.Pubkey), nil)
+			if err != nil {
+				return nil, err
+			}
+
+			validatorDisplayStatus, err := stdr.GetValidatorRunningStatus(validatorBeaconStatus, validatorContractInfo)
+			if err != nil {
+				return nil, err
+			}
+
+			depositTime, err := eth1.ConvertBlockToTimestamp(c, validatorContractInfo.DepositBlock.Int64())
+			if err != nil {
+				return nil, err
+			}
+			withdrawTime, err := eth1.ConvertBlockToTimestamp(c, validatorContractInfo.WithdrawnBlock.Int64())
+			if err != nil {
+				return nil, err
+			}
+
+			validatorInfo := stdr.ValidatorInfo{
+				Status:                           validatorContractInfo.Status,
+				StatusToDisplay:                  validatorDisplayStatus,
+				Pubkey:                           validatorContractInfo.Pubkey,
+				PreDepositSignature:              validatorContractInfo.PreDepositSignature,
+				DepositSignature:                 validatorContractInfo.DepositSignature,
+				WithdrawVaultAddress:             validatorContractInfo.WithdrawVaultAddress,
+				WithdrawVaultRewardBalance:       withdrawVaultRewardShares.OperatorShare,
+				CrossedRewardsThreshold:          crossedRewardThreshold,
+				WithdrawVaultWithdrawableBalance: validatorWithdrawVaultWithdrawShares,
+				OperatorId:                       validatorContractInfo.OperatorId,
+				DepositBlock:                     validatorContractInfo.DepositBlock,
+				DepositTime:                      depositTime,
+				WithdrawnBlock:                   validatorContractInfo.WithdrawnBlock,
+				WithdrawnTime:                    withdrawTime,
+			}
+
+			validatorInfoArray[i] = validatorInfo
+		}
+
+		response.ValidatorInfos = validatorInfoArray
+
+		//fmt.Printf("Getting operator claimed and unclaimed socializing pool merkles\n")
+		claimedMerkles, unclaimedMerkles, err := GetClaimedAndUnclaimedSocializingPoolMerkles(c)
+		if err != nil {
+			return nil, err
+		}
+
+		response.ClaimedSocializingPoolMerkles = claimedMerkles
+		response.UnclaimedSocializingPoolMerkles = unclaimedMerkles
+
+	} else {
+		response.ValidatorInfos = []stdr.ValidatorInfo{}
+		response.Registered = false
+	}
+
+	// Return response
+	return &response, nil
+}
