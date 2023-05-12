@@ -61,9 +61,15 @@ func canNodeDeposit(c *cli.Context, validatorList string) (*api.CanNodeDepositRe
 		if !found {
 			return nil, fmt.Errorf("validatorPubkey %s is not registered with the web3signer", val)
 		}
-	}
 
-	// TODO - Check if validators are already registered
+		validatorId, err := node.GetValidatorIdByPubKey(prn, []byte(val), nil)
+		if err != nil {
+			return nil, err
+		}
+		if validatorId.Cmp(big.NewInt(0)) != 0 {
+			return nil, fmt.Errorf("validatorPubkey %s is already registered with the permissioned node registry", val)
+		}
+	}
 
 	// Get eth2 config
 	eth2Config, err := bc.GetEth2Config()
