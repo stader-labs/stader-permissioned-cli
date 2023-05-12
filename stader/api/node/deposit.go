@@ -63,7 +63,7 @@ func canNodeDeposit(c *cli.Context, validatorList string) (*api.CanNodeDepositRe
 		}
 	}
 
-	// Check if validators are already registered
+	// TODO - Check if validators are already registered
 
 	// Get eth2 config
 	eth2Config, err := bc.GetEth2Config()

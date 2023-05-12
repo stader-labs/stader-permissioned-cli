@@ -45,12 +45,13 @@ import (
 var preSignedCooldown, _ = time.ParseDuration("30m")
 var preSignedBatchCooldown, _ = time.ParseDuration("5s")
 var preSignBatchSize = 10 // Go thru 100 keys in each pass
-var reloadInterval, _ = time.ParseDuration("2m")
+var merkleProofsDownloaderInterval, _ = time.ParseDuration("10s")
 
 const (
-	MaxConcurrentEth1Requests = 200
-	ErrorColor                = color.FgRed
-	InfoColor                 = color.FgHiGreen
+	MaxConcurrentEth1Requests   = 200
+	ErrorColor                  = color.FgRed
+	InfoColor                   = color.FgHiGreen
+	MerkleProofsDownloaderColor = color.FgHiYellow
 )
 
 // Register node command
@@ -100,16 +101,19 @@ func run(c *cli.Context) error {
 	errorLog := log.NewColorLogger(ErrorColor)
 	infoLog := log.NewColorLogger(InfoColor)
 
+	merkleProofsDownloader, err := NewMerkleProofsDownloader(c, log.NewColorLogger(MerkleProofsDownloaderColor))
+	if err != nil {
+		return err
+	}
+
 	operatorId, err := node.GetOperatorId(pnr, nodeAccount.Address, nil)
 	if err != nil {
 		return err
 	}
 
-	// get all registered validators with smart contracts
-
 	// Wait group to handle the various threads
 	wg := new(sync.WaitGroup)
-	wg.Add(1)
+	wg.Add(2)
 
 	// validator presigned loop
 	go func() {
@@ -245,6 +249,22 @@ func run(c *cli.Context) error {
 			errorLog.Printf("Done with the pass of presign daemon")
 			// run loop every 12 hours
 			time.Sleep(preSignedCooldown)
+		}
+
+		wg.Done()
+	}()
+
+	go func() {
+		for {
+			infoLog.Printlnf("Checking if there are any available merkle proofs to download")
+
+			// Manage the fee recipient for the node
+			if err := merkleProofsDownloader.run(); err != nil {
+				errorLog.Println(err)
+			}
+
+			infoLog.Printlnf("Done checking for merkle proofs to download")
+			time.Sleep(merkleProofsDownloaderInterval)
 		}
 
 		wg.Done()
