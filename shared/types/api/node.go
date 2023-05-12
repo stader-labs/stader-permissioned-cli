@@ -37,6 +37,8 @@ type NodeStatusResponse struct {
 	Web3SignerUrl                     string                             `json:"web3SignerUrl"`
 	Web3SignerConnectionSuccess       bool                               `json:"web3SignerConnectionSuccess"`
 	Web3SignerConnectionError         string                             `json:"web3SignerConnectionError"`
+	BeaconChainUrl                    string                             `json:"beaconChainUrl"`
+	ExecutionChainUrl                 string                             `json:"executionChainUrl"`
 }
 
 type CanRegisterNodeResponse struct {

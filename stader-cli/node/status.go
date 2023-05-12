@@ -58,12 +58,14 @@ func getStatus(c *cli.Context) error {
 		totalUnclaimedSocializingPoolSd.Add(totalUnclaimedSocializingPoolSd, sdRewards)
 	}
 
-	fmt.Printf("%s=== Web3Signer Connection Status ===%s\n", log.ColorGreen, log.ColorReset)
+	fmt.Printf("%s=== Services Connection Status ===%s\n", log.ColorGreen, log.ColorReset)
 	if status.Web3SignerConnectionSuccess {
 		fmt.Printf("The node is connected to the Web3Signer at %s.\n\n", status.Web3SignerUrl)
 	} else {
 		fmt.Printf("Web3Signer Connection Failed with error %s. \n\n", status.Error)
 	}
+	fmt.Printf("The node is using %s to connect to the beacon chain.\n\n", status.BeaconChainUrl)
+	fmt.Printf("The node is using %s to connect to the execution chain.\n\n", status.ExecutionChainUrl)
 
 	// Account address & balances
 	fmt.Printf("%s=== Account and Balances ===%s\n", log.ColorGreen, log.ColorReset)

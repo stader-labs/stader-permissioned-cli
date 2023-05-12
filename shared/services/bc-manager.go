@@ -57,9 +57,6 @@ func NewBeaconClientManager(cfg *config.StaderConfig) (*BeaconClientManager, err
 	primaryProvider := cfg.ExternalBeacon.HttpUrl.Value.(string)
 	fallbackProvider := cfg.ExternalBeacon.HttpUrl.Value.(string)
 
-	//fmt.Printf("primaryBc: %s\n", primaryProvider)
-	//fmt.Printf("fallbackBc: %s\n", fallbackProvider)
-
 	primaryBc := client.NewStandardHttpClient(primaryProvider)
 	fallbackBc := client.NewStandardHttpClient(fallbackProvider)
 

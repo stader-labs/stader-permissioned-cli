@@ -147,6 +147,12 @@ func getStatus(c *cli.Context) (*api.NodeStatusResponse, error) {
 		response.Web3SignerConnectionSuccess = true
 	}
 
+	beaconUrl := cfg.ExternalBeacon.HttpUrl.Value.(string)
+	executionUrl := cfg.ExternalExecution.HttpUrl.Value.(string)
+
+	response.BeaconChainUrl = beaconUrl
+	response.ExecutionChainUrl = executionUrl
+
 	if operatorRegistry.OperatorName != "" {
 		response.Registered = true
 		response.OperatorId = operatorId

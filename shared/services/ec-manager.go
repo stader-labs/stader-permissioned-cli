@@ -57,9 +57,6 @@ func NewExecutionClientManager(cfg *config.StaderConfig) (*ExecutionClientManage
 	primaryEcUrl := cfg.ExternalExecution.HttpUrl.Value.(string)
 	fallbackEcUrl := cfg.ExternalExecution.HttpUrl.Value.(string)
 
-	fmt.Printf("primaryEcUrl: %s\n", primaryEcUrl)
-	fmt.Printf("fallbackEcUrl: %s\n", fallbackEcUrl)
-
 	primaryEc, err := ethclient.Dial(primaryEcUrl)
 	if err != nil {
 		return nil, fmt.Errorf("error connecting to primary EC at [%s]: %w", primaryEcUrl, err)
