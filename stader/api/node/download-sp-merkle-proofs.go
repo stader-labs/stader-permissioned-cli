@@ -93,6 +93,8 @@ func downloadSpMerkleProofs(c *cli.Context) (*api.DownloadSpMerkleProofsResponse
 		if err != nil {
 			return nil, err
 		}
+		fmt.Printf("absolutePathOfProofFile: %s\n", absolutePathOfProofFile)
+		fmt.Printf("cycleMerkleProofFile: %s\n", cycleMerkleProofFile)
 
 		// proof has already been downloaded
 		_, err = os.Stat(cycleMerkleProofFile)
