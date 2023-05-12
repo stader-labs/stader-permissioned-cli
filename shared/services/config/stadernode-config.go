@@ -334,15 +334,15 @@ func (cfg *StaderNodeConfig) GetValidatorKeychainPath() string {
 }
 
 func (cfg *StaderNodeConfig) GetWalletPathInCLI() string {
-	return filepath.Join(cfg.DataPath.Value.(string), "wallet")
+	return filepath.Join(DaemonDataPath, "wallet")
 }
 
 func (cfg *StaderNodeConfig) GetPasswordPathInCLI() string {
-	return filepath.Join(cfg.DataPath.Value.(string), "password")
+	return filepath.Join(DaemonDataPath, "password")
 }
 
 func (cfg *StaderNodeConfig) GetValidatorKeychainPathInCLI() string {
-	return filepath.Join(cfg.DataPath.Value.(string), "validators")
+	return filepath.Join(DaemonDataPath, "validators")
 }
 
 func (config *StaderNodeConfig) GetGuardianStatePath() string {
@@ -396,20 +396,20 @@ func GetDefaultWeb3SignerKeyStorePasswordPath(cfg *StaderConfig) string {
 
 func (cfg *StaderNodeConfig) GetGuardianFolder(daemon bool) string {
 
-	return filepath.Join(cfg.DataPath.Value.(string), GuardianFolder)
+	return filepath.Join(DaemonDataPath, GuardianFolder)
 }
 
 func (cfg *StaderNodeConfig) GetSpRewardsMerkleProofFolder(daemon bool) string {
 
-	return filepath.Join(cfg.DataPath.Value.(string), GuardianFolder)
+	return filepath.Join(DaemonDataPath, GuardianFolder)
 }
 
 func (cfg *StaderNodeConfig) GetSpRewardCyclePath(cycle int64, daemon bool) string {
-	return filepath.Join(cfg.DataPath.Value.(string), SpRewardsMerkleProofsFolder, fmt.Sprintf(MerkleProofsFormat, string(cfg.Network.Value.(config.Network)), cycle))
+	return filepath.Join(DaemonDataPath, SpRewardsMerkleProofsFolder, fmt.Sprintf(MerkleProofsFormat, string(cfg.Network.Value.(config.Network)), cycle))
 }
 
 func (cfg *StaderNodeConfig) GetFeeRecipientFilePath() string {
-	return filepath.Join(cfg.DataPath.Value.(string), "validators", NativeFeeRecipientFilename)
+	return filepath.Join(DaemonDataPath, "validators", NativeFeeRecipientFilename)
 }
 
 func getNetworkOptions() []config.ParameterOption {
