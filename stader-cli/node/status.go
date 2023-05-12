@@ -102,9 +102,9 @@ func getStatus(c *cli.Context) error {
 	}
 	fmt.Printf("The Operator has registered a total of %d validators\n\n", len(status.ValidatorInfos))
 
-	if totalUnclaimedSocializingPoolSd.Cmp(big.NewInt(0)) > 0 {
-		fmt.Printf("The Operator reward address %s has %.6f SD as unclaimed SD rewards\n\n", status.OperatorAddress.String(), math.RoundDown(eth.WeiToEth(totalUnclaimedSocializingPoolSd), 18))
-		fmt.Printf("To claim SD rewards using the %sstader-cli node claim-sp-rewards%s command\n\n", log.ColorGreen, log.ColorReset)
+	if totalUnclaimedSocializingPoolEth.Cmp(big.NewInt(0)) > 0 {
+		fmt.Printf("The Operator reward address %s has %.6f ETH as unclaimed ETH rewards\n\n", status.OperatorAddress.String(), math.RoundDown(eth.WeiToEth(totalUnclaimedSocializingPoolEth), 18))
+		fmt.Printf("To claim ETH rewards using the %sstader-cli node claim-sp-rewards%s command\n\n", log.ColorGreen, log.ColorReset)
 	}
 
 	fmt.Printf("%s=== Registered Validator Details ===%s\n", log.ColorGreen, log.ColorReset)
