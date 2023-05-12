@@ -3,7 +3,6 @@ package node
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/mitchellh/go-homedir"
 	"github.com/stader-labs/stader-node/shared/services"
 	"github.com/stader-labs/stader-node/shared/types/api"
 	"github.com/stader-labs/stader-node/shared/utils/stader"
@@ -89,27 +88,27 @@ func downloadSpMerkleProofs(c *cli.Context) (*api.DownloadSpMerkleProofsResponse
 	for _, cycleMerkleProof := range allMerkleProofs {
 
 		cycleMerkleProofFile := cfg.StaderNode.GetSpRewardCyclePath(cycleMerkleProof.Cycle, true)
-		absolutePathOfProofFile, err := homedir.Expand(cycleMerkleProofFile)
+		//absolutePathOfProofFile, err := homedir.Expand(cycleMerkleProofFile)
 		if err != nil {
 			return nil, err
 		}
-		fmt.Printf("absolutePathOfProofFile: %s\n", absolutePathOfProofFile)
-		fmt.Printf("cycleMerkleProofFile: %s\n", cycleMerkleProofFile)
+		//fmt.Printf("absolutePathOfProofFile: %s\n", absolutePathOfProofFile)
+		//fmt.Printf("cycleMerkleProofFile: %s\n", cycleMerkleProofFile)
 
 		// proof has already been downloaded
 		_, err = os.Stat(cycleMerkleProofFile)
-		fmt.Printf("error in stating is: %s\n", err.Error())
+		//fmt.Printf("error in stating is: %s\n", err.Error())
 		if !os.IsNotExist(err) && err != nil {
-			fmt.Printf("Returning error 1\n")
+			//fmt.Printf("Returning error 1\n")
 			return nil, err
 		}
 		if !os.IsNotExist(err) {
 			continue
 		}
 
-		file, err := os.Create(absolutePathOfProofFile)
+		file, err := os.Create(cycleMerkleProofFile)
 		if err != nil {
-			fmt.Printf("Returning error 2 \n")
+			//fmt.Printf("Returning error 2 \n")
 			return nil, err
 		}
 
