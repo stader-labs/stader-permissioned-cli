@@ -86,6 +86,13 @@ func downloadSpMerkleProofs(c *cli.Context) (*api.DownloadSpMerkleProofsResponse
 
 	downloadedCycles := []int64{}
 
+	cwd, err := os.Getwd()
+	if err != nil {
+		fmt.Printf("error in getting current working directory: %s\n", err.Error())
+		return nil, err
+	}
+	fmt.Printf("current working directory: %s\n", cwd)
+
 	for _, cycleMerkleProof := range allMerkleProofs {
 
 		cycleMerkleProofFile := cfg.StaderNode.GetSpRewardCyclePath(cycleMerkleProof.Cycle, true)
