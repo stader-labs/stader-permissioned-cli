@@ -54,15 +54,11 @@ type ecFunction func(*ethclient.Client) (interface{}, error)
 
 // Creates a new ExecutionClientManager instance based on the Stader config
 func NewExecutionClientManager(cfg *config.StaderConfig) (*ExecutionClientManager, error) {
+	primaryEcUrl := cfg.ExternalExecution.HttpUrl.Value.(string)
+	fallbackEcUrl := cfg.ExternalExecution.HttpUrl.Value.(string)
 
-	// TODO - bchain - make this configurable we can do it thru external execution client
-	primaryEcUrl := "https://nd-942-489-268.p2pify.com/c450ba1e6c5025d33dd14dc4c54f5cf6"
-	fallbackEcUrl := "https://nd-942-489-268.p2pify.com/c450ba1e6c5025d33dd14dc4c54f5cf6"
-	//primaryEcUrl := cfg.ExternalExecution.HttpUrl.Value.(string)
-	//fallbackEcUrl := cfg.ExternalExecution.HttpUrl.Value.(string)
-
-	//fmt.Printf("primaryEcUrl: %s\n", primaryEcUrl)
-	//fmt.Printf("fallbackEcUrl: %s\n", fallbackEcUrl)
+	fmt.Printf("primaryEcUrl: %s\n", primaryEcUrl)
+	fmt.Printf("fallbackEcUrl: %s\n", fallbackEcUrl)
 
 	primaryEc, err := ethclient.Dial(primaryEcUrl)
 	if err != nil {
