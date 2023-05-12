@@ -86,13 +86,6 @@ func downloadSpMerkleProofs(c *cli.Context) (*api.DownloadSpMerkleProofsResponse
 
 	downloadedCycles := []int64{}
 
-	cwd, err := os.Getwd()
-	if err != nil {
-		fmt.Printf("error in getting current working directory: %s\n", err.Error())
-		return nil, err
-	}
-	fmt.Printf("current working directory: %s\n", cwd)
-
 	for _, cycleMerkleProof := range allMerkleProofs {
 
 		cycleMerkleProofFile := cfg.StaderNode.GetSpRewardCyclePath(cycleMerkleProof.Cycle, true)
@@ -100,23 +93,18 @@ func downloadSpMerkleProofs(c *cli.Context) (*api.DownloadSpMerkleProofsResponse
 		if err != nil {
 			return nil, err
 		}
-		fmt.Printf("absolutePathOfProofFile: %s\n", absolutePathOfProofFile)
-		fmt.Printf("cycleMerkleProofFile: %s\n", cycleMerkleProofFile)
 
 		// proof has already been downloaded
 		_, err = os.Stat(cycleMerkleProofFile)
-		fmt.Printf("error in stating is: %s\n", err.Error())
 		if !os.IsNotExist(err) && err != nil {
-			fmt.Printf("Returning error 1\n")
 			return nil, err
 		}
 		if !os.IsNotExist(err) {
 			continue
 		}
 
-		file, err := os.Create(cycleMerkleProofFile)
+		file, err := os.Create(absolutePathOfProofFile)
 		if err != nil {
-			fmt.Printf("Returning error 2 \n")
 			return nil, err
 		}
 
