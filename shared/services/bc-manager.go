@@ -54,12 +54,8 @@ type bcFunction2 func(beacon.Client) (interface{}, interface{}, error)
 // Creates a new BeaconClientManager instance based on the Stader config
 func NewBeaconClientManager(cfg *config.StaderConfig) (*BeaconClientManager, error) {
 
-	// TODO - bchain - allow users to pass this is as an option
-	primaryProvider := "https://beacon-nd-942-489-268.p2pify.com/c450ba1e6c5025d33dd14dc4c54f5cf6"
-	fallbackProvider := "https://beacon-nd-942-489-268.p2pify.com/c450ba1e6c5025d33dd14dc4c54f5cf6"
-
-	//primaryProvider := cfg.ExternalBeacon.HttpUrl.Value.(string)
-	//fallbackProvider := cfg.ExternalBeacon.HttpUrl.Value.(string)
+	primaryProvider := cfg.ExternalBeacon.HttpUrl.Value.(string)
+	fallbackProvider := cfg.ExternalBeacon.HttpUrl.Value.(string)
 
 	//fmt.Printf("primaryBc: %s\n", primaryProvider)
 	//fmt.Printf("fallbackBc: %s\n", fallbackProvider)
