@@ -180,6 +180,7 @@ type CanExitValidatorResponse struct {
 	Error                  string `json:"error"`
 	OperatorNotRegistered  bool   `json:"operatorNotRegistered"`
 	ValidatorNotRegistered bool   `json:"validatorNotRegistered"`
+	ValidatorNotExists     bool   `json:"validatorNotExists"`
 	ValidatorTooYoung      bool   `json:"validatorTooYoung"`
 	ValidatorExiting       bool   `json:"validatorExiting"`
 }

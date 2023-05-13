@@ -359,3 +359,33 @@ func (c *Client) UpdateOperatorDetails(operatorName string, operatorRewardAddres
 	}
 	return response, nil
 }
+
+func (c *Client) CanExitValidator(validatorPubKey types.ValidatorPubkey) (api.CanExitValidatorResponse, error) {
+	responseBytes, err := c.callAPI(fmt.Sprintf("node can-exit-validator %s", validatorPubKey))
+	if err != nil {
+		return api.CanExitValidatorResponse{}, fmt.Errorf("could not get can-exit-validator status: %w", err)
+	}
+	var response api.CanExitValidatorResponse
+	if err := json.Unmarshal(responseBytes, &response); err != nil {
+		return api.CanExitValidatorResponse{}, fmt.Errorf("could not decode can-exit-validator response: %w", err)
+	}
+	if response.Error != "" {
+		return api.CanExitValidatorResponse{}, fmt.Errorf("could not get can-exit-validator status: %s", response.Error)
+	}
+	return response, nil
+}
+
+func (c *Client) ExitValidator(validatorPubKey types.ValidatorPubkey) (api.ExitValidatorResponse, error) {
+	responseBytes, err := c.callAPI(fmt.Sprintf("node exit-validator %s", validatorPubKey))
+	if err != nil {
+		return api.ExitValidatorResponse{}, fmt.Errorf("could not get exit-validator status: %w", err)
+	}
+	var response api.ExitValidatorResponse
+	if err := json.Unmarshal(responseBytes, &response); err != nil {
+		return api.ExitValidatorResponse{}, fmt.Errorf("could not decode exit-validator response: %w", err)
+	}
+	if response.Error != "" {
+		return api.ExitValidatorResponse{}, fmt.Errorf("could not get exit-validator status: %s", response.Error)
+	}
+	return response, nil
+}
