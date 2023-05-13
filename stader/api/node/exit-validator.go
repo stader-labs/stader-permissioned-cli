@@ -103,7 +103,8 @@ func exitValidator(c *cli.Context, validatorPubKey types.ValidatorPubkey) (*api.
 		return nil, err
 	}
 
-	hexExitSignature, err := w3signer.GetVoluntaryExitSignature(validatorPubKey.Hex(), validatorIndex, head.Epoch, forkInfo, eth2Config)
+	//fmt.Printf("hex version of pub key is %s\n", validatorPubKey.Hex())
+	hexExitSignature, err := w3signer.GetVoluntaryExitSignature(validatorPubKey.String(), validatorIndex, head.Epoch, forkInfo, eth2Config)
 	if err != nil {
 		return nil, err
 	}
