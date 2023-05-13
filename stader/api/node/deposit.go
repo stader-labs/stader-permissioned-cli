@@ -1,10 +1,10 @@
 package node
 
 import (
-	"encoding/hex"
 	"fmt"
 	string_utils "github.com/stader-labs/stader-node/shared/utils/string-utils"
 	"github.com/stader-labs/stader-node/stader-lib/node"
+	"github.com/stader-labs/stader-node/stader-lib/types"
 	"github.com/urfave/cli"
 	_ "golang.org/x/sync/errgroup"
 	"math/big"
@@ -167,22 +167,40 @@ func canNodeDeposit(c *cli.Context, validatorList string) (*api.CanNodeDepositRe
 			return nil, err
 		}
 
-		decodedHexPubKey, err := hex.DecodeString(validatorPubkey[2:])
-		if err != nil {
-			return nil, err
-		}
-		decodedHexPreDeposit, err := hex.DecodeString(preDepositSignature[2:])
-		if err != nil {
-			return nil, err
-		}
-		decodedHexDeposit, err := hex.DecodeString(depositSignature[2:])
+		//decodedHexPubKey, err := hex.DecodeString(validatorPubkey[2:])
+		//if err != nil {
+		//	return nil, err
+		//}
+		decodedHexPubKey, err := types.HexToValidatorPubkey(validatorPubkey)
 		if err != nil {
 			return nil, err
 		}
 
-		pubKeys[i] = decodedHexPubKey[:]
-		preDepositSignatures[i] = decodedHexPreDeposit[:]
-		depositSignatures[i] = decodedHexDeposit[:]
+		//decodedHexPreDeposit, err := hex.DecodeString(preDepositSignature[2:])
+		//if err != nil {
+		//	return nil, err
+		//}
+		decodedHexPreDepositSignature, err := types.HexToValidatorSignature(preDepositSignature)
+		if err != nil {
+			return nil, err
+		}
+
+		//decodedHexDeposit, err := hex.DecodeString(depositSignature[2:])
+		//if err != nil {
+		//	return nil, err
+		//}
+		decodedHexDepositSignature, err := types.HexToValidatorSignature(depositSignature)
+		if err != nil {
+			return nil, err
+		}
+
+		pubKeys[i] = decodedHexPubKey.Bytes()
+		preDepositSignatures[i] = decodedHexPreDepositSignature.Bytes()
+		depositSignatures[i] = decodedHexDepositSignature.Bytes()
+
+		//pubKeys[i] = decodedHexPubKey[:]
+		//preDepositSignatures[i] = decodedHexPreDeposit[:]
+		//depositSignatures[i] = decodedHexDeposit[:]
 
 		newValidatorKey.Add(newValidatorKey, big.NewInt(1))
 	}
@@ -292,22 +310,36 @@ func nodeDeposit(c *cli.Context, validatorList string, submit bool) (*api.NodeDe
 			return nil, err
 		}
 
-		decodedHexPubKey, err := hex.DecodeString(validatorPubkey[2:])
-		if err != nil {
-			return nil, err
-		}
-		decodedHexPreDeposit, err := hex.DecodeString(preDepositSignature[2:])
-		if err != nil {
-			return nil, err
-		}
-		decodedHexDeposit, err := hex.DecodeString(depositSignature[2:])
+		//decodedHexPubKey, err := hex.DecodeString(validatorPubkey[2:])
+		//if err != nil {
+		//	return nil, err
+		//}
+		decodedHexPubKey, err := types.HexToValidatorPubkey(validatorPubkey)
 		if err != nil {
 			return nil, err
 		}
 
-		pubKeys[i] = decodedHexPubKey
-		preDepositSignatures[i] = decodedHexPreDeposit
-		depositSignatures[i] = decodedHexDeposit
+		//decodedHexPreDeposit, err := hex.DecodeString(preDepositSignature[2:])
+		//if err != nil {
+		//	return nil, err
+		//}
+		decodedHexPreDepositSignature, err := types.HexToValidatorSignature(preDepositSignature)
+		if err != nil {
+			return nil, err
+		}
+
+		//decodedHexDeposit, err := hex.DecodeString(depositSignature[2:])
+		//if err != nil {
+		//	return nil, err
+		//}
+		decodedHexDepositSignature, err := types.HexToValidatorSignature(depositSignature)
+		if err != nil {
+			return nil, err
+		}
+
+		pubKeys[i] = decodedHexPubKey.Bytes()
+		preDepositSignatures[i] = decodedHexPreDepositSignature.Bytes()
+		depositSignatures[i] = decodedHexDepositSignature.Bytes()
 
 		newValidatorKey.Add(newValidatorKey, big.NewInt(1))
 	}
