@@ -209,7 +209,7 @@ func getStatus(c *cli.Context) (*api.NodeStatusResponse, error) {
 			if err != nil {
 				return nil, err
 			}
-			withdrawVaultRewardShares, err := pool_utils.CalculateRewardShare(putils, 1, withdrawVaultBalance, nil)
+			withdrawVaultRewardShares, err := pool_utils.CalculateRewardShare(putils, 2, withdrawVaultBalance, nil)
 			if err != nil {
 				return nil, err
 			}
