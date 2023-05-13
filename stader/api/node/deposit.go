@@ -171,7 +171,7 @@ func canNodeDeposit(c *cli.Context, validatorList string) (*api.CanNodeDepositRe
 		//if err != nil {
 		//	return nil, err
 		//}
-		decodedHexPubKey, err := types.HexToValidatorPubkey(validatorPubkey)
+		decodedHexPubKey, err := types.HexToValidatorPubkey(validatorPubkey[2:])
 		if err != nil {
 			return nil, err
 		}
@@ -180,7 +180,7 @@ func canNodeDeposit(c *cli.Context, validatorList string) (*api.CanNodeDepositRe
 		//if err != nil {
 		//	return nil, err
 		//}
-		decodedHexPreDepositSignature, err := types.HexToValidatorSignature(preDepositSignature)
+		decodedHexPreDepositSignature, err := types.HexToValidatorSignature(preDepositSignature[2:])
 		if err != nil {
 			return nil, err
 		}
@@ -189,7 +189,7 @@ func canNodeDeposit(c *cli.Context, validatorList string) (*api.CanNodeDepositRe
 		//if err != nil {
 		//	return nil, err
 		//}
-		decodedHexDepositSignature, err := types.HexToValidatorSignature(depositSignature)
+		decodedHexDepositSignature, err := types.HexToValidatorSignature(depositSignature[2:])
 		if err != nil {
 			return nil, err
 		}
@@ -314,7 +314,7 @@ func nodeDeposit(c *cli.Context, validatorList string, submit bool) (*api.NodeDe
 		//if err != nil {
 		//	return nil, err
 		//}
-		decodedHexPubKey, err := types.HexToValidatorPubkey(validatorPubkey)
+		decodedHexPubKey, err := types.HexToValidatorPubkey(validatorPubkey[2:])
 		if err != nil {
 			return nil, err
 		}
@@ -323,7 +323,7 @@ func nodeDeposit(c *cli.Context, validatorList string, submit bool) (*api.NodeDe
 		//if err != nil {
 		//	return nil, err
 		//}
-		decodedHexPreDepositSignature, err := types.HexToValidatorSignature(preDepositSignature)
+		decodedHexPreDepositSignature, err := types.HexToValidatorSignature(preDepositSignature[2:])
 		if err != nil {
 			return nil, err
 		}
@@ -332,7 +332,7 @@ func nodeDeposit(c *cli.Context, validatorList string, submit bool) (*api.NodeDe
 		//if err != nil {
 		//	return nil, err
 		//}
-		decodedHexDepositSignature, err := types.HexToValidatorSignature(depositSignature)
+		decodedHexDepositSignature, err := types.HexToValidatorSignature(depositSignature[2:])
 		if err != nil {
 			return nil, err
 		}

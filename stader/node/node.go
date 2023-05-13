@@ -151,12 +151,11 @@ func run(c *cli.Context) error {
 
 			for i := 0; i <= noOfBatches; i++ {
 				j := 0
-				for pubkey, validatorInfo := range registeredValidators {
+				for validatorPubKey, validatorInfo := range registeredValidators {
 					if j >= preSignBatchSize {
 						break
 					}
 
-					validatorPubKey := pubkey
 					infoLog.Printf("Checking validator Pub key: %s\n", validatorPubKey.String())
 
 					if stdr.IsValidatorTerminal(validatorInfo) {
