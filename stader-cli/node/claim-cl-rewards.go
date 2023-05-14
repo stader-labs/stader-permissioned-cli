@@ -42,10 +42,6 @@ func ClaimClRewards(c *cli.Context, validatorPubKey types.ValidatorPubkey) error
 		fmt.Printf("Validator %s not found\n", validatorPubKey.String())
 		return nil
 	}
-	if canClaimClRewardsResponse.ValidatorWithdrawn {
-		fmt.Printf("Validator %s has withdrawn all the staked funds\n", validatorPubKey.String())
-		return nil
-	}
 	if canClaimClRewardsResponse.VaultAlreadySettled {
 		fmt.Printf("Vault for validator %s has already been settled\n", validatorPubKey.String())
 		return nil

@@ -212,7 +212,6 @@ type CanClaimClRewardsResponse struct {
 	Status                string         `json:"status"`
 	Error                 string         `json:"error"`
 	OperatorNotRegistered bool           `json:"operatorNotRegistered"`
-	ValidatorWithdrawn    bool           `json:"validatorWithdrawn"`
 	VaultAlreadySettled   bool           `json:"vaultAlreadySettled"`
 	NoClRewards           bool           `json:"noClRewards"`
 	TooManyClRewards      bool           `json:"tooManyClRewards"`
