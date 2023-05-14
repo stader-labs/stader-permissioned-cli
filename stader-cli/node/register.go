@@ -30,9 +30,6 @@ func registerNode(c *cli.Context) error {
 		operatorRewardAddressString = walletStatus.AccountAddress.String()
 	}
 
-	fmt.Printf("Operator name: %s\n", operatorName)
-	fmt.Printf("Operator reward address: %s\n", operatorRewardAddressString)
-
 	// Check node can be registered
 	canRegister, err := staderClient.CanRegisterNode(operatorName, common.HexToAddress(operatorRewardAddressString))
 	if err != nil {
@@ -77,7 +74,7 @@ func registerNode(c *cli.Context) error {
 		return err
 	}
 
-	fmt.Printf("Registering node...\n")
+	fmt.Printf("Registering node with name %s and reward address %s...\n", operatorName, operatorRewardAddressString)
 	cliutils.PrintTransactionHash(staderClient, response.TxHash)
 	if _, err = staderClient.WaitForTransaction(response.TxHash); err != nil {
 		return err

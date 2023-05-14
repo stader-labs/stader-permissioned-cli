@@ -22,10 +22,6 @@ func updateOperatorDetails(c *cli.Context, operatorName string, operatorRewardAd
 	if err != nil {
 		return err
 	}
-	if res.OperatorNotRegistered {
-		fmt.Println("Operator not registered")
-		return nil
-	}
 	if res.OperatorNotActive {
 		fmt.Println("Operator not active")
 		return nil

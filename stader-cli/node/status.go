@@ -90,7 +90,7 @@ func getStatus(c *cli.Context) error {
 		return nil
 	}
 
-	fmt.Printf("The operator is registered with Stader. Below are operator details:\n")
+	fmt.Printf("The Operator is registered with Stader. Below are operator details:\n")
 	fmt.Printf("Operator Id: %d\n\n", status.OperatorId)
 	fmt.Printf("Operator Name: %s\n\n", status.OperatorName)
 	fmt.Printf("Operator Address: %s\n\n", status.OperatorAddress.String())

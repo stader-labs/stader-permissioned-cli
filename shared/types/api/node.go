@@ -332,7 +332,6 @@ type ClaimSpRewardsResponse struct {
 type CanUpdateOperatorDetails struct {
 	Status                    string         `json:"status"`
 	Error                     string         `json:"error"`
-	OperatorNotRegistered     bool           `json:"operatorNotRegistered"`
 	OperatorNotActive         bool           `json:"operatorNotActive"`
 	OperatorNameTooLong       bool           `json:"operatorNameTooLong"`
 	OperatorRewardAddressZero bool           `json:"operatorRewardAddressZero"`

@@ -9,11 +9,13 @@ import (
 	"github.com/stader-labs/stader-node/stader-lib/node"
 	stader_config "github.com/stader-labs/stader-node/stader-lib/stader-config"
 	"github.com/urfave/cli"
-	"math/big"
 )
 
 func CanUpdateOperatorDetails(c *cli.Context, operatorName string, operatorRewardAddress common.Address) (*api.CanUpdateOperatorDetails, error) {
 	if err := services.RequireNodeWallet(c); err != nil {
+		return nil, err
+	}
+	if err := services.RequireNodeRegistered(c); err != nil {
 		return nil, err
 	}
 	w, err := services.GetWallet(c)
@@ -38,10 +40,6 @@ func CanUpdateOperatorDetails(c *cli.Context, operatorName string, operatorRewar
 	operatorId, err := node.GetOperatorId(pnr, nodeAccount.Address, nil)
 	if err != nil {
 		return nil, err
-	}
-	if operatorId.Cmp(big.NewInt(0)) == 0 {
-		response.OperatorNotRegistered = true
-		return &response, nil
 	}
 
 	operatorInfo, err := node.GetOperatorInfo(pnr, operatorId, nil)
