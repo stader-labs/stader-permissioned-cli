@@ -222,27 +222,6 @@ func RegisterCommands(app *cli.App, name string, aliases []string) {
 				},
 			},
 			{
-				Name:      "download-sp-merkle-proofs",
-				Aliases:   []string{"dspmp"},
-				Usage:     "Download all the missing Socializing Pool merkle proofs for the operator",
-				UsageText: "stader-permissioned-cli node download-sp-merkle-proofs",
-				Flags: []cli.Flag{
-					cli.BoolFlag{
-						Name:  "yes, y",
-						Usage: "Automatically confirm merkle proofs download",
-					},
-				},
-				Action: func(c *cli.Context) error {
-
-					if err := cliutils.ValidateArgCount(c, 0); err != nil {
-						return err
-					}
-
-					// Run
-					return downloadSPMerkleProofs(c)
-				},
-			},
-			{
 				Name:      "claim-sp-rewards",
 				Aliases:   []string{"cspr"},
 				Usage:     "Claim Socializing Pool Rewards for given cycles",

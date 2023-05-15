@@ -231,38 +231,6 @@ func (c *Client) ClaimClRewards(validatorPubKey types.ValidatorPubkey) (api.Clai
 	return response, nil
 }
 
-func (c *Client) CanDownloadSpMerkleProofs() (api.CanDownloadSpMerkleProofsResponse, error) {
-	responseBytes, err := c.callAPI(fmt.Sprintf("node can-download-sp-merkle-proofs"))
-	if err != nil {
-		return api.CanDownloadSpMerkleProofsResponse{}, fmt.Errorf("could not get node can-download-sp-merkle-proofs response: %w", err)
-	}
-	var response api.CanDownloadSpMerkleProofsResponse
-	if err := json.Unmarshal(responseBytes, &response); err != nil {
-		return api.CanDownloadSpMerkleProofsResponse{}, fmt.Errorf("could not decode node can-download-sp-merkle-proofs response: %w", err)
-	}
-	if response.Error != "" {
-		return api.CanDownloadSpMerkleProofsResponse{}, fmt.Errorf("could not get node can-download-sp-merkle-proofs response: %s", response.Error)
-	}
-
-	return response, nil
-}
-
-func (c *Client) DownloadSpMerkleProofs() (api.DownloadSpMerkleProofsResponse, error) {
-	responseBytes, err := c.callAPI(fmt.Sprintf("node download-sp-merkle-proofs"))
-	if err != nil {
-		return api.DownloadSpMerkleProofsResponse{}, fmt.Errorf("could not get node download-sp-merkle-proofs response: %w", err)
-	}
-	var response api.DownloadSpMerkleProofsResponse
-	if err := json.Unmarshal(responseBytes, &response); err != nil {
-		return api.DownloadSpMerkleProofsResponse{}, fmt.Errorf("could not decode node download-sp-merkle-proofs response: %w", err)
-	}
-	if response.Error != "" {
-		return api.DownloadSpMerkleProofsResponse{}, fmt.Errorf("could not get node download-sp-merkle-proofs response: %s", response.Error)
-	}
-
-	return response, nil
-}
-
 func (c *Client) GetDetailedCyclesInfo(cycles []*big.Int) (api.CyclesDetailedInfo, error) {
 	stringifiedCycleList := string_utils.StringifyArray(cycles)
 	responseBytes, err := c.callAPI(fmt.Sprintf("node detailed-cycles-info %s", stringifiedCycleList))
