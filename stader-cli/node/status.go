@@ -20,12 +20,6 @@ func getStatus(c *cli.Context) error {
 	}
 	defer staderClient.Close()
 
-	// Check and assign the EC status
-	err = cliutils.CheckClientStatus(staderClient)
-	if err != nil {
-		return err
-	}
-
 	// Print what network we're on
 	err = cliutils.PrintNetwork(staderClient)
 	if err != nil {
@@ -61,7 +55,7 @@ func getStatus(c *cli.Context) error {
 	if status.Web3SignerConnectionSuccess {
 		fmt.Printf("The node is connected to the Web3Signer at %s.\n\n", status.Web3SignerUrl)
 	} else {
-		fmt.Printf("Web3Signer Connection Failed with error %s. \n\n", status.Error)
+		fmt.Printf("Web3Signer Connection Failed with error: %s. \n\n", status.Error)
 	}
 	fmt.Printf("The node is using %s to connect to the beacon chain.\n\n", status.BeaconChainUrl)
 	fmt.Printf("The node is using %s to connect to the execution chain.\n\n", status.ExecutionChainUrl)

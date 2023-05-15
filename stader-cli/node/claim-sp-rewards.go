@@ -20,12 +20,6 @@ func ClaimSpRewards(c *cli.Context) error {
 	}
 	defer staderClient.Close()
 
-	// Check and assign the EC status
-	err = cliutils.CheckClientStatus(staderClient)
-	if err != nil {
-		return err
-	}
-
 	fmt.Println("Downloading the merkle proofs for the cycles you may have not downloaded yet...")
 	downloadRes, err := staderClient.DownloadSpMerkleProofs()
 	if err != nil {

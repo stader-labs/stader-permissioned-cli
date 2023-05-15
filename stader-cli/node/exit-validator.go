@@ -15,12 +15,6 @@ func ExitValidator(c *cli.Context, validatorPubKey types.ValidatorPubkey) error 
 	}
 	defer staderClient.Close()
 
-	// Check and assign the EC status
-	err = cliutils.CheckClientStatus(staderClient)
-	if err != nil {
-		return err
-	}
-
 	// check canExit
 	response, err := staderClient.CanExitValidator(validatorPubKey)
 	if err != nil {

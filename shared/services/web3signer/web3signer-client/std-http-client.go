@@ -174,8 +174,6 @@ func (c *StandardHttpClient) getRequest(requestPath string) ([]byte, int, error)
 // Make a POST request to the beacon node
 func (c *StandardHttpClient) postRequest(requestPath string, requestBody interface{}) ([]byte, int, error) {
 
-	//fmt.Printf("requestPath: %s\n", requestPath)
-	//fmt.Printf("requestBody: %s\n", requestBody)
 	// Get request body
 	requestBodyBytes, err := json.Marshal(requestBody)
 	if err != nil {
