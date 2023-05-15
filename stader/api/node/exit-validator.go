@@ -108,7 +108,7 @@ func exitValidator(c *cli.Context, validatorPubKey types.ValidatorPubkey) (*api.
 	if err != nil {
 		return nil, err
 	}
-	exitSignature, err := types.HexToValidatorSignature(hexExitSignature)
+	exitSignature, err := types.HexToValidatorSignature(hexExitSignature[2:])
 	if err != nil {
 		return nil, err
 	}
