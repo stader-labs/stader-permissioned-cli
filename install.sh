@@ -365,7 +365,7 @@ else
                 echo -e "${RED}**ERROR**"
                 echo "The docker-compose-plugin package is not installed."
                 echo "Since automatic dependency installation for the $PLATFORM operating system is not supported, you will need to install it manually."
-                echo "Please install docker-compose-plugin manually, then try running `stader-cli service install -d` again to finish updating."
+                echo "Please install docker-compose-plugin manually, then try running `stader-permissioned-cli service install -d` again to finish updating."
                 echo -e "${RESET}"
                 exit 1
             fi

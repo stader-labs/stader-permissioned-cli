@@ -42,7 +42,7 @@ func AssignMaxFeeAndLimit(gasInfo staderCore.GasInfo, staderClient *stader.Clien
 		return fmt.Errorf("Error getting Stader configuration: %w", err)
 	}
 	if isNew {
-		return fmt.Errorf("couldn't locate settings file. Execute the stader-cli service config command to set up your Stader Node")
+		return fmt.Errorf("couldn't locate settings file. Execute the stader-permissioned-cli service config command to set up your Stader Node")
 	}
 
 	// Get the current settings from the CLI arguments

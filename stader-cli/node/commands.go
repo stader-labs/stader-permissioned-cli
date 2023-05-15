@@ -38,7 +38,7 @@ func RegisterCommands(app *cli.App, name string, aliases []string) {
 				Name:      "status",
 				Aliases:   []string{"s"},
 				Usage:     "Get the node's status",
-				UsageText: "stader-cli node status",
+				UsageText: "stader-permissioned-cli node status",
 				Action: func(c *cli.Context) error {
 
 					// Validate args
@@ -55,7 +55,7 @@ func RegisterCommands(app *cli.App, name string, aliases []string) {
 				Name:      "exit-validator",
 				Aliases:   []string{"e"},
 				Usage:     "Exit validator",
-				UsageText: "stader-cli node exit-validator --validator-pub-key",
+				UsageText: "stader-permissioned-cli node exit-validator --validator-pub-key",
 				Flags: []cli.Flag{
 					cli.StringFlag{
 						Name:  "validator-pub-key, vpk",
@@ -82,7 +82,7 @@ func RegisterCommands(app *cli.App, name string, aliases []string) {
 				Name:      "register",
 				Aliases:   []string{"r"},
 				Usage:     "Register the node with Stader",
-				UsageText: "stader-cli node register [options]",
+				UsageText: "stader-permissioned-cli node register [options]",
 				Flags: []cli.Flag{
 					cli.StringFlag{
 						Name:  "operator-name, on",
@@ -118,7 +118,7 @@ func RegisterCommands(app *cli.App, name string, aliases []string) {
 				Name:      "deposit",
 				Aliases:   []string{"d"},
 				Usage:     "Make a deposit and create a validator",
-				UsageText: "stader-cli node deposit [options]",
+				UsageText: "stader-permissioned-cli node deposit [options]",
 				Flags: []cli.Flag{
 					cli.BoolFlag{
 						Name:  "yes, y",
@@ -153,7 +153,7 @@ func RegisterCommands(app *cli.App, name string, aliases []string) {
 				Name:      "send",
 				Aliases:   []string{"n"},
 				Usage:     "Send ETH or SD, EthX tokens from the node account to an address.",
-				UsageText: "stader-cli node send [options] amount token to",
+				UsageText: "stader-permissioned-cli node send [options] amount token to",
 				Flags: []cli.Flag{
 					cli.BoolFlag{
 						Name:  "yes, y",
@@ -184,7 +184,7 @@ func RegisterCommands(app *cli.App, name string, aliases []string) {
 				Name:      "get-contracts-info",
 				Aliases:   []string{"c"},
 				Usage:     "Get the current network contracts info",
-				UsageText: "stader-cli node get-contracts-info",
+				UsageText: "stader-permissioned-cli node get-contracts-info",
 				Action: func(c *cli.Context) error {
 
 					// Validate args
@@ -200,7 +200,7 @@ func RegisterCommands(app *cli.App, name string, aliases []string) {
 				Name:      "claim-cl-rewards",
 				Aliases:   []string{"ccr"},
 				Usage:     "claim all Consensus Layer rewards to the node reward address.",
-				UsageText: "stader-cli node claim-cl-rewards --validator-pub-key",
+				UsageText: "stader-permissioned-cli node claim-cl-rewards --validator-pub-key",
 				Flags: []cli.Flag{
 					cli.StringFlag{
 						Name:  "validator-pub-key, vpk",
@@ -225,7 +225,7 @@ func RegisterCommands(app *cli.App, name string, aliases []string) {
 				Name:      "download-sp-merkle-proofs",
 				Aliases:   []string{"dspmp"},
 				Usage:     "Download all the missing Socializing Pool merkle proofs for the operator",
-				UsageText: "stader-cli node download-sp-merkle-proofs",
+				UsageText: "stader-permissioned-cli node download-sp-merkle-proofs",
 				Flags: []cli.Flag{
 					cli.BoolFlag{
 						Name:  "yes, y",
@@ -246,7 +246,7 @@ func RegisterCommands(app *cli.App, name string, aliases []string) {
 				Name:      "claim-sp-rewards",
 				Aliases:   []string{"cspr"},
 				Usage:     "Claim Socializing Pool Rewards for given cycles",
-				UsageText: "stader-cli node claim-sp-rewards --download-merkles-proofs --yes",
+				UsageText: "stader-permissioned-cli node claim-sp-rewards --download-merkles-proofs --yes",
 				Flags: []cli.Flag{
 					cli.BoolFlag{
 						Name:  "yes, y",
@@ -267,7 +267,7 @@ func RegisterCommands(app *cli.App, name string, aliases []string) {
 				Name:      "update-operator-details",
 				Aliases:   []string{"uod"},
 				Usage:     "Update Operator name or Operator reward address",
-				UsageText: "stader-cli node update-operator-details --operator-name --operator-reward-address",
+				UsageText: "stader-permissioned-cli node update-operator-details --operator-name --operator-reward-address",
 				Flags: []cli.Flag{
 					cli.StringFlag{
 						Name:  "operator-name, on",

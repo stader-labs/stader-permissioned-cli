@@ -173,7 +173,7 @@ func RegisterCommands(app *cli.App, name string, aliases []string) {
 				Name:      "status",
 				Aliases:   []string{"u"},
 				Usage:     "View the Stader service status",
-				UsageText: "stader-cli service status",
+				UsageText: "stader-permissioned-cli service status",
 				Action: func(c *cli.Context) error {
 
 					// Validate args
@@ -191,7 +191,7 @@ func RegisterCommands(app *cli.App, name string, aliases []string) {
 				Name:      "start",
 				Aliases:   []string{"s"},
 				Usage:     "Start the Stader service",
-				UsageText: "stader-cli service start",
+				UsageText: "stader-permissioned-cli service start",
 				Flags: []cli.Flag{
 					cli.BoolFlag{
 						Name:  "ignore-slash-timer",
@@ -219,7 +219,7 @@ func RegisterCommands(app *cli.App, name string, aliases []string) {
 				Name:      "pause",
 				Aliases:   []string{"p"},
 				Usage:     "Pause the Stader service",
-				UsageText: "stader-cli service pause [options]",
+				UsageText: "stader-permissioned-cli service pause [options]",
 				Flags: []cli.Flag{
 					cli.BoolFlag{
 						Name:  "yes, y",
@@ -241,8 +241,8 @@ func RegisterCommands(app *cli.App, name string, aliases []string) {
 			{
 				Name:      "stop",
 				Aliases:   []string{"o"},
-				Usage:     "Pause the Stader service (alias of 'stader-cli service pause')",
-				UsageText: "stader-cli service stop [options]",
+				Usage:     "Pause the Stader service (alias of 'stader-permissioned-cli service pause')",
+				UsageText: "stader-permissioned-cli service stop [options]",
 				Flags: []cli.Flag{
 					cli.BoolFlag{
 						Name:  "yes, y",
@@ -266,7 +266,7 @@ func RegisterCommands(app *cli.App, name string, aliases []string) {
 				Name:      "logs",
 				Aliases:   []string{"l"},
 				Usage:     "View the Stader service logs",
-				UsageText: "stader-cli service logs [options] [services...]",
+				UsageText: "stader-permissioned-cli service logs [options] [services...]",
 				Flags: []cli.Flag{
 					cli.StringFlag{
 						Name:  "tail, t",
@@ -286,7 +286,7 @@ func RegisterCommands(app *cli.App, name string, aliases []string) {
 				Name:      "stats",
 				Aliases:   []string{"a"},
 				Usage:     "View the Stader service stats",
-				UsageText: "stader-cli service stats",
+				UsageText: "stader-permissioned-cli service stats",
 				Action: func(c *cli.Context) error {
 
 					// Validate args
@@ -303,7 +303,7 @@ func RegisterCommands(app *cli.App, name string, aliases []string) {
 			{
 				Name:      "compose",
 				Usage:     "View the Stader service docker compose config",
-				UsageText: "stader-cli service compose",
+				UsageText: "stader-permissioned-cli service compose",
 				Action: func(c *cli.Context) error {
 
 					// Validate args
@@ -321,7 +321,7 @@ func RegisterCommands(app *cli.App, name string, aliases []string) {
 				Name:      "version",
 				Aliases:   []string{"v"},
 				Usage:     "View the Stader service version information",
-				UsageText: "stader-cli service version",
+				UsageText: "stader-permissioned-cli service version",
 				Action: func(c *cli.Context) error {
 
 					// Validate args
@@ -339,7 +339,7 @@ func RegisterCommands(app *cli.App, name string, aliases []string) {
 				Name:      "check-cpu-features",
 				Aliases:   []string{"ccf"},
 				Usage:     "Checks if your CPU supports all of the features required by the \"modern\" version of certain client images. If not, it prints what features are missing.",
-				UsageText: "stader-cli service check-cpu-features",
+				UsageText: "stader-permissioned-cli service check-cpu-features",
 				Action: func(c *cli.Context) error {
 
 					// Validate args
@@ -356,7 +356,7 @@ func RegisterCommands(app *cli.App, name string, aliases []string) {
 			{
 				Name:      "get-config-yaml",
 				Usage:     "Generate YAML that shows the current configuration schema, including all of the parameters and their descriptions",
-				UsageText: "stader-cli service get-config-yaml",
+				UsageText: "stader-permissioned-cli service get-config-yaml",
 				Action: func(c *cli.Context) error {
 
 					// Validate args
@@ -374,7 +374,7 @@ func RegisterCommands(app *cli.App, name string, aliases []string) {
 				Name:      "terminate",
 				Aliases:   []string{"t"},
 				Usage:     fmt.Sprintf("%sDeletes all of the Stader Docker containers and volumes, including your ETH1 and ETH2 chain data and your Prometheus database (if metrics are enabled). Only use this if you are cleaning up the Stadernode and want to start over!%s", colorRed, colorReset),
-				UsageText: "stader-cli service terminate [options]",
+				UsageText: "stader-permissioned-cli service terminate [options]",
 				Flags: []cli.Flag{
 					cli.BoolFlag{
 						Name:  "yes, y",

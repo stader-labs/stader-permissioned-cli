@@ -38,7 +38,7 @@ func RegisterSubcommands(command *cli.Command, name string, aliases []string) {
 				Name:      "status",
 				Aliases:   []string{"s"},
 				Usage:     "Get the node's status",
-				UsageText: "stader-cli api node status",
+				UsageText: "stader-permissioned-cli api node status",
 				Action: func(c *cli.Context) error {
 
 					// Validate args
@@ -56,7 +56,7 @@ func RegisterSubcommands(command *cli.Command, name string, aliases []string) {
 			{
 				Name:      "can-register",
 				Usage:     "Check whether the node can be registered with Stader",
-				UsageText: "stader-cli api node can-register",
+				UsageText: "stader-permissioned-cli api node can-register",
 				Action: func(c *cli.Context) error {
 
 					// Validate args
@@ -81,7 +81,7 @@ func RegisterSubcommands(command *cli.Command, name string, aliases []string) {
 				Name:      "register",
 				Aliases:   []string{"r"},
 				Usage:     "Register the node with Stader",
-				UsageText: "stader-cli api node register operator-name operator-reward-address",
+				UsageText: "stader-permissioned-cli api node register operator-name operator-reward-address",
 				Action: func(c *cli.Context) error {
 
 					// Validate args
@@ -106,7 +106,7 @@ func RegisterSubcommands(command *cli.Command, name string, aliases []string) {
 			{
 				Name:      "can-deposit",
 				Usage:     "Check whether the node can make a deposit",
-				UsageText: "stader-cli api node can-deposit amount validator-list",
+				UsageText: "stader-permissioned-cli api node can-deposit amount validator-list",
 				Action: func(c *cli.Context) error {
 
 					//// Validate args
@@ -155,7 +155,7 @@ func RegisterSubcommands(command *cli.Command, name string, aliases []string) {
 			{
 				Name:      "can-exit-validator",
 				Usage:     "Can validator exit",
-				UsageText: "stader-cli api node can-exit-validator validator-pub-key",
+				UsageText: "stader-permissioned-cli api node can-exit-validator validator-pub-key",
 				Action: func(c *cli.Context) error {
 
 					// Validate args
@@ -176,7 +176,7 @@ func RegisterSubcommands(command *cli.Command, name string, aliases []string) {
 			{
 				Name:      "exit-validator",
 				Usage:     "Exit validator",
-				UsageText: "stader-cli api node exit-validator validator-pub-key",
+				UsageText: "stader-permissioned-cli api node exit-validator validator-pub-key",
 				Action: func(c *cli.Context) error {
 
 					// Validate args
@@ -197,7 +197,7 @@ func RegisterSubcommands(command *cli.Command, name string, aliases []string) {
 			{
 				Name:      "can-send",
 				Usage:     "Check whether the node can send ETH or tokens to an address",
-				UsageText: "stader-cli api node can-send amount token",
+				UsageText: "stader-permissioned-cli api node can-send amount token",
 				Action: func(c *cli.Context) error {
 
 					// Validate args
@@ -223,7 +223,7 @@ func RegisterSubcommands(command *cli.Command, name string, aliases []string) {
 				Name:      "send",
 				Aliases:   []string{"n"},
 				Usage:     "Send ETH or tokens from the node account to an address",
-				UsageText: "stader-cli api node send amount token to",
+				UsageText: "stader-permissioned-cli api node send amount token to",
 				Action: func(c *cli.Context) error {
 
 					// Validate args
@@ -253,7 +253,7 @@ func RegisterSubcommands(command *cli.Command, name string, aliases []string) {
 			{
 				Name:      "get-contracts-info",
 				Usage:     "Get information about the deposit contract and stader contract on the current network",
-				UsageText: "stader-cli api node get-contracts-info",
+				UsageText: "stader-permissioned-cli api node get-contracts-info",
 				Action: func(c *cli.Context) error {
 
 					// Validate args
@@ -270,7 +270,7 @@ func RegisterSubcommands(command *cli.Command, name string, aliases []string) {
 			{
 				Name:      "can-claim-cl-rewards",
 				Usage:     "Can claim cl rewards of a validator",
-				UsageText: "stader-cli api node can-claim-cl-rewards --validator-pub-key",
+				UsageText: "stader-permissioned-cli api node can-claim-cl-rewards --validator-pub-key",
 				Action: func(c *cli.Context) error {
 
 					validatorPubKey, err := cliutils.ValidatePubkey("validator-pub-key", c.Args().Get(0))
@@ -286,7 +286,7 @@ func RegisterSubcommands(command *cli.Command, name string, aliases []string) {
 			{
 				Name:      "claim-cl-rewards",
 				Usage:     "Claim cl rewards of a validator",
-				UsageText: "stader-cli api node claim-cl-rewards --validator-pub-key",
+				UsageText: "stader-permissioned-cli api node claim-cl-rewards --validator-pub-key",
 				Action: func(c *cli.Context) error {
 
 					validatorPubKey, err := cliutils.ValidatePubkey("validator-pub-key", c.Args().Get(0))
@@ -302,7 +302,7 @@ func RegisterSubcommands(command *cli.Command, name string, aliases []string) {
 			{
 				Name:      "can-download-sp-merkle-proofs",
 				Usage:     "Can we Download missing socializing merkle proofs",
-				UsageText: "stader-cli api node can-download-sp-merkle-proofs",
+				UsageText: "stader-permissioned-cli api node can-download-sp-merkle-proofs",
 				Action: func(c *cli.Context) error {
 
 					// Validate args
@@ -319,7 +319,7 @@ func RegisterSubcommands(command *cli.Command, name string, aliases []string) {
 			{
 				Name:      "download-sp-merkle-proofs",
 				Usage:     "Download missing socializing merkle proofs",
-				UsageText: "stader-cli api node download-sp-merkle-proofs",
+				UsageText: "stader-permissioned-cli api node download-sp-merkle-proofs",
 				Action: func(c *cli.Context) error {
 
 					// Validate args
@@ -336,7 +336,7 @@ func RegisterSubcommands(command *cli.Command, name string, aliases []string) {
 			{
 				Name:      "detailed-cycles-info",
 				Usage:     "Get detailed reward cycles info",
-				UsageText: "stader-cli api node detailed-cycles-info cycles",
+				UsageText: "stader-permissioned-cli api node detailed-cycles-info cycles",
 				Action: func(c *cli.Context) error {
 
 					// Validate args
@@ -355,7 +355,7 @@ func RegisterSubcommands(command *cli.Command, name string, aliases []string) {
 			{
 				Name:      "can-claim-sp-rewards",
 				Usage:     "Can we claim the SP rewards",
-				UsageText: "stader-cli api node can-claim-sp-rewards",
+				UsageText: "stader-permissioned-cli api node can-claim-sp-rewards",
 				Action: func(c *cli.Context) error {
 
 					// Validate args
@@ -372,7 +372,7 @@ func RegisterSubcommands(command *cli.Command, name string, aliases []string) {
 			{
 				Name:      "claim-sp-rewards",
 				Usage:     "Claim the SP rewards",
-				UsageText: "stader-cli api node claim-sp-rewards cycles",
+				UsageText: "stader-permissioned-cli api node claim-sp-rewards cycles",
 				Action: func(c *cli.Context) error {
 
 					// Validate args
@@ -391,7 +391,7 @@ func RegisterSubcommands(command *cli.Command, name string, aliases []string) {
 			{
 				Name:      "estimate-claim-sp-rewards-gas",
 				Usage:     "Estimate the gas required to claim the SP rewards",
-				UsageText: "stader-cli api node estimate-claim-sp-rewards-gas cycles",
+				UsageText: "stader-permissioned-cli api node estimate-claim-sp-rewards-gas cycles",
 				Action: func(c *cli.Context) error {
 
 					// Validate args
@@ -409,7 +409,7 @@ func RegisterSubcommands(command *cli.Command, name string, aliases []string) {
 			{
 				Name:      "can-update-operator-details",
 				Usage:     "Can we update the operator details",
-				UsageText: "stader-cli api node can-update-operator-details operator-name operator-reward-address",
+				UsageText: "stader-permissioned-cli api node can-update-operator-details operator-name operator-reward-address",
 				Action: func(c *cli.Context) error {
 
 					// Validate args
@@ -433,7 +433,7 @@ func RegisterSubcommands(command *cli.Command, name string, aliases []string) {
 			{
 				Name:      "update-operator-details",
 				Usage:     "Update the operator details",
-				UsageText: "stader-cli api node update-operator-details operator-name operator-reward-address",
+				UsageText: "stader-permissioned-cli api node update-operator-details operator-name operator-reward-address",
 				Action: func(c *cli.Context) error {
 
 					// Validate args

@@ -260,7 +260,7 @@ func startService(c *cli.Context, ignoreConfigSuggestion bool) error {
 	}
 
 	//if isNew {
-	//	return fmt.Errorf("No configuration detected. Please run `stader-cli service config` to set up your Stadernode before running it.")
+	//	return fmt.Errorf("No configuration detected. Please run `stader-permissioned-cli service config` to set up your Stadernode before running it.")
 	//}
 
 	if !ignoreConfigSuggestion {
@@ -407,7 +407,7 @@ func serviceVersion(c *cli.Context) error {
 		return err
 	}
 	if isNew {
-		return fmt.Errorf("settings file not found. Please run `stader-cli service config` to set up your Stadernode")
+		return fmt.Errorf("settings file not found. Please run `stader-permissioned-cli service config` to set up your Stadernode")
 	}
 
 	// Print version info

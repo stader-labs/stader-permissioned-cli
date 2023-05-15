@@ -984,7 +984,7 @@ func (c *Client) compose(composeFiles []string, args string) (string, error) {
 	}
 
 	if isNew {
-		return "", fmt.Errorf("Settings file not found. Please run `stader-cli service config` to set up your Stadernode before starting it.")
+		return "", fmt.Errorf("Settings file not found. Please run `stader-permissioned-cli service config` to set up your Stadernode before starting it.")
 	}
 
 	// Get the external IP address

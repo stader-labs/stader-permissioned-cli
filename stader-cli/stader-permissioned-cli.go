@@ -50,8 +50,8 @@ func main() {
 	app := cli.NewApp()
 
 	// Set application info
-	app.Name = "Stader-node beta"
-	app.Usage = "Stader Node CLI"
+	app.Name = "Stader permissioned node beta"
+	app.Usage = "Stader Permissioned Node CLI"
 	app.Version = shared.StaderVersion
 	app.Description = `This is a beta release solely intended for testing purposes. This release is only meant for private beta participants who have expressed interest in participating in our beta program through our discord servers. Any other usage of this release is unauthorized and if you are in possession of an unauthorized copy you should delete the same and inform admin@staderlabs.com immediately.
 

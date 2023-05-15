@@ -38,7 +38,7 @@ func RegisterSubcommands(command *cli.Command, name string, aliases []string) {
 				Name:      "status",
 				Aliases:   []string{"s"},
 				Usage:     "Get the node wallet status",
-				UsageText: "stader-cli api wallet status",
+				UsageText: "stader-permissioned-cli api wallet status",
 				Action: func(c *cli.Context) error {
 
 					// Validate args
@@ -57,7 +57,7 @@ func RegisterSubcommands(command *cli.Command, name string, aliases []string) {
 				Name:      "set-password",
 				Aliases:   []string{"p"},
 				Usage:     "Set the node wallet password",
-				UsageText: "stader-cli api wallet set-password password",
+				UsageText: "stader-permissioned-cli api wallet set-password password",
 				Action: func(c *cli.Context) error {
 
 					// Validate args
@@ -80,7 +80,7 @@ func RegisterSubcommands(command *cli.Command, name string, aliases []string) {
 				Name:      "recover",
 				Aliases:   []string{"r"},
 				Usage:     "Recover a node wallet from a mnemonic phrase",
-				UsageText: "stader-cli api wallet recover mnemonic",
+				UsageText: "stader-permissioned-cli api wallet recover mnemonic",
 				Flags: []cli.Flag{
 					cli.BoolFlag{
 						Name:  "skip-validator-key-recovery, k",
@@ -118,7 +118,7 @@ func RegisterSubcommands(command *cli.Command, name string, aliases []string) {
 				Name:      "init",
 				Aliases:   []string{"i"},
 				Usage:     "Initialize the node wallet",
-				UsageText: "stader-cli api wallet init",
+				UsageText: "stader-permissioned-cli api wallet init",
 				Flags: []cli.Flag{
 					cli.StringFlag{
 						Name:  "derivation-path, d",
@@ -143,7 +143,7 @@ func RegisterSubcommands(command *cli.Command, name string, aliases []string) {
 				Name:      "export",
 				Aliases:   []string{"e"},
 				Usage:     "Export the node wallet in JSON format",
-				UsageText: "stader-cli api wallet export",
+				UsageText: "stader-permissioned-cli api wallet export",
 				Action: func(c *cli.Context) error {
 
 					// Validate args
@@ -161,7 +161,7 @@ func RegisterSubcommands(command *cli.Command, name string, aliases []string) {
 			{
 				Name:      "purge",
 				Usage:     "Deletes your node wallet, your validator keys, and restarts your Validator Client while preserving your chain data. WARNING: Only use this if you want to stop validating with this machine!",
-				UsageText: "stader-cli api wallet purge",
+				UsageText: "stader-permissioned-cli api wallet purge",
 				Action: func(c *cli.Context) error {
 
 					// Validate args

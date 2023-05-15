@@ -37,7 +37,7 @@ func RegisterCommands(app *cli.App, name string, aliases []string) {
 				Name:      "status",
 				Aliases:   []string{"s"},
 				Usage:     "Get the node wallet status",
-				UsageText: "stader-cli wallet status",
+				UsageText: "stader-permissioned-cli wallet status",
 				Action: func(c *cli.Context) error {
 
 					// Validate args
@@ -55,7 +55,7 @@ func RegisterCommands(app *cli.App, name string, aliases []string) {
 				Name:      "recover",
 				Aliases:   []string{"r"},
 				Usage:     "Recover a node wallet from a mnemonic phrase",
-				UsageText: "stader-cli wallet recover [options]",
+				UsageText: "stader-permissioned-cli wallet recover [options]",
 				Flags: []cli.Flag{
 					cli.StringFlag{
 						Name:  "password, p",
@@ -112,7 +112,7 @@ func RegisterCommands(app *cli.App, name string, aliases []string) {
 				Name:      "init",
 				Aliases:   []string{"i"},
 				Usage:     "Initialize the node wallet",
-				UsageText: "stader-cli wallet init [options]",
+				UsageText: "stader-permissioned-cli wallet init [options]",
 				Flags: []cli.Flag{
 					cli.StringFlag{
 						Name:  "password, p",
@@ -151,7 +151,7 @@ func RegisterCommands(app *cli.App, name string, aliases []string) {
 				Name:      "export",
 				Aliases:   []string{"e"},
 				Usage:     "Export the node wallet in JSON format",
-				UsageText: "stader-cli wallet export",
+				UsageText: "stader-permissioned-cli wallet export",
 				Action: func(c *cli.Context) error {
 
 					// Validate args

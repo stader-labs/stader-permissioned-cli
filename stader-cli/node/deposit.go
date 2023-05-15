@@ -70,7 +70,7 @@ func nodeDeposit(c *cli.Context, validatorPubKeyList string) error {
 
 	fmt.Println("Your validators are now in Initialized status.")
 	fmt.Println("Once the ETH deposits have been matched by the remaining 28ETH, it will move to Deposited status.")
-	fmt.Println("You can check the status of your validator with `stader-cli node status`.")
+	fmt.Println("You can check the status of your validator with `stader-permissioned-cli node status`.")
 
 	return nil
 

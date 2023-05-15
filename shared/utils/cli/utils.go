@@ -71,7 +71,7 @@ func printTransactionHashImpl(staderClient *stader.Client, hash common.Hash, fin
 	}
 
 	if isNew {
-		fmt.Print("Settings file not found. Please run `stader-cli service config` to set up your Stadernode.")
+		fmt.Print("Settings file not found. Please run `stader-permissioned-cli service config` to set up your Stadernode.")
 		return
 	}
 
@@ -126,7 +126,7 @@ func PrintNetwork(staderClient *stader.Client) error {
 		return fmt.Errorf("error loading global config: %w", err)
 	}
 	if isNew {
-		return fmt.Errorf("settings file not found. Please run `stader-cli service config` to set up your Stader Node")
+		return fmt.Errorf("settings file not found. Please run `stader-permissioned-cli service config` to set up your Stader Node")
 	}
 
 	currentNetwork := cfg.StaderNode.Network.Value.(cfgtypes.Network)

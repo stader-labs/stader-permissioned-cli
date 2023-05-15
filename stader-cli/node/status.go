@@ -86,7 +86,7 @@ func getStatus(c *cli.Context) error {
 	fmt.Printf("%s=== Operator Registration Details ===%s\n", log.ColorGreen, log.ColorReset)
 
 	if !status.Registered {
-		fmt.Printf("The node is not registered with Stader. Please use the %sstader-cli node register%s to register with Stader", log.ColorGreen, log.ColorReset)
+		fmt.Printf("The node is not registered with Stader. Please use the %sstader-permissioned-cli node register%s to register with Stader", log.ColorGreen, log.ColorReset)
 		return nil
 	}
 
@@ -104,13 +104,13 @@ func getStatus(c *cli.Context) error {
 
 	if totalUnclaimedSocializingPoolEth.Cmp(big.NewInt(0)) > 0 {
 		fmt.Printf("The Operator reward address %s has %.6f ETH as unclaimed ETH rewards\n\n", status.OperatorAddress.String(), math.RoundDown(eth.WeiToEth(totalUnclaimedSocializingPoolEth), 18))
-		fmt.Printf("To claim ETH rewards using the %sstader-cli node claim-sp-rewards%s command\n\n", log.ColorGreen, log.ColorReset)
+		fmt.Printf("To claim ETH rewards using the %sstader-permissioned-cli node claim-sp-rewards%s command\n\n", log.ColorGreen, log.ColorReset)
 	}
 
 	fmt.Printf("%s=== Registered Validator Details ===%s\n", log.ColorGreen, log.ColorReset)
 
 	if totalRegisteredValidators.Int64() <= 0 {
-		fmt.Printf("The node has no registered validators. Please use the %sstader-cli node deposit%s command to register a validator with Stader\n\n", log.ColorGreen, log.ColorReset)
+		fmt.Printf("The node has no registered validators. Please use the %sstader-permissioned-cli node deposit%s command to register a validator with Stader\n\n", log.ColorGreen, log.ColorReset)
 		return nil
 	}
 
@@ -123,7 +123,7 @@ func getStatus(c *cli.Context) error {
 		fmt.Printf("-Validator Withdraw Vault: %s\n\n", validatorInfo.WithdrawVaultAddress)
 		if validatorInfo.WithdrawVaultRewardBalance.Int64() > 0 && !validatorInfo.CrossedRewardsThreshold {
 			fmt.Printf("-Validator Skimmed Rewards: %.6f\n", math.RoundDown(eth.WeiToEth(validatorInfo.WithdrawVaultRewardBalance), 18))
-			fmt.Printf("To claim skimmed rewards use the %sstader-cli node claim-cl-rewards %s command\n\n", log.ColorGreen, log.ColorReset)
+			fmt.Printf("To claim skimmed rewards use the %sstader-permissioned-cli node claim-cl-rewards %s command\n\n", log.ColorGreen, log.ColorReset)
 		} else if validatorInfo.CrossedRewardsThreshold {
 			fmt.Printf("The validator has crossed the reward threshold %s.\n", validatorPubKey.String())
 			fmt.Printf("If you have exited the validator, Please wait for Stader Oracles to settle your funds!\n")
