@@ -55,9 +55,7 @@ func getStatus(c *cli.Context) error {
 	if status.Web3SignerConnectionSuccess {
 		fmt.Printf("The node is connected to the Web3Signer at %s.\n\n", status.Web3SignerUrl)
 	} else {
-		fmt.Println("Printing error status")
-		fmt.Printf(status.Error)
-		fmt.Printf("Web3Signer Connection Failed with error: %s. \n\n", status.Error)
+		fmt.Printf("Web3Signer Connection Failed with error: %s. \n\n", status.Web3SignerConnectionError)
 	}
 	fmt.Printf("The node is using %s to connect to the beacon chain.\n\n", status.BeaconChainUrl)
 	fmt.Printf("The node is using %s to connect to the execution chain.\n\n", status.ExecutionChainUrl)
