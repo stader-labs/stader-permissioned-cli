@@ -39,7 +39,6 @@ func getStatus(c *cli.Context) error {
 	}
 
 	totalRegisteredValidators := status.TotalNonTerminalValidators
-	totalEthCollateral := totalRegisteredValidators.Int64() * 4
 
 	totalUnclaimedSocializingPoolEth := big.NewInt(0)
 	totalUnclaimedSocializingPoolSd := big.NewInt(0)
@@ -75,13 +74,6 @@ func getStatus(c *cli.Context) error {
 		status.AccountAddress,
 		log.ColorReset,
 		math.RoundDown(eth.WeiToEth(status.AccountBalances.ETH), 6))
-
-	fmt.Printf(
-		"The node %s%s%s has a deposited %d Eth as collateral.\n\n",
-		log.ColorBlue,
-		status.AccountAddress,
-		log.ColorReset,
-		totalEthCollateral)
 
 	fmt.Printf("%s=== Operator Registration Details ===%s\n", log.ColorGreen, log.ColorReset)
 
