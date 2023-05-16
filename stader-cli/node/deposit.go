@@ -61,7 +61,7 @@ func nodeDeposit(c *cli.Context, validatorPubKeyList string) error {
 		return err
 	}
 
-	fmt.Printf("Creating %s validators...\n", validatorPubKeyList)
+	fmt.Printf("Registering validators with stader...\n")
 	cliutils.PrintTransactionHash(staderClient, response.TxHash)
 	_, err = staderClient.WaitForTransaction(response.TxHash)
 	if err != nil {
