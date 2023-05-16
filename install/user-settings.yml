@@ -1,0 +1,16 @@
+externalBeacon:
+  httpUrl: ""
+externalExecution:
+  httpUrl: ""
+  wsUrl: ""
+externalWeb3Signer:
+  httpUrl: ""
+root:
+  sdDir: ~/.stader
+  version: v0.0.1-pp
+stadernode:
+  dataPath: ~/.stader/data
+  manualMaxFee: "0"
+  network: prater
+  priorityFee: "2"
+  projectName: stader

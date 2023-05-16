@@ -1,4 +1,0 @@
-version: "3.7"
-services:
-  web3signer:
-    x-comment: Add your customizations below this line
