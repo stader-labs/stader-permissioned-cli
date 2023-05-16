@@ -18,6 +18,9 @@ func canNodeDeposit(c *cli.Context, validatorList string) (*api.CanNodeDepositRe
 	if err := services.RequireNodeWallet(c); err != nil {
 		return nil, err
 	}
+	if err := services.RequireNodeRegistered(c); err != nil {
+		return nil, err
+	}
 	w, err := services.GetWallet(c)
 	if err != nil {
 		return nil, err
@@ -106,10 +109,6 @@ func canNodeDeposit(c *cli.Context, validatorList string) (*api.CanNodeDepositRe
 	operatorId, err := node.GetOperatorId(prn, nodeAccount.Address, nil)
 	if err != nil {
 		return nil, err
-	}
-	if operatorId.Cmp(big.NewInt(0)) == 0 {
-		canNodeDepositResponse.OperatorNotRegistered = true
-		return &canNodeDepositResponse, nil
 	}
 
 	operatorInfo, err := node.GetOperatorInfo(prn, operatorId, nil)
