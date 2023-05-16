@@ -45,7 +45,7 @@ import (
 var preSignedCooldown, _ = time.ParseDuration("30m")
 var preSignedBatchCooldown, _ = time.ParseDuration("5s")
 var preSignBatchSize = 10 // Go thru 100 keys in each pass
-var merkleProofsDownloaderInterval, _ = time.ParseDuration("10s")
+var merkleProofsDownloaderInterval, _ = time.ParseDuration("5m")
 
 const (
 	MaxConcurrentEth1Requests   = 200
