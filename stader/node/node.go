@@ -231,11 +231,13 @@ func run(c *cli.Context) error {
 					errorLog.Printf("Sending presigned message failed with %v\n", err)
 					continue
 				}
+
+				time.Sleep(preSignedBatchCooldown)
 			}
 
-			time.Sleep(preSignedBatchCooldown)
+			infoLog.Printf("Done with the pass of presign daemon")
 
-			errorLog.Printf("Done with the pass of presign daemon")
+			time.Sleep(preSignedCooldown)
 		}
 
 		wg.Done()
