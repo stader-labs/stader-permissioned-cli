@@ -42,6 +42,8 @@ func canNodeDeposit(c *cli.Context, validatorList string) (*api.CanNodeDepositRe
 		return nil, err
 	}
 
+	canNodeDepositResponse := api.CanNodeDepositResponse{}
+
 	registeredPublicKeys, err := web3SignerClient.GetValidatorPubKeysList()
 	if err != nil {
 		return nil, err
@@ -49,6 +51,17 @@ func canNodeDeposit(c *cli.Context, validatorList string) (*api.CanNodeDepositRe
 
 	validators := string_utils.DestringifyStringArray(validatorList)
 	numValidators := big.NewInt(int64(len(validators)))
+
+	inputKeyLimit, err := node.GetInputKeyCountLimit(prn, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if len(validators) > int(inputKeyLimit) {
+		canNodeDepositResponse.InputKeyLimitReached = true
+		canNodeDepositResponse.InputKeyLimit = inputKeyLimit
+		return &canNodeDepositResponse, nil
+	}
 
 	if len(validators) > len(registeredPublicKeys) {
 		return nil, fmt.Errorf("number of validators to register is greater than the number of validators registered with the web3signer")
@@ -94,8 +107,6 @@ func canNodeDeposit(c *cli.Context, validatorList string) (*api.CanNodeDepositRe
 	if err != nil {
 		return nil, err
 	}
-
-	canNodeDepositResponse := api.CanNodeDepositResponse{}
 
 	isPermissionedNodeRegistryPaused, err := node.IsPermissionedNodeRegistryPaused(prn, nil)
 	if err != nil {
