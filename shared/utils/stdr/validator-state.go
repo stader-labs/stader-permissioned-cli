@@ -1,7 +1,6 @@
 package stdr
 
 import (
-	"fmt"
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/stader-labs/stader-node/shared/services/beacon"
@@ -43,7 +42,6 @@ func GetAllValidatorsRegisteredWithOperator(pnr *stader.PermissionedNodeRegistry
 	if err != nil {
 		return nil, err
 	}
-	fmt.Printf("Total operator keys: %s\n", totalOperatorKeys)
 
 	validators := make(map[types.ValidatorPubkey]types.ValidatorContractInfo)
 	for i := big.NewInt(0); i.Cmp(totalOperatorKeys) < 0; i.Add(i, big.NewInt(1)) {
