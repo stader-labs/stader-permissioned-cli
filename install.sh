@@ -421,13 +421,8 @@ fi
 
 # Create ~/.stader dir & files
 progress 6 "Creating Stader user data directory..."
-{ mkdir -p "$DATA_PATH/validators" || fail "Could not create the Stader user data directory."; } >&2
 { mkdir -p "$STADER_PATH/runtime" || fail "Could not create the Stader runtime directory."; } >&2
-{ mkdir -p "$DATA_PATH/secrets" || fail "Could not create the Stader secrets directory."; } >&2
 { mkdir -p "$DATA_PATH/sp-rewards-merkle-proofs" || fail "Could not create the Stader socializing pool rewards merkle proofs directory."; } >&2
-{ mkdir -p "$DATA_PATH/web3signer-keystore" || fail "Could not create the web3signer keystore"; } >&2
-{ mkdir -p "$DATA_PATH/web3signer-keystore-password" || fail "Could not create the web3signer password key store"; } >&2
-
 
 # Download and extract package files
 progress 7 "Downloading Stader package files..."
