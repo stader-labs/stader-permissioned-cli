@@ -99,11 +99,6 @@ func run(c *cli.Context) error {
 		return err
 	}
 
-	operatorId, err := node.GetOperatorId(pnr, nodeAccount.Address, nil)
-	if err != nil {
-		return err
-	}
-
 	// Wait group to handle the various threads
 	wg := new(sync.WaitGroup)
 	wg.Add(2)
@@ -122,6 +117,12 @@ func run(c *cli.Context) error {
 				errorLog.Printf("Could not get public key: %s\n", err)
 				continue
 			}
+			operatorId, err := node.GetOperatorId(pnr, nodeAccount.Address, nil)
+			if err != nil {
+				errorLog.Printf("Could not get operator id: %s\n", err)
+				continue
+			}
+
 			// make a map of all validators actually registered with stader
 			// user might just move the validator keys to the directory. we don't wanna send the presigned msg of them
 
@@ -131,6 +132,7 @@ func run(c *cli.Context) error {
 				errorLog.Printf("Could not get all validators registered with operator %s\n", operatorId)
 				continue
 			}
+			infoLog.Printf("Found %d validators registered with operator %s\n", len(registeredValidators), operatorId.String())
 
 			infoLog.Println("Starting a pass of the presign daemon!")
 
