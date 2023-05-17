@@ -41,6 +41,10 @@ func nodeDeposit(c *cli.Context, validatorPubKeyList string) error {
 		fmt.Printf("Operator not active")
 		return nil
 	}
+	if canNodeDepositResponse.InputKeyLimitReached {
+		fmt.Printf("You cannot add more than %d keys at a time", canNodeDepositResponse.InputKeyLimit)
+		return nil
+	}
 
 	//Assign max fees
 	err = gas.AssignMaxFeeAndLimit(canNodeDepositResponse.GasInfo, staderClient, c.Bool("yes"))

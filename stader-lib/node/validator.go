@@ -100,3 +100,7 @@ func GetValidatorIdByPubKey(pnr *stader.PermissionedNodeRegistryContractManager,
 func GetNextValidatorId(pnr *stader.PermissionedNodeRegistryContractManager, opts *bind.CallOpts) (*big.Int, error) {
 	return pnr.PermissionedNodeRegistry.NextValidatorId(opts)
 }
+
+func GetInputKeyCountLimit(pnr *stader.PermissionedNodeRegistryContractManager, opts *bind.CallOpts) (uint16, error) {
+	return pnr.PermissionedNodeRegistry.InputKeyCountLimit(opts)
+}

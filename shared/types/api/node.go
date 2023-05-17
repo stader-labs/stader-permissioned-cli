@@ -96,6 +96,8 @@ type CanNodeDepositResponse struct {
 	OperatorNotActive        bool           `json:"operatorNotActive"`
 	DepositPaused            bool           `json:"depositPaused"`
 	MaxValidatorLimitReached bool           `json:"maxValidatorLimitReached"`
+	InputKeyLimitReached     bool           `json:"inputKeyLimitReached"`
+	InputKeyLimit            uint16         `json:"inputKeyLimit"`
 	GasInfo                  stader.GasInfo `json:"gasInfo"`
 }
 
