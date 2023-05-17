@@ -78,10 +78,6 @@ func run(c *cli.Context) error {
 	if err != nil {
 		return err
 	}
-	pnr, err := services.GetPermissionedNodeRegistry(c)
-	if err != nil {
-		return err
-	}
 	nodeAccount, err := w.GetNodeAccount()
 	if err != nil {
 		return err
