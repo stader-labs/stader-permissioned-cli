@@ -207,8 +207,8 @@ func NewStadernodeConfig(cfg *StaderConfig) *StaderNodeConfig {
 		},
 
 		baseStaderBackendUrl: map[config.Network]string{
-			config.Network_Prater:   "https://1r6l0g1nkd.execute-api.us-east-1.amazonaws.com/prod",
-			config.Network_Devnet:   "https://stage-ethx-offchain.staderlabs.click",
+			config.Network_Prater:   "https://stage-ethx-offchain.staderlabs.click",
+			config.Network_Devnet:   "https://1r6l0g1nkd.execute-api.us-east-1.amazonaws.com/prod",
 			config.Network_Mainnet:  "https://stage-ethx-offchain.staderlabs.click",
 			config.Network_Zhejiang: "0x90Da3CA75532A17ca38440a32595F036ecE46E85",
 		},
@@ -321,18 +321,24 @@ func (cfg *StaderNodeConfig) GetParameters() []*config.Parameter {
 
 // Getters for the non-editable parameters
 func (cfg *StaderNodeConfig) GetPresignSendApi() string {
+	fmt.Printf("Presign check api: %s\n", cfg.baseStaderBackendUrl[cfg.Network.Value.(config.Network)]+"/presign")
 	return cfg.baseStaderBackendUrl[cfg.Network.Value.(config.Network)] + "/presign"
 }
 
 func (cfg *StaderNodeConfig) GetPresignCheckApi() string {
+	fmt.Printf("Presign check api: %s\n", cfg.baseStaderBackendUrl[cfg.Network.Value.(config.Network)]+"/msgSubmitted")
 	return cfg.baseStaderBackendUrl[cfg.Network.Value.(config.Network)] + "/msgSubmitted"
 }
 
 func (cfg *StaderNodeConfig) GetPresignPublicKeyApi() string {
+	fmt.Printf("Presign check public key: %s\n", cfg.baseStaderBackendUrl[cfg.Network.Value.(config.Network)]+"/publicKey")
+
 	return cfg.baseStaderBackendUrl[cfg.Network.Value.(config.Network)] + "/publicKey"
 }
 
 func (cfg *StaderNodeConfig) GetMerkleProofApi() string {
+	fmt.Printf("merkle proof api: %s\n", cfg.baseStaderBackendUrl[cfg.Network.Value.(config.Network)]+"/merklesForElRewards/proofs/%s")
+
 	return cfg.baseStaderBackendUrl[cfg.Network.Value.(config.Network)] + "/merklesForElRewards/proofs/%s"
 }
 
