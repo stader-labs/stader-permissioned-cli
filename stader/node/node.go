@@ -108,7 +108,7 @@ func run(c *cli.Context) error {
 				continue
 			}
 
-			publicKey, err := stader.GetPublicKey()
+			publicKey, err := stader.GetPublicKey(c)
 			if err != nil {
 				errorLog.Printf("Could not get public key: %s\n", err)
 				continue
@@ -173,7 +173,7 @@ func run(c *cli.Context) error {
 				}
 
 				// check if the presigned message has been registered. if it has been registered, then continue
-				isRegistered, err := stader.IsPresignedKeyRegistered(validatorPubKey)
+				isRegistered, err := stader.IsPresignedKeyRegistered(c, validatorPubKey)
 				if isRegistered {
 					errorLog.Printf("Validator pub key: %s pre signed key already registered\n", validatorPubKey)
 					continue
@@ -206,7 +206,7 @@ func run(c *cli.Context) error {
 				exitSignatureEncryptedString := crypto.EncodeBase64(exitSignatureEncrypted)
 
 				// send it to the presigned api
-				backendRes, err := stader.SendPresignedMessageToStaderBackend(stader_backend.PreSignSendApiRequestType{
+				backendRes, err := stader.SendPresignedMessageToStaderBackend(c, stader_backend.PreSignSendApiRequestType{
 					Message: struct {
 						Epoch          string `json:"epoch"`
 						ValidatorIndex string `json:"validator_index"`

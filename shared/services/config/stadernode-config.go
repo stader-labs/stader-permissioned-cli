@@ -86,6 +86,9 @@ type StaderNodeConfig struct {
 	// The URL to provide the user so they can follow pending transactions
 	txWatchUrl map[config.Network]string `yaml:"-"`
 
+	// Beacon chain explorer URL
+	beaconChainUrl map[config.Network]string `yaml:"-"`
+
 	// The URL to use for staking EthX
 	stakeUrl map[config.Network]string `yaml:"-"`
 
@@ -97,6 +100,9 @@ type StaderNodeConfig struct {
 
 	// The contract address of stader config
 	staderConfigAddress map[config.Network]string `yaml:"-"`
+
+	// The url of stader-backend for sending pre-sign messages and getting merkle proofs
+	baseStaderBackendUrl map[config.Network]string `yaml:"-"`
 }
 
 // Generates a new Stadernode configuration
@@ -173,6 +179,12 @@ func NewStadernodeConfig(cfg *StaderConfig) *StaderNodeConfig {
 			config.Network_Devnet:  "https://goerli.etherscan.io/tx",
 		},
 
+		beaconChainUrl: map[config.Network]string{
+			config.Network_Mainnet: "https://beaconcha.in",
+			config.Network_Prater:  "https://prater.beaconcha.in",
+			config.Network_Devnet:  "https://prater.beaconcha.in",
+		},
+
 		chainID: map[config.Network]uint{
 			config.Network_Mainnet:  1,       // Mainnet
 			config.Network_Prater:   5,       // Goerli
@@ -189,8 +201,15 @@ func NewStadernodeConfig(cfg *StaderConfig) *StaderNodeConfig {
 
 		staderConfigAddress: map[config.Network]string{
 			config.Network_Prater:   "0x8eF9036E524ce6340eF71844C29508C26Fbbe478",
-			config.Network_Devnet:   "0x8eF9036E524ce6340eF71844C29508C26Fbbe478",
+			config.Network_Devnet:   "0x198C5bC65acce5a35Ae7A8B7AEf4f92FA94C1c6E",
 			config.Network_Mainnet:  "0x8eF9036E524ce6340eF71844C29508C26Fbbe478",
+			config.Network_Zhejiang: "0x90Da3CA75532A17ca38440a32595F036ecE46E85",
+		},
+
+		baseStaderBackendUrl: map[config.Network]string{
+			config.Network_Prater:   "https://1r6l0g1nkd.execute-api.us-east-1.amazonaws.com/prod",
+			config.Network_Devnet:   "https://stage-ethx-offchain.staderlabs.click",
+			config.Network_Mainnet:  "https://stage-ethx-offchain.staderlabs.click",
 			config.Network_Zhejiang: "0x90Da3CA75532A17ca38440a32595F036ecE46E85",
 		},
 	}
@@ -301,9 +320,28 @@ func (cfg *StaderNodeConfig) GetParameters() []*config.Parameter {
 }
 
 // Getters for the non-editable parameters
+func (cfg *StaderNodeConfig) GetPresignSendApi() string {
+	return cfg.baseStaderBackendUrl[cfg.Network.Value.(config.Network)] + "/presign"
+}
+
+func (cfg *StaderNodeConfig) GetPresignCheckApi() string {
+	return cfg.baseStaderBackendUrl[cfg.Network.Value.(config.Network)] + "/msgSubmitted"
+}
+
+func (cfg *StaderNodeConfig) GetPresignPublicKeyApi() string {
+	return cfg.baseStaderBackendUrl[cfg.Network.Value.(config.Network)] + "/publicKey"
+}
+
+func (cfg *StaderNodeConfig) GetMerkleProofApi() string {
+	return cfg.baseStaderBackendUrl[cfg.Network.Value.(config.Network)] + "/merklesForElRewards/proofs/%s"
+}
 
 func (cfg *StaderNodeConfig) GetTxWatchUrl() string {
 	return cfg.txWatchUrl[cfg.Network.Value.(config.Network)]
+}
+
+func (cfg *StaderNodeConfig) GetBeaconChainUrl() string {
+	return cfg.beaconChainUrl[cfg.Network.Value.(config.Network)]
 }
 
 func (cfg *StaderNodeConfig) GetStakeUrl() string {
