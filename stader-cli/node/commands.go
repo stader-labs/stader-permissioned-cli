@@ -222,6 +222,27 @@ func RegisterCommands(app *cli.App, name string, aliases []string) {
 				},
 			},
 			{
+				Name:      "get-validator-info",
+				Aliases:   []string{"gvi"},
+				Usage:     "Get info for a specific validator",
+				UsageText: "stader-permissioned-cli node get-validator-info --validator-pub-key",
+				Flags: []cli.Flag{
+					cli.StringFlag{
+						Name:  "validator-pub-key, vpk",
+						Usage: "Public key of validator we want to exit",
+					},
+				},
+				Action: func(c *cli.Context) error {
+
+					validatorPubKey, err := cliutils.ValidatePubkey("validator-pub-key", c.String("validator-pub-key"))
+					if err != nil {
+						return err
+					}
+					// Run
+					return GetValidatorInfo(c, validatorPubKey)
+				},
+			},
+			{
 				Name:      "claim-sp-rewards",
 				Aliases:   []string{"cspr"},
 				Usage:     "Claim Socializing Pool Rewards for given cycles",

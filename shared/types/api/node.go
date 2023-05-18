@@ -193,6 +193,14 @@ type ExitValidatorResponse struct {
 	Error          string `json:"error"`
 }
 
+type ValidatorInfoResponse struct {
+	ValidatorInfo types.ValidatorContractInfo `json:"validatorInfo"`
+	ClRewards     *big.Int                    `json:"clRewards"`
+	DisplayStatus string                      `json:"displayStatus"`
+	Status        string                      `json:"status"`
+	Error         string                      `json:"error"`
+}
+
 type CanUpdateSocializeElResponse struct {
 	Status                        string         `json:"status"`
 	Error                         string         `json:"error"`
