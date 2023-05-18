@@ -332,22 +332,6 @@ type ClaimSpRewardsResponse struct {
 	TxHash common.Hash `json:"txHash"`
 }
 
-type CanUpdateOperatorDetails struct {
-	Status                    string         `json:"status"`
-	Error                     string         `json:"error"`
-	OperatorNotActive         bool           `json:"operatorNotActive"`
-	OperatorNameTooLong       bool           `json:"operatorNameTooLong"`
-	OperatorRewardAddressZero bool           `json:"operatorRewardAddressZero"`
-	NothingToUpdate           bool           `json:"nothingToUpdate"`
-	GasInfo                   stader.GasInfo `json:"gasInfo"`
-}
-
-type UpdateOperatorDetails struct {
-	Status string      `json:"status"`
-	Error  string      `json:"error"`
-	TxHash common.Hash `json:"txHash"`
-}
-
 type CanUpdateOperatorName struct {
 	Status              string         `json:"status"`
 	Error               string         `json:"error"`
