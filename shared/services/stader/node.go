@@ -406,7 +406,7 @@ func (c *Client) CanUpdateOperatorRewardAddress(operatorRewardAddress common.Add
 }
 
 func (c *Client) UpdateOperatorRewardAddress(operatorRewardAddress common.Address) (api.UpdateOperatorRewardAddress, error) {
-	responseBytes, err := c.callAPI("node update-operator-details", operatorRewardAddress.Hex())
+	responseBytes, err := c.callAPI("node update-operator-reward-address", operatorRewardAddress.Hex())
 	if err != nil {
 		return api.UpdateOperatorRewardAddress{}, fmt.Errorf("could not get update-operator-reward-address response: %w", err)
 	}
