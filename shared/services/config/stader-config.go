@@ -38,18 +38,11 @@ import (
 const (
 	rootConfigName string = "root"
 
-	ApiContainerName          string = "api"
-	Eth1ContainerName         string = "eth1"
-	Eth1FallbackContainerName string = "eth1-fallback"
-	Eth2ContainerName         string = "eth2"
-	ExporterContainerName     string = "exporter"
-	GrafanaContainerName      string = "grafana"
-	MevBoostContainerName     string = "mev-boost"
-	NodeContainerName         string = "node"
-	PrometheusContainerName   string = "prometheus"
-	ValidatorContainerName    string = "validator"
-	GuardianContainerName     string = "guardian"
-	Web3SignerContainerName   string = "web3signer"
+	ApiContainerName        string = "api"
+	ExporterContainerName   string = "exporter"
+	GrafanaContainerName    string = "grafana"
+	NodeContainerName       string = "node"
+	PrometheusContainerName string = "prometheus"
 
 	FeeRecipientFileEnvVar string = "FEE_RECIPIENT_FILE"
 	FeeRecipientEnvVar     string = "FEE_RECIPIENT"
@@ -301,8 +294,6 @@ func (cfg *StaderConfig) GenerateEnvironmentVariables() map[string]string {
 	// Basic variables and root parameters
 	envVars["STADER_NODE_IMAGE"] = cfg.StaderNode.GetStadernodeContainerTag()
 	envVars["STADER_FOLDER"] = cfg.StaderDirectory
-	envVars["ETHX_ADDRESS"] = cfg.StaderNode.GetEthxTokenAddress().Hex()
-	envVars[FeeRecipientFileEnvVar] = FeeRecipientFilename // If this is running, we're in Docker mode by definition so use the Docker fee recipient filename
 	config.AddParametersToEnvVars(cfg.StaderNode.GetParameters(), envVars)
 	config.AddParametersToEnvVars(cfg.GetParameters(), envVars)
 

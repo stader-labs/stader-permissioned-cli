@@ -37,19 +37,13 @@ import (
 
 // Constants
 const (
-	stadernodeTag                          = "staderdev/stader-node:v" + shared.StaderVersion
-	pruneProvisionerTag             string = "staderdev/eth1-prune-provision:v0.0.1"
-	ecMigratorTag                   string = "staderdev/ec-migrator:v1.0.0"
-	NetworkID                       string = "network"
-	ProjectNameID                   string = "projectName"
-	DaemonDataPath                  string = "/.stader/data"
-	GuardianFolder                  string = "guardian"
-	SpRewardsMerkleProofsFolder     string = "sp-rewards-merkle-proofs"
-	Web3SignerKeyStoresPath         string = "web3signer-keystore"
-	Web3SignerKeyStoresPasswordPath string = "web3signer-keystore-password"
-	MerkleProofsFormat              string = "cycle-%s-%d.json"
-	FeeRecipientFilename            string = "stader-fee-recipient.txt"
-	NativeFeeRecipientFilename      string = "stader-fee-recipient-env.txt"
+	stadernodeTag                      = "staderdev/stader-node:v" + shared.StaderVersion
+	NetworkID                   string = "network"
+	ProjectNameID               string = "projectName"
+	DaemonDataPath              string = "/.stader/data"
+	GuardianFolder              string = "guardian"
+	SpRewardsMerkleProofsFolder string = "sp-rewards-merkle-proofs"
+	MerkleProofsFormat          string = "cycle-%s-%d.json"
 )
 
 // --ignore-sync-check
@@ -345,10 +339,6 @@ func (cfg *StaderNodeConfig) GetValidatorKeychainPathInCLI() string {
 	return filepath.Join(DaemonDataPath, "validators")
 }
 
-func (config *StaderNodeConfig) GetGuardianStatePath() string {
-	return filepath.Join(DaemonDataPath, GuardianFolder, "state.yml")
-}
-
 func (cfg *StaderNodeConfig) GetCustomKeyPath() string {
 	return filepath.Join(DaemonDataPath, "custom-keys")
 }
@@ -359,14 +349,6 @@ func (cfg *StaderNodeConfig) GetCustomKeyPasswordFilePath() string {
 
 func (cfg *StaderNodeConfig) GetStadernodeContainerTag() string {
 	return stadernodeTag
-}
-
-func (config *StaderNodeConfig) GetPruneProvisionerContainerTag() string {
-	return pruneProvisionerTag
-}
-
-func (cfg *StaderNodeConfig) GetEcMigratorContainerTag() string {
-	return ecMigratorTag
 }
 
 // The the title for the config
@@ -386,14 +368,6 @@ func getDefaultDataDir(config *StaderConfig) string {
 	return filepath.Join(config.StaderDirectory, "data")
 }
 
-func GetDefaultWeb3SignerKeyStorePath(cfg *StaderConfig) string {
-	return filepath.Join(getDefaultDataDir(cfg), Web3SignerKeyStoresPath)
-}
-
-func GetDefaultWeb3SignerKeyStorePasswordPath(cfg *StaderConfig) string {
-	return filepath.Join(getDefaultDataDir(cfg), Web3SignerKeyStoresPasswordPath)
-}
-
 func (cfg *StaderNodeConfig) GetGuardianFolder(daemon bool) string {
 
 	return filepath.Join(DaemonDataPath, GuardianFolder)
@@ -406,10 +380,6 @@ func (cfg *StaderNodeConfig) GetSpRewardsMerkleProofFolder(daemon bool) string {
 
 func (cfg *StaderNodeConfig) GetSpRewardCyclePath(cycle int64, daemon bool) string {
 	return filepath.Join(DaemonDataPath, SpRewardsMerkleProofsFolder, fmt.Sprintf(MerkleProofsFormat, string(cfg.Network.Value.(config.Network)), cycle))
-}
-
-func (cfg *StaderNodeConfig) GetFeeRecipientFilePath() string {
-	return filepath.Join(DaemonDataPath, "validators", NativeFeeRecipientFilename)
 }
 
 func getNetworkOptions() []config.ParameterOption {
