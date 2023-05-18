@@ -41,12 +41,12 @@ func ExitValidator(c *cli.Context, validatorPubKey types.ValidatorPubkey) error 
 	}
 
 	// now exit
-	_, err = staderClient.ExitValidator(validatorPubKey)
+	exitValidatorResponse, err := staderClient.ExitValidator(validatorPubKey)
 	if err != nil {
 		return err
 	}
 
-	fmt.Printf("Exiting validator %s, you check check the validator status at %s\n", validatorPubKey, fmt.Sprintf("https://prater.beaconcha.in/validator/%s#withdrawals", validatorPubKey))
+	fmt.Printf("Exiting validator %s, you check check the validator status at %s\n", validatorPubKey, fmt.Sprintf("%s/validator/%s#withdrawals", exitValidatorResponse.BeaconChainUrl, validatorPubKey))
 
 	return nil
 }

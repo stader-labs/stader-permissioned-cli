@@ -78,9 +78,14 @@ func exitValidator(c *cli.Context, validatorPubKey types.ValidatorPubkey) (*api.
 	if err != nil {
 		return nil, err
 	}
+	cfg, err := services.GetConfig(c)
+	if err != nil {
+		return nil, err
+	}
 
 	// Response
 	response := api.ExitValidatorResponse{}
+	response.BeaconChainUrl = cfg.StaderNode.GetBeaconChainUrl()
 
 	// Get beacon head
 	head, err := bc.GetBeaconHead()

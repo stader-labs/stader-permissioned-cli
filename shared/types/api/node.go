@@ -188,8 +188,9 @@ type CanExitValidatorResponse struct {
 }
 
 type ExitValidatorResponse struct {
-	Status string `json:"status"`
-	Error  string `json:"error"`
+	BeaconChainUrl string `json:"beaconChainUrl"`
+	Status         string `json:"status"`
+	Error          string `json:"error"`
 }
 
 type CanUpdateSocializeElResponse struct {
