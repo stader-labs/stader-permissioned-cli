@@ -151,6 +151,21 @@ func (c *Client) GetContractsInfo() (api.ContractsInfoResponse, error) {
 	return response, nil
 }
 
+func (c *Client) GetValidatorInfo(valPubKey types.ValidatorPubkey) (api.ValidatorInfoResponse, error) {
+	responseBytes, err := c.callAPI(fmt.Sprintf("node get-validator-info %s", valPubKey))
+	if err != nil {
+		return api.ValidatorInfoResponse{}, fmt.Errorf("could not get validator info: %w", err)
+	}
+	var response api.ValidatorInfoResponse
+	if err := json.Unmarshal(responseBytes, &response); err != nil {
+		return api.ValidatorInfoResponse{}, fmt.Errorf("could not decode get-validator-info: %w", err)
+	}
+	if response.Error != "" {
+		return api.ValidatorInfoResponse{}, fmt.Errorf("could not get-validator-info: %s", response.Error)
+	}
+	return response, nil
+}
+
 // Make a node deposit
 func (c *Client) NodeDeposit(validatorPubKeyList string, submit bool) (api.NodeDepositResponse, error) {
 	responseBytes, err := c.callAPI(fmt.Sprintf("node deposit %s %t", validatorPubKeyList, submit))

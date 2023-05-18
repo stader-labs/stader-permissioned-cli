@@ -300,6 +300,22 @@ func RegisterSubcommands(command *cli.Command, name string, aliases []string) {
 				},
 			},
 			{
+				Name:      "get-validator-info",
+				Usage:     "Get info of a particular validator",
+				UsageText: "stader-permissioned-cli api node get-validator-info --validator-pub-key",
+				Action: func(c *cli.Context) error {
+
+					validatorPubKey, err := cliutils.ValidatePubkey("validator-pub-key", c.Args().Get(0))
+					if err != nil {
+						return err
+					}
+
+					api.PrintResponse(GetValidatorContractInfo(c, validatorPubKey))
+					return nil
+
+				},
+			},
+			{
 				Name:      "can-download-sp-merkle-proofs",
 				Usage:     "Can we Download missing socializing merkle proofs",
 				UsageText: "stader-permissioned-cli api node can-download-sp-merkle-proofs",
