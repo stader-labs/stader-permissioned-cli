@@ -2,7 +2,7 @@
 This work is licensed and released under GNU GPL v3 or any other later versions.
 The full text of the license is below/ found at <http://www.gnu.org/licenses/>
 
-(c) 2023 Rocket Pool Pty Ltd. Modified under GNU GPL v3. [0.3.0-beta]
+(c) 2023 Rocket Pool Pty Ltd. Modified under GNU GPL v3. [0.4.0-beta-permissioned]
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -106,12 +106,13 @@ func installService(c *cli.Context) error {
 			return fmt.Errorf("error saveConfig: %w", err)
 		}
 	}
-	// Report next steps
-	fmt.Printf("%s\n=== Next Steps ===\n", colorLightBlue)
-	fmt.Printf("Open %s.user-settings.yml and add the URLs for the beacon chain node, execution chain node and your web3signer setup. %s\n", cfg.StaderDirectory, colorReset)
 
 	// Print the docker permissions notice
 	if isNew {
+		// Report next steps
+		fmt.Printf("%s\n=== Next Steps ===\n", colorLightBlue)
+		fmt.Printf("Open %s.user-settings.yml and add the URLs for the beacon chain node, execution chain node and your web3signer setup. %s\n", cfg.StaderDirectory, colorReset)
+
 		fmt.Printf("\n%sNOTE:\nSince this is your first time installing Stader, please start a new shell session by logging out and back in or restarting the machine.\n", colorYellow)
 		fmt.Printf("This is necessary for your user account to have permissions to use Docker.%s", colorReset)
 	}
