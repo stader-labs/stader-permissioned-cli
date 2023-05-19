@@ -108,7 +108,7 @@ func installService(c *cli.Context) error {
 	}
 	// Report next steps
 	fmt.Printf("%s\n=== Next Steps ===\n", colorLightBlue)
-	fmt.Printf("Open %s.user-settings.yml review the settings, or to continue setting up your node.%s\n", cfg.StaderDirectory, colorReset)
+	fmt.Printf("Open %s.user-settings.yml and add the URLs for the beacon chain node, execution chain node and your web3signer setup. %s\n", cfg.StaderDirectory, colorReset)
 
 	// Print the docker permissions notice
 	if isNew {
