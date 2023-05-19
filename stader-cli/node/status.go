@@ -26,6 +26,11 @@ func getStatus(c *cli.Context) error {
 		return err
 	}
 
+	clientStatus, err := staderClient.GetClientStatus()
+	if err != nil {
+		return err
+	}
+
 	// Get node status
 	status, err := staderClient.NodeStatus()
 	if err != nil {
@@ -57,8 +62,18 @@ func getStatus(c *cli.Context) error {
 	} else {
 		fmt.Printf("Web3Signer Connection Failed with error: %s. \n\n", status.Web3SignerConnectionError)
 	}
-	fmt.Printf("The node is using %s to connect to the beacon chain.\n\n", status.BeaconChainUrl)
-	fmt.Printf("The node is using %s to connect to the execution chain.\n\n", status.ExecutionChainUrl)
+
+	if clientStatus.BcManagerStatus.PrimaryClientStatus.Error != "" {
+		fmt.Printf("Connection to beacon chain failed with: %s\n\n", clientStatus.BcManagerStatus.PrimaryClientStatus.Error)
+	} else {
+		fmt.Printf("The node is using %s to connect to the beacon chain.\n\n", status.BeaconChainUrl)
+	}
+
+	if clientStatus.EcManagerStatus.PrimaryClientStatus.Error != "" {
+		fmt.Printf("Connection to execution chain failed with: %s\n\n", clientStatus.EcManagerStatus.PrimaryClientStatus.Error)
+	} else {
+		fmt.Printf("The node is using %s to connect to the execution chain.\n\n", status.ExecutionChainUrl)
+	}
 
 	// Account address & balances
 	fmt.Printf("%s=== Account and Balances ===%s\n", log.ColorGreen, log.ColorReset)
