@@ -34,27 +34,14 @@ import (
 
 // Settings
 const (
-	ExporterContainerSuffix         string = "_exporter"
-	ValidatorContainerSuffix        string = "_validator"
-	BeaconContainerSuffix           string = "_eth2"
-	ExecutionContainerSuffix        string = "_eth1"
-	NodeContainerSuffix             string = "_node"
-	ApiContainerSuffix              string = "_api"
-	GuardianContainerSuffix         string = "guardian"
-	PruneProvisionerContainerSuffix string = "_prune_provisioner"
-	EcMigratorContainerSuffix       string = "_ec_migrator"
-	clientDataVolumeName            string = "/ethclient"
-	dataFolderVolumeName            string = "/.stader/data"
+	NodeContainerSuffix     string = "_node"
+	GuardianContainerSuffix string = "guardian"
 
-	PruneFreeSpaceRequired uint64 = 50 * 1024 * 1024 * 1024
-	dockerImageRegex       string = ".*/(?P<image>.*):.*"
-	colorReset             string = "\033[0m"
-	colorBold              string = "\033[1m"
-	colorRed               string = "\033[31m"
-	colorYellow            string = "\033[33m"
-	colorGreen             string = "\033[32m"
-	colorLightBlue         string = "\033[36m"
-	clearLine              string = "\033[2K"
+	colorReset     string = "\033[0m"
+	colorRed       string = "\033[31m"
+	colorYellow    string = "\033[33m"
+	colorGreen     string = "\033[32m"
+	colorLightBlue string = "\033[36m"
 )
 
 // Install the Stader service
@@ -258,10 +245,6 @@ func startService(c *cli.Context, ignoreConfigSuggestion bool) error {
 	if err != nil {
 		return fmt.Errorf("Error loading user settings: %w", err)
 	}
-
-	//if isNew {
-	//	return fmt.Errorf("No configuration detected. Please run `stader-permissioned-cli service config` to set up your Stadernode before running it.")
-	//}
 
 	if !ignoreConfigSuggestion {
 		if c.Bool("yes") || cliutils.Confirm("Stadernode upgrade detected - starting will overwrite certain settings with the latest defaults (such as container versions).\nYou may want to run `service config` first to see what's changed.\n\nWould you like to continue starting the service?") {
