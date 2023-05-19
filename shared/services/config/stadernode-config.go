@@ -277,7 +277,6 @@ func (cfg *StaderNodeConfig) GetClaimData(cycles []*big.Int) ([]*big.Int, []*big
 }
 
 func (cfg *StaderNodeConfig) ReadCycleCache(cycle int64) (stader_backend.CycleMerkleProofs, bool, error) {
-	//fmt.Printf("Reading cycle cache for cycle %d\n", cycle)
 	cycleMerkleProofFile := cfg.GetSpRewardCyclePath(cycle, true)
 	absolutePathOfProofFile, err := homedir.Expand(cycleMerkleProofFile)
 	if err != nil {
@@ -321,24 +320,18 @@ func (cfg *StaderNodeConfig) GetParameters() []*config.Parameter {
 
 // Getters for the non-editable parameters
 func (cfg *StaderNodeConfig) GetPresignSendApi() string {
-	fmt.Printf("Presign check api: %s\n", cfg.baseStaderBackendUrl[cfg.Network.Value.(config.Network)]+"/presign")
 	return cfg.baseStaderBackendUrl[cfg.Network.Value.(config.Network)] + "/presign"
 }
 
 func (cfg *StaderNodeConfig) GetPresignCheckApi() string {
-	fmt.Printf("Presign check api: %s\n", cfg.baseStaderBackendUrl[cfg.Network.Value.(config.Network)]+"/msgSubmitted")
 	return cfg.baseStaderBackendUrl[cfg.Network.Value.(config.Network)] + "/msgSubmitted"
 }
 
 func (cfg *StaderNodeConfig) GetPresignPublicKeyApi() string {
-	fmt.Printf("Presign check public key: %s\n", cfg.baseStaderBackendUrl[cfg.Network.Value.(config.Network)]+"/publicKey")
-
 	return cfg.baseStaderBackendUrl[cfg.Network.Value.(config.Network)] + "/publicKey"
 }
 
 func (cfg *StaderNodeConfig) GetMerkleProofApi() string {
-	fmt.Printf("merkle proof api: %s\n", cfg.baseStaderBackendUrl[cfg.Network.Value.(config.Network)]+"/merklesForElRewards/proofs/%s")
-
 	return cfg.baseStaderBackendUrl[cfg.Network.Value.(config.Network)] + "/merklesForElRewards/proofs/%s"
 }
 
