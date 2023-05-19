@@ -92,7 +92,7 @@ func (c *Client) RegisterNode(operatorName string, operatorRewardAddress common.
 
 // Check whether the node can make a deposit
 func (c *Client) CanRegisterValidators(validatorList string) (api.CanRegisterValidatorsResponse, error) {
-	responseBytes, err := c.callAPI(fmt.Sprintf("validator can-register %s %t", validatorList))
+	responseBytes, err := c.callAPI(fmt.Sprintf("validator can-register %s", validatorList))
 	if err != nil {
 		return api.CanRegisterValidatorsResponse{}, fmt.Errorf("could not get validator can-register status: %w", err)
 	}
