@@ -23,19 +23,19 @@ func GetValidatorInfo(c *cli.Context, validatorPubKey types.ValidatorPubkey) err
 		return err
 	}
 
-	fmt.Printf("Validator info for %s\n", validatorPubKey.String())
-	fmt.Printf("Validator PubKey: %s\n", types.BytesToValidatorPubkey(response.ValidatorInfo.Pubkey).String())
-	fmt.Printf("Validator WithdrawVault: %s\n", response.ValidatorInfo.WithdrawVaultAddress.String())
-	fmt.Printf("Validator Status: %s\n", response.DisplayStatus)
+	fmt.Printf("%s=== Validator Info ===%s\n", log.ColorGreen, log.ColorReset)
+	fmt.Printf("Validator PubKey: %s\n\n", types.BytesToValidatorPubkey(response.ValidatorInfo.Pubkey).String())
+	fmt.Printf("Validator WithdrawVault: %s\n\n", response.ValidatorInfo.WithdrawVaultAddress.String())
+	fmt.Printf("Validator Status: %s\n\n", response.DisplayStatus)
 	if response.ClRewards.Cmp(big.NewInt(0)) > 0 {
-		fmt.Printf("Validator Skimmed Rewards: %.6f\n", math.RoundDown(eth.WeiToEth(response.ClRewards), 18))
+		fmt.Printf("Validator Skimmed Rewards: %.6f\n\n", math.RoundDown(eth.WeiToEth(response.ClRewards), 18))
 		fmt.Printf("To claim skimmed rewards use the %sstader-permissioned-cli node claim-cl-rewards %s command\n\n", log.ColorGreen, log.ColorReset)
 	}
 	if response.ValidatorInfo.DepositBlock.Cmp(big.NewInt(0)) > 0 {
-		fmt.Printf("Validator DepositBlock: %d\n", response.ValidatorInfo.DepositBlock)
+		fmt.Printf("Validator DepositBlock: %d\n\n", response.ValidatorInfo.DepositBlock)
 	}
 	if response.ValidatorInfo.WithdrawnBlock.Cmp(big.NewInt(0)) > 0 {
-		fmt.Printf("Validator WithdrawnBlock: %d\n", response.ValidatorInfo.WithdrawnBlock)
+		fmt.Printf("Validator WithdrawnBlock: %d\n\n", response.ValidatorInfo.WithdrawnBlock)
 	}
 
 	return nil
