@@ -38,22 +38,9 @@ import (
 const (
 	rootConfigName string = "root"
 
-	ApiContainerName        string = "api"
-	ExporterContainerName   string = "exporter"
-	GrafanaContainerName    string = "grafana"
-	NodeContainerName       string = "node"
-	PrometheusContainerName string = "prometheus"
-
-	FeeRecipientFileEnvVar string = "FEE_RECIPIENT_FILE"
-	FeeRecipientEnvVar     string = "FEE_RECIPIENT"
+	ApiContainerName  string = "api"
+	NodeContainerName string = "node"
 )
-
-// Defaults
-const defaultBnMetricsPort uint16 = 9100
-const defaultVcMetricsPort uint16 = 9101
-const defaultNodeMetricsPort uint16 = 9104
-const defaultExporterMetricsPort uint16 = 9103
-const defaultEcMetricsPort uint16 = 9105
 
 // The master configuration struct
 type StaderConfig struct {
