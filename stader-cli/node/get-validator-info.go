@@ -28,7 +28,7 @@ func GetValidatorInfo(c *cli.Context, validatorPubKey types.ValidatorPubkey) err
 	fmt.Printf("Validator WithdrawVault: %s\n", response.ValidatorInfo.WithdrawVaultAddress.String())
 	fmt.Printf("Validator Status: %s\n", response.DisplayStatus)
 	if response.ClRewards.Cmp(big.NewInt(0)) > 0 {
-		fmt.Printf("Validator ClRewards: %.6f\n", math.RoundDown(eth.WeiToEth(response.ClRewards), 18))
+		fmt.Printf("Validator Skimmed Rewards: %.6f\n", math.RoundDown(eth.WeiToEth(response.ClRewards), 18))
 		fmt.Printf("To claim skimmed rewards use the %sstader-permissioned-cli node claim-cl-rewards %s command\n\n", log.ColorGreen, log.ColorReset)
 	}
 	if response.ValidatorInfo.DepositBlock.Cmp(big.NewInt(0)) > 0 {
