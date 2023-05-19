@@ -965,7 +965,6 @@ func (c *Client) migrateCcSelection(legacySelectedClient string, ccParam *cfgtyp
 // Build a docker compose command
 func (c *Client) compose(composeFiles []string, args string) (string, error) {
 
-	fmt.Printf("composeFiles: %v", composeFiles)
 	// Cancel if running in non-docker mode
 	if c.daemonPath != "" {
 		return "", errors.New("command unavailable in Native Mode (with '--daemon-path' option specified)")
@@ -1024,10 +1023,7 @@ func (c *Client) compose(composeFiles []string, args string) (string, error) {
 	for _, container := range composeFiles {
 		composeFileFlags = append(composeFileFlags, fmt.Sprintf("-f %s", shellescape.Quote(container)))
 	}
-	fmt.Printf("composeFileFlags is %s\n", composeFileFlags)
 
-	//x := fmt.Sprintf("%s docker compose --project-directory %s %s %s", strings.Join(env, " "), shellescape.Quote(expandedConfigPath), strings.Join(composeFileFlags, " "), args)
-	//fmt.Printf("command is %s", x)
 	// Return command
 	return fmt.Sprintf("%s docker compose --project-directory %s %s %s", strings.Join(env, " "), shellescape.Quote(expandedConfigPath), strings.Join(composeFileFlags, " "), args), nil
 
