@@ -168,7 +168,7 @@ func (c *Client) GetValidatorInfo(valPubKey types.ValidatorPubkey) (api.Validato
 
 // Make a node deposit
 func (c *Client) RegisterValidators(validatorPubKeyList string) (api.ValidatorRegisterResponse, error) {
-	responseBytes, err := c.callAPI(fmt.Sprintf("validator register %s %t", validatorPubKeyList))
+	responseBytes, err := c.callAPI(fmt.Sprintf("validator register %s", validatorPubKeyList))
 	if err != nil {
 		return api.ValidatorRegisterResponse{}, fmt.Errorf("could not make validator register as err: %w", err)
 	}
