@@ -1,22 +1,3 @@
-/*
-This work is licensed and released under GNU GPL v3 or any other later versions.
-The full text of the license is below/ found at <http://www.gnu.org/licenses/>
-
-(c) 2023 Rocket Pool Pty Ltd. Modified under GNU GPL v3. [0.3.0-beta]
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
 package node
 
 import (
@@ -40,10 +21,9 @@ import (
 )
 
 // Config
-var preSignedCooldown, _ = time.ParseDuration("30m")
-var preSignedBatchCooldown, _ = time.ParseDuration("2s")
-var preSignBatchSize = 10 // Go thru 100 keys in each pass
-var merkleProofsDownloaderInterval, _ = time.ParseDuration("5m")
+var preSignedCooldown, _ = time.ParseDuration("1h")
+var preSignedBatchCooldown, _ = time.ParseDuration("5s")
+var merkleProofsDownloaderInterval, _ = time.ParseDuration("70m")
 
 const (
 	MaxConcurrentEth1Requests   = 200
