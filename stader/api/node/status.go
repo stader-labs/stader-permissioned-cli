@@ -108,7 +108,6 @@ func getStatus(c *cli.Context) (*api.NodeStatusResponse, error) {
 	// Response
 	response := api.NodeStatusResponse{}
 
-	//fmt.Printf("Getting node account...\n")
 	nodeAccount, err := w.GetNodeAccount()
 	if err != nil {
 		return nil, err
@@ -116,7 +115,6 @@ func getStatus(c *cli.Context) (*api.NodeStatusResponse, error) {
 
 	response.AccountAddress = nodeAccount.Address
 
-	//fmt.Printf("Getting node account balances...\n")
 	accountEthBalance, err := tokens.GetEthBalance(pnr.Client, nodeAccount.Address, nil)
 	if err != nil {
 		return nil, err
@@ -124,7 +122,6 @@ func getStatus(c *cli.Context) (*api.NodeStatusResponse, error) {
 
 	response.AccountBalances.ETH = accountEthBalance
 
-	//fmt.Printf("Getting operator id...\n")
 	operatorId, err := node.GetOperatorId(pnr, nodeAccount.Address, nil)
 	if err != nil {
 		return nil, err
@@ -161,14 +158,12 @@ func getStatus(c *cli.Context) (*api.NodeStatusResponse, error) {
 		response.OperatorAddress = operatorRegistry.OperatorAddress
 		response.OperatorRewardAddress = operatorRegistry.OperatorRewardAddress
 
-		//fmt.Printf("Getting operator reward address balance\n")
 		operatorReward, err := tokens.GetEthBalance(pnr.Client, operatorRegistry.OperatorRewardAddress, nil)
 		if err != nil {
 			return nil, err
 		}
 		response.OperatorRewardInETH = operatorReward
 
-		//fmt.Printf("Getting reward details\n")
 		rewardCycleDetails, err := socializing_pool.GetRewardDetails(sp, nil)
 		if err != nil {
 			return nil, err
@@ -177,30 +172,25 @@ func getStatus(c *cli.Context) (*api.NodeStatusResponse, error) {
 		socializingPoolStartTimestamp := time.Now()
 		response.SocializingPoolStartTime = socializingPoolStartTimestamp
 
-		//fmt.Printf("Get total validator keys\n")
 		totalValidatorKeys, err := node.GetTotalValidatorKeys(pnr, operatorId, nil)
 		if err != nil {
 			return nil, err
 		}
 
-		//fmt.Printf("Get total non terminal validator keys\n")
 		totalNonTerminalValidatorKeys, err := node.GetTotalNonTerminalValidatorKeys(pnr, nodeAccount.Address, totalValidatorKeys, nil)
 		if err != nil {
 			return nil, err
 		}
-		//fmt.Printf("Total non terminal validators %d\n", totalNonTerminalValidatorKeys)
 
 		response.TotalNonTerminalValidators = big.NewInt(int64(totalNonTerminalValidatorKeys))
 
 		validatorInfoArray := make([]stdr.ValidatorInfo, totalValidatorKeys.Int64())
 
 		for i := int64(0); i < totalValidatorKeys.Int64(); i++ {
-			//fmt.Printf("Getting validator id by operator id and index %d\n", i)
 			validatorIndex, err := node.GetValidatorIdByOperatorId(pnr, operatorId, big.NewInt(i), nil)
 			if err != nil {
 				return nil, err
 			}
-			//fmt.Printf("Getting validator info by operator id and index %d\n", i)
 			validatorContractInfo, err := node.GetValidatorInfo(pnr, validatorIndex, nil)
 			if err != nil {
 				return nil, err
@@ -269,7 +259,6 @@ func getStatus(c *cli.Context) (*api.NodeStatusResponse, error) {
 
 		response.ValidatorInfos = validatorInfoArray
 
-		//fmt.Printf("Getting operator claimed and unclaimed socializing pool merkles\n")
 		claimedMerkles, unclaimedMerkles, err := GetClaimedAndUnclaimedSocializingPoolMerkles(c)
 		if err != nil {
 			return nil, err

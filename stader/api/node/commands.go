@@ -397,7 +397,6 @@ func RegisterSubcommands(command *cli.Command, name string, aliases []string) {
 					}
 
 					cycles := c.Args().Get(0)
-					//fmt.Printf("cycles is %s\n", cycles)
 					// Run
 					api.PrintResponse(claimSpRewards(c, cycles))
 					return nil

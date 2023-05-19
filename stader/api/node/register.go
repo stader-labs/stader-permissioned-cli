@@ -45,7 +45,6 @@ func canRegisterNode(c *cli.Context, operatorName string, operatorRewardAddress 
 
 	nodeAccount, err := w.GetNodeAccount()
 
-	//fmt.Printf("Checking if permissioned node registry is paused\n")
 	isPermissionedRegistryPaused, err := node.IsPermissionedNodeRegistryPaused(pnr, nil)
 	if err != nil {
 		return nil, err
@@ -64,7 +63,6 @@ func canRegisterNode(c *cli.Context, operatorName string, operatorRewardAddress 
 		return &response, nil
 	}
 
-	//fmt.Printf("Checking if existing operator\n")
 	isExistingOperator, err := pool_utils.IsExistingOperator(putils, nodeAccount.Address, nil)
 	if err != nil {
 		return nil, err
@@ -74,7 +72,6 @@ func canRegisterNode(c *cli.Context, operatorName string, operatorRewardAddress 
 		return &response, nil
 	}
 
-	//fmt.Printf("Checkign operator max name length\n")
 	operatorNameMaxLength, err := stader_config.GetOperatorNameMaxLength(sdcfg, nil)
 	if err != nil {
 		return nil, err
@@ -93,7 +90,6 @@ func canRegisterNode(c *cli.Context, operatorName string, operatorRewardAddress 
 		return nil, err
 	}
 
-	//fmt.Printf("Checking gas estimate\n")
 	gasInfo, err := node.EstimateOnboardNodeOperator(pnr, operatorName, operatorRewardAddress, opts)
 	if err != nil {
 		return nil, err
