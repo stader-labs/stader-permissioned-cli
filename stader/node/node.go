@@ -22,8 +22,8 @@ import (
 
 // Config
 var preSignedCooldown, _ = time.ParseDuration("1h")
-var preSignedBatchCooldown, _ = time.ParseDuration("2s")
-var merkleProofsDownloaderInterval, _ = time.ParseDuration("30m")
+var preSignedBatchCooldown, _ = time.ParseDuration("5s")
+var merkleProofsDownloaderInterval, _ = time.ParseDuration("70m")
 
 const (
 	MaxConcurrentEth1Requests   = 200
