@@ -21,6 +21,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/stader-labs/stader-node/stader-cli/validator"
 	"os"
 
 	"github.com/mitchellh/go-homedir"
@@ -814,6 +815,7 @@ Public License instead of this License. But first, please read
 	}
 
 	node.RegisterCommands(app, "node", []string{"n"})
+	validator.RegisterCommands(app, "validator", []string{"v"})
 	service.RegisterCommands(app, "service", []string{"s"})
 	wallet.RegisterCommands(app, "wallet", []string{"w"})
 	app.Commands = append(app.Commands, cli.Command{

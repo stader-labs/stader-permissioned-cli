@@ -21,6 +21,7 @@ package api
 
 import (
 	"github.com/ethereum/go-ethereum/common"
+	"github.com/stader-labs/stader-node/stader/api/validator"
 	"github.com/urfave/cli"
 
 	"github.com/stader-labs/stader-node/shared/services"
@@ -71,6 +72,7 @@ func RegisterCommands(app *cli.App, name string, aliases []string) {
 
 	// Register subcommands
 	node.RegisterSubcommands(&command, "node", []string{"n"})
+	validator.RegisterSubcommands(&command, "validator", []string{"v"})
 	wallet.RegisterSubcommands(&command, "wallet", []string{"w"})
 	apiservice.RegisterSubcommands(&command, "service", []string{"s"})
 

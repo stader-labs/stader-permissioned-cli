@@ -1,4 +1,4 @@
-package node
+package validator
 
 import (
 	"fmt"
@@ -14,7 +14,7 @@ import (
 	"github.com/stader-labs/stader-node/shared/utils/eth1"
 )
 
-func canNodeDeposit(c *cli.Context, validatorList string) (*api.CanNodeDepositResponse, error) {
+func canRegisterValidators(c *cli.Context, validatorList string) (*api.CanRegisterValidatorsResponse, error) {
 	if err := services.RequireNodeWallet(c); err != nil {
 		return nil, err
 	}
@@ -42,7 +42,7 @@ func canNodeDeposit(c *cli.Context, validatorList string) (*api.CanNodeDepositRe
 		return nil, err
 	}
 
-	canNodeDepositResponse := api.CanNodeDepositResponse{}
+	canNodeDepositResponse := api.CanRegisterValidatorsResponse{}
 
 	registeredPublicKeys, err := web3SignerClient.GetValidatorPubKeysList()
 	if err != nil {
@@ -220,7 +220,7 @@ func canNodeDeposit(c *cli.Context, validatorList string) (*api.CanNodeDepositRe
 	return &canNodeDepositResponse, nil
 }
 
-func nodeDeposit(c *cli.Context, validatorList string, submit bool) (*api.NodeDepositResponse, error) {
+func registerValidators(c *cli.Context, validatorList string) (*api.ValidatorRegisterResponse, error) {
 
 	w, err := services.GetWallet(c)
 	if err != nil {
@@ -259,7 +259,7 @@ func nodeDeposit(c *cli.Context, validatorList string, submit bool) (*api.NodeDe
 	numValidators := big.NewInt(int64(len(validators)))
 
 	// Response
-	response := api.NodeDepositResponse{}
+	response := api.ValidatorRegisterResponse{}
 
 	// get the vault address and vault credential
 	operatorId, err := node.GetOperatorId(prn, nodeAccount.Address, nil)
@@ -333,21 +333,9 @@ func nodeDeposit(c *cli.Context, validatorList string, submit bool) (*api.NodeDe
 		return nil, fmt.Errorf("error checking for nonce override: %w", err)
 	}
 
-	// Do not send transaction unless requested
-	opts.NoSend = !submit
-
 	tx, err := node.AddValidatorKeys(prn, pubKeys, preDepositSignatures, depositSignatures, opts)
 	if err != nil {
 		return nil, err
-	}
-
-	// Print transaction if requested
-	if !submit {
-		b, err := tx.MarshalBinary()
-		if err != nil {
-			return nil, err
-		}
-		fmt.Printf("%x\n", b)
 	}
 
 	response.TxHash = tx.Hash()

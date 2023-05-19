@@ -1,4 +1,4 @@
-package node
+package validator
 
 import (
 	"fmt"
@@ -9,7 +9,7 @@ import (
 	"github.com/stader-labs/stader-node/shared/services/stader"
 )
 
-func nodeDeposit(c *cli.Context, validatorPubKeyList string) error {
+func registerValidators(c *cli.Context, validatorPubKeyList string) error {
 
 	staderClient, err := stader.NewClientFromCtx(c)
 	if err != nil {
@@ -17,50 +17,50 @@ func nodeDeposit(c *cli.Context, validatorPubKeyList string) error {
 	}
 	defer staderClient.Close()
 
-	canNodeDepositResponse, err := staderClient.CanNodeDeposit(validatorPubKeyList, true)
+	canRegisterValidatorsResponse, err := staderClient.CanRegisterValidators(validatorPubKeyList)
 	if err != nil {
 		return err
 	}
-	if canNodeDepositResponse.InsufficientBalance {
+	if canRegisterValidatorsResponse.InsufficientBalance {
 		fmt.Printf("Account does not have enough balance!")
 		return nil
 	}
-	if canNodeDepositResponse.DepositPaused {
+	if canRegisterValidatorsResponse.DepositPaused {
 		fmt.Printf("Deposits are currently paused!")
 		return nil
 	}
-	if canNodeDepositResponse.MaxValidatorLimitReached {
+	if canRegisterValidatorsResponse.MaxValidatorLimitReached {
 		fmt.Printf("Max validator limit reached")
 		return nil
 	}
-	if canNodeDepositResponse.OperatorNotRegistered {
+	if canRegisterValidatorsResponse.OperatorNotRegistered {
 		fmt.Printf("Operator not registered")
 		return nil
 	}
-	if canNodeDepositResponse.OperatorNotActive {
+	if canRegisterValidatorsResponse.OperatorNotActive {
 		fmt.Printf("Operator not active")
 		return nil
 	}
-	if canNodeDepositResponse.InputKeyLimitReached {
-		fmt.Printf("You cannot add more than %d keys at a time", canNodeDepositResponse.InputKeyLimit)
+	if canRegisterValidatorsResponse.InputKeyLimitReached {
+		fmt.Printf("You cannot add more than %d keys at a time", canRegisterValidatorsResponse.InputKeyLimit)
 		return nil
 	}
 
 	//Assign max fees
-	err = gas.AssignMaxFeeAndLimit(canNodeDepositResponse.GasInfo, staderClient, c.Bool("yes"))
+	err = gas.AssignMaxFeeAndLimit(canRegisterValidatorsResponse.GasInfo, staderClient, c.Bool("yes"))
 	if err != nil {
 		return err
 	}
 
 	// Prompt for confirmation
 	if !(c.Bool("yes") || cliutils.Confirm(fmt.Sprintf(
-		"Are you sure you want to deposit?"))) {
+		"Are you sure you want to register the validators with stader?"))) {
 		fmt.Println("Cancelled.")
 		return nil
 	}
 
 	// Make deposit
-	response, err := staderClient.NodeDeposit(validatorPubKeyList, true)
+	response, err := staderClient.RegisterValidators(validatorPubKeyList)
 	if err != nil {
 		return err
 	}
@@ -73,7 +73,7 @@ func nodeDeposit(c *cli.Context, validatorPubKeyList string) error {
 	}
 
 	fmt.Println("Your validators are now in Initialized status.")
-	fmt.Println("Once the ETH deposits have been matched by the remaining 28ETH, it will move to Deposited status.")
+	fmt.Println("Your validators will be matched with a 1Eth deposit by stader which will be followed by the remaining 31Eth deposit")
 	fmt.Println("You can check the status of your validator with `stader-permissioned-cli node status`.")
 
 	return nil

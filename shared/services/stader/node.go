@@ -91,17 +91,17 @@ func (c *Client) RegisterNode(operatorName string, operatorRewardAddress common.
 }
 
 // Check whether the node can make a deposit
-func (c *Client) CanNodeDeposit(validatorList string, submit bool) (api.CanNodeDepositResponse, error) {
-	responseBytes, err := c.callAPI(fmt.Sprintf("node can-deposit %s %t", validatorList, submit))
+func (c *Client) CanRegisterValidators(validatorList string) (api.CanRegisterValidatorsResponse, error) {
+	responseBytes, err := c.callAPI(fmt.Sprintf("validator can-register %s %t", validatorList))
 	if err != nil {
-		return api.CanNodeDepositResponse{}, fmt.Errorf("could not get can node deposit status: %w", err)
+		return api.CanRegisterValidatorsResponse{}, fmt.Errorf("could not get validator can-register status: %w", err)
 	}
-	var response api.CanNodeDepositResponse
+	var response api.CanRegisterValidatorsResponse
 	if err := json.Unmarshal(responseBytes, &response); err != nil {
-		return api.CanNodeDepositResponse{}, fmt.Errorf("could not decode can node deposit response: %w", err)
+		return api.CanRegisterValidatorsResponse{}, fmt.Errorf("could not decode validator can-register response: %w", err)
 	}
 	if response.Error != "" {
-		return api.CanNodeDepositResponse{}, fmt.Errorf("could not get can node deposit status: %s", response.Error)
+		return api.CanRegisterValidatorsResponse{}, fmt.Errorf("could not get validator can-register status: %s", response.Error)
 	}
 	return response, nil
 }
@@ -152,7 +152,7 @@ func (c *Client) GetContractsInfo() (api.ContractsInfoResponse, error) {
 }
 
 func (c *Client) GetValidatorInfo(valPubKey types.ValidatorPubkey) (api.ValidatorInfoResponse, error) {
-	responseBytes, err := c.callAPI(fmt.Sprintf("node get-validator-info %s", valPubKey))
+	responseBytes, err := c.callAPI(fmt.Sprintf("validator get-validator-info %s", valPubKey))
 	if err != nil {
 		return api.ValidatorInfoResponse{}, fmt.Errorf("could not get validator info: %w", err)
 	}
@@ -167,17 +167,17 @@ func (c *Client) GetValidatorInfo(valPubKey types.ValidatorPubkey) (api.Validato
 }
 
 // Make a node deposit
-func (c *Client) NodeDeposit(validatorPubKeyList string, submit bool) (api.NodeDepositResponse, error) {
-	responseBytes, err := c.callAPI(fmt.Sprintf("node deposit %s %t", validatorPubKeyList, submit))
+func (c *Client) RegisterValidators(validatorPubKeyList string) (api.ValidatorRegisterResponse, error) {
+	responseBytes, err := c.callAPI(fmt.Sprintf("validator register %s %t", validatorPubKeyList))
 	if err != nil {
-		return api.NodeDepositResponse{}, fmt.Errorf("could not make node deposit as er: %w", err)
+		return api.ValidatorRegisterResponse{}, fmt.Errorf("could not make validator register as err: %w", err)
 	}
-	var response api.NodeDepositResponse
+	var response api.ValidatorRegisterResponse
 	if err := json.Unmarshal(responseBytes, &response); err != nil {
-		return api.NodeDepositResponse{}, fmt.Errorf("could not decode node deposit response: %w", err)
+		return api.ValidatorRegisterResponse{}, fmt.Errorf("could not decode validator register response: %w", err)
 	}
 	if response.Error != "" {
-		return api.NodeDepositResponse{}, fmt.Errorf("could not make node deposit: %s", response.Error)
+		return api.ValidatorRegisterResponse{}, fmt.Errorf("could not make validator register: %s", response.Error)
 	}
 	return response, nil
 }
@@ -215,32 +215,32 @@ func (c *Client) NodeSend(amountWei *big.Int, token string, toAddress common.Add
 }
 
 func (c *Client) CanClaimClRewards(validatorPubKey types.ValidatorPubkey) (api.CanClaimClRewardsResponse, error) {
-	responseBytes, err := c.callAPI(fmt.Sprintf("node can-claim-cl-rewards %s", validatorPubKey))
+	responseBytes, err := c.callAPI(fmt.Sprintf("validator can-claim-cl-rewards %s", validatorPubKey))
 	if err != nil {
-		return api.CanClaimClRewardsResponse{}, fmt.Errorf("could not get node can-claim-cl-rewards response: %w", err)
+		return api.CanClaimClRewardsResponse{}, fmt.Errorf("could not get validator can-claim-cl-rewards response: %w", err)
 	}
 	var response api.CanClaimClRewardsResponse
 	if err := json.Unmarshal(responseBytes, &response); err != nil {
-		return api.CanClaimClRewardsResponse{}, fmt.Errorf("could not decode node can-claim-cl-rewards response: %w", err)
+		return api.CanClaimClRewardsResponse{}, fmt.Errorf("could not decode validator can-claim-cl-rewards response: %w", err)
 	}
 	if response.Error != "" {
-		return api.CanClaimClRewardsResponse{}, fmt.Errorf("could not get node can-claim-cl-rewards response: %s", response.Error)
+		return api.CanClaimClRewardsResponse{}, fmt.Errorf("could not get validator can-claim-cl-rewards response: %s", response.Error)
 	}
 
 	return response, nil
 }
 
 func (c *Client) ClaimClRewards(validatorPubKey types.ValidatorPubkey) (api.ClaimClRewardsResponse, error) {
-	responseBytes, err := c.callAPI(fmt.Sprintf("node claim-cl-rewards %s", validatorPubKey))
+	responseBytes, err := c.callAPI(fmt.Sprintf("validator claim-cl-rewards %s", validatorPubKey))
 	if err != nil {
-		return api.ClaimClRewardsResponse{}, fmt.Errorf("could not get node claim-cl-rewards response: %w", err)
+		return api.ClaimClRewardsResponse{}, fmt.Errorf("could not get validator claim-cl-rewards response: %w", err)
 	}
 	var response api.ClaimClRewardsResponse
 	if err := json.Unmarshal(responseBytes, &response); err != nil {
-		return api.ClaimClRewardsResponse{}, fmt.Errorf("could not decode node claim-cl-rewards response: %w", err)
+		return api.ClaimClRewardsResponse{}, fmt.Errorf("could not decode validator claim-cl-rewards response: %w", err)
 	}
 	if response.Error != "" {
-		return api.ClaimClRewardsResponse{}, fmt.Errorf("could not get node claim-cl-rewards response: %s", response.Error)
+		return api.ClaimClRewardsResponse{}, fmt.Errorf("could not get validator claim-cl-rewards response: %s", response.Error)
 	}
 
 	return response, nil
@@ -406,7 +406,7 @@ func (c *Client) UpdateOperatorRewardAddress(operatorRewardAddress common.Addres
 }
 
 func (c *Client) CanExitValidator(validatorPubKey types.ValidatorPubkey) (api.CanExitValidatorResponse, error) {
-	responseBytes, err := c.callAPI(fmt.Sprintf("node can-exit-validator %s", validatorPubKey))
+	responseBytes, err := c.callAPI(fmt.Sprintf("validator can-exit-validator %s", validatorPubKey))
 	if err != nil {
 		return api.CanExitValidatorResponse{}, fmt.Errorf("could not get can-exit-validator status: %w", err)
 	}
@@ -421,7 +421,7 @@ func (c *Client) CanExitValidator(validatorPubKey types.ValidatorPubkey) (api.Ca
 }
 
 func (c *Client) ExitValidator(validatorPubKey types.ValidatorPubkey) (api.ExitValidatorResponse, error) {
-	responseBytes, err := c.callAPI(fmt.Sprintf("node exit-validator %s", validatorPubKey))
+	responseBytes, err := c.callAPI(fmt.Sprintf("validator exit-validator %s", validatorPubKey))
 	if err != nil {
 		return api.ExitValidatorResponse{}, fmt.Errorf("could not get exit-validator status: %w", err)
 	}

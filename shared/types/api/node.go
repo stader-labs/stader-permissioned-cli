@@ -86,7 +86,7 @@ type NodeDepositSdAllowanceResponse struct {
 	Allowance *big.Int `json:"allowance"`
 }
 
-type CanNodeDepositResponse struct {
+type CanRegisterValidatorsResponse struct {
 	Status                   string         `json:"status"`
 	Error                    string         `json:"error"`
 	CanDeposit               bool           `json:"CanDeposit"`
@@ -101,7 +101,7 @@ type CanNodeDepositResponse struct {
 	GasInfo                  stader.GasInfo `json:"gasInfo"`
 }
 
-type NodeDepositResponse struct {
+type ValidatorRegisterResponse struct {
 	Status string      `json:"status"`
 	Error  string      `json:"error"`
 	TxHash common.Hash `json:"txHash"`
