@@ -115,6 +115,12 @@ func getStatus(c *cli.Context) (*api.NodeStatusResponse, error) {
 
 	response.AccountAddress = nodeAccount.Address
 
+	isWhitelisted, err := node.IsOperatorWhitelisted(pnr, nodeAccount.Address, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	response.OperatorWhitelisted = isWhitelisted
 	accountEthBalance, err := tokens.GetEthBalance(pnr.Client, nodeAccount.Address, nil)
 	if err != nil {
 		return nil, err

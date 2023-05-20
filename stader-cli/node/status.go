@@ -87,8 +87,13 @@ func getStatus(c *cli.Context) error {
 	fmt.Printf("%s=== Operator Registration Details ===%s\n", log.ColorGreen, log.ColorReset)
 
 	if !status.Registered {
-		fmt.Printf("The node is not registered with Stader. Please use the %sstader-permissioned-cli node register%s to register with Stader", log.ColorGreen, log.ColorReset)
-		return nil
+		if !status.OperatorWhitelisted {
+			fmt.Printf("The operator is not whitelisted with Stader. Please connect with the Stader Team to be considered to be part of the permissioned operator pool")
+			return nil
+		} else {
+			fmt.Printf("The operator is not registered with Stader. Please use the %sstader-permissioned-cli node register%s to register with Stader", log.ColorGreen, log.ColorReset)
+			return nil
+		}
 	}
 
 	fmt.Printf("The Operator is registered with Stader. Below are operator details:\n")

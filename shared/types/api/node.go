@@ -39,6 +39,7 @@ type NodeStatusResponse struct {
 	Web3SignerConnectionError         string                             `json:"web3SignerConnectionError"`
 	BeaconChainUrl                    string                             `json:"beaconChainUrl"`
 	ExecutionChainUrl                 string                             `json:"executionChainUrl"`
+	OperatorWhitelisted               bool                               `json:"operatorWhitelisted"`
 }
 
 type CanRegisterNodeResponse struct {

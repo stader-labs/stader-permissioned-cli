@@ -111,7 +111,7 @@ func installService(c *cli.Context) error {
 	if isNew {
 		// Report next steps
 		fmt.Printf("%s\n=== Next Steps ===\n", colorLightBlue)
-		fmt.Printf("Open %s.user-settings.yml and add the URLs for the beacon chain node, execution chain node and your web3signer setup. %s\n", cfg.StaderDirectory, colorReset)
+		fmt.Printf("Open %s/user-settings.yml and add the URLs for the beacon chain node, execution chain node and your web3signer setup. %s\n", cfg.StaderDirectory, colorReset)
 
 		fmt.Printf("\n%sNOTE:\nSince this is your first time installing Stader, please start a new shell session by logging out and back in or restarting the machine.\n", colorYellow)
 		fmt.Printf("This is necessary for your user account to have permissions to use Docker.%s", colorReset)
