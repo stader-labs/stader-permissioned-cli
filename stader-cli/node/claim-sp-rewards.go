@@ -20,15 +20,9 @@ func ClaimSpRewards(c *cli.Context) error {
 	}
 	defer staderClient.Close()
 
-	fmt.Println("Downloading the merkle proofs for the cycles you may have not downloaded yet...")
-	downloadRes, err := staderClient.DownloadSpMerkleProofs()
+	_, err = staderClient.DownloadSpMerkleProofs()
 	if err != nil {
 		return err
-	}
-	if len(downloadRes.DownloadedCycles) != 0 {
-		fmt.Printf("Merkle proofs downloaded for cycles %v!\n", downloadRes.DownloadedCycles)
-	} else {
-		fmt.Println("No new merkle proofs downloaded!")
 	}
 
 	// prompt user to select the cycles to claim from
@@ -45,7 +39,6 @@ func ClaimSpRewards(c *cli.Context) error {
 		return nil
 	}
 
-	fmt.Printf("Getting the detailed cycles info...\n")
 	detailedCyclesInfo, err := staderClient.GetDetailedCyclesInfo(canClaimSpRewards.UnclaimedCycles)
 	if err != nil {
 		return err
@@ -62,7 +55,7 @@ func ClaimSpRewards(c *cli.Context) error {
 		cycleIndexes = append(cycleIndexes, big.NewInt(cycleInfo.MerkleProofInfo.Cycle))
 	}
 
-	fmt.Println("Following are the unclaimed cycles, Please enter in a comma seperated string the cycles you want to claim rewards for:\n")
+	fmt.Println("Following are the unclaimed cycles: \n")
 
 	fmt.Printf("%-18s%-14.30s%-14.10s%-10s\n", "Cycle Number", "Cycle Date", "ETH Rewards", "SD Rewards")
 	cyclesToClaim := map[int64]bool{}
@@ -85,8 +78,9 @@ func ClaimSpRewards(c *cli.Context) error {
 
 			fmt.Printf("%-18d%-14.30s%-14.4f%-.4f\n", cycleInfo.MerkleProofInfo.Cycle, cycleInfo.CycleTime.Format("2006-01-02"), ethRewardsConverted, sdRewardsConverted)
 		}
+		fmt.Printf("\n\n")
 
-		cycleSelection := cliutils.Prompt("Select the cycles for which you wish to claim the rewards. Enter the cycles numbers in a comma separate format without any space (e.g. 1,2,3,4) or leave it blank to claim all cycles at once.", "^$|^\\d+(,\\d+)*$", "Unexpected input. Please enter a comma separated list of cycle numbers or leave it blank to claim all cycles at once.")
+		cycleSelection := cliutils.Prompt("Enter the cycles numbers in a comma separate format without any space (e.g. 1,2,3,4) or leave it blank to claim all cycles at once.", "^$|^\\d+(,\\d+)*$", "Unexpected input. Please enter a comma separated list of cycle numbers or leave it blank to claim all cycles at once.")
 		if cycleSelection == "" {
 			for _, cycle := range cycleIndexes {
 				cyclesToClaim[cycle.Int64()] = true
