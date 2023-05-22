@@ -21,7 +21,7 @@ import (
 )
 
 // Config
-var preSignedCooldown, _ = time.ParseDuration("2m")
+var preSignedCooldown, _ = time.ParseDuration("1m")
 var preSignedBatchCooldown, _ = time.ParseDuration("5s")
 var merkleProofsDownloaderInterval, _ = time.ParseDuration("70m")
 
@@ -85,6 +85,17 @@ func run(c *cli.Context) error {
 			pnr, err := services.GetPermissionedNodeRegistry(c)
 			if err != nil {
 				errorLog.Printf("Could not get permissioned node registry: %s\n", err)
+				continue
+			}
+
+			w, err = services.GetWallet(c)
+			if err != nil {
+				errorLog.Printf("Could not get wallet: %s\n", err)
+				continue
+			}
+			nodeAccount, err = w.GetNodeAccount()
+			if err != nil {
+				errorLog.Printf("Could not get node account: %s\n", err)
 				continue
 			}
 
