@@ -21,7 +21,7 @@ import (
 )
 
 // Config
-var preSignedCooldown, _ = time.ParseDuration("30m")
+var preSignedCooldown, _ = time.ParseDuration("2m")
 var preSignedBatchCooldown, _ = time.ParseDuration("5s")
 var merkleProofsDownloaderInterval, _ = time.ParseDuration("70m")
 
