@@ -89,6 +89,15 @@ func canRegisterValidators(c *cli.Context, validatorList string) (*api.CanRegist
 		if validatorId.Cmp(big.NewInt(0)) != 0 {
 			return nil, fmt.Errorf("validatorPubkey %s is already registered with the permissioned node registry", val)
 		}
+
+		// add check for whether validator is present in beacon chain or not
+		validatorStatus, err := bc.GetValidatorStatus(valPubKey, nil)
+		if err != nil {
+			return nil, err
+		}
+		if validatorStatus.Exists {
+			return nil, fmt.Errorf("validator %s is already registered with the beacon chain", val)
+		}
 	}
 
 	// Get eth2 config
