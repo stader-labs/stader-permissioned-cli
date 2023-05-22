@@ -1,0 +1,87 @@
+package node
+
+import (
+	"fmt"
+	"github.com/ethereum/go-ethereum/accounts/abi/bind"
+	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/core/types"
+	"github.com/stader-labs/stader-node/stader-lib/stader"
+	types2 "github.com/stader-labs/stader-node/stader-lib/types"
+	"math/big"
+)
+
+func EstimateOnboardNodeOperator(pnr *stader.PermissionedNodeRegistryContractManager, operatorName string, operatorRewarderAddress common.Address, opts *bind.TransactOpts) (stader.GasInfo, error) {
+	return pnr.PermissionedNodeRegistryContract.GetTransactionGasInfo(opts, "onboardNodeOperator", operatorName, operatorRewarderAddress)
+}
+
+func OnboardNodeOperator(pnr *stader.PermissionedNodeRegistryContractManager, operatorName string, operatorRewarderAddress common.Address, opts *bind.TransactOpts) (*types.Transaction, error) {
+	tx, err := pnr.PermissionedNodeRegistry.OnboardNodeOperator(opts, operatorName, operatorRewarderAddress)
+	if err != nil {
+		return nil, fmt.Errorf("Could not onboard node operator: %w", err)
+	}
+
+	return tx, nil
+}
+
+func IsOperatorWhitelisted(pnr *stader.PermissionedNodeRegistryContractManager, operatorAddress common.Address, opts *bind.CallOpts) (bool, error) {
+	return pnr.PermissionedNodeRegistry.PermissionList(opts, operatorAddress)
+}
+
+func EstimateUpdateOperatorDetails(pnr *stader.PermissionedNodeRegistryContractManager, operatorName string, operatorRewarderAddress common.Address, opts *bind.TransactOpts) (stader.GasInfo, error) {
+	return pnr.PermissionedNodeRegistryContract.GetTransactionGasInfo(opts, "updateOperatorDetails", operatorName, operatorRewarderAddress)
+}
+
+func UpdateOperatorDetails(pnr *stader.PermissionedNodeRegistryContractManager, operatorName string, operatorRewarderAddress common.Address, opts *bind.TransactOpts) (*types.Transaction, error) {
+	tx, err := pnr.PermissionedNodeRegistry.UpdateOperatorDetails(opts, operatorName, operatorRewarderAddress)
+	if err != nil {
+		return nil, err
+	}
+
+	return tx, nil
+}
+
+func EstimateWithdrawFromNodeElVault(client stader.ExecutionClient, nevAddress common.Address, opts *bind.TransactOpts) (stader.GasInfo, error) {
+	nev, err := stader.NewNodeElRewardVaultFactory(client, nevAddress)
+	if err != nil {
+		return stader.GasInfo{}, err
+	}
+	return nev.NodeElRewardVaultContract.GetTransactionGasInfo(opts, "withdraw")
+}
+
+func WithdrawFromNodeElVault(client stader.ExecutionClient, nevAddress common.Address, opts *bind.TransactOpts) (*types.Transaction, error) {
+	nev, err := stader.NewNodeElRewardVaultFactory(client, nevAddress)
+	if err != nil {
+		return nil, err
+	}
+	return nev.NodeElRewardVault.Withdraw(opts)
+}
+
+func GetOperatorId(pnr *stader.PermissionedNodeRegistryContractManager, nodeAddress common.Address, opts *bind.CallOpts) (*big.Int, error) {
+	operatorId, err := pnr.PermissionedNodeRegistry.OperatorIDByAddress(opts, nodeAddress)
+	if err != nil {
+		return nil, err
+	}
+
+	return operatorId, nil
+}
+
+func GetOperatorInfo(pnr *stader.PermissionedNodeRegistryContractManager, operatorId *big.Int, opts *bind.CallOpts) (types2.OperatorInfo, error) {
+	operatorInfo, err := pnr.PermissionedNodeRegistry.OperatorStructById(opts, operatorId)
+	if err != nil {
+		return types2.OperatorInfo{}, err
+	}
+
+	return operatorInfo, nil
+}
+
+func GetNodeElRewardAddress(vf *stader.VaultFactoryContractManager, poolId uint8, operatorId *big.Int, opts *bind.CallOpts) (common.Address, error) {
+	return vf.VaultFactory.ComputeNodeELRewardVaultAddress(opts, poolId, operatorId)
+}
+
+func GetSocializingPoolContract(pp *stader.PermissionlessPoolContractManager, opts *bind.CallOpts) (common.Address, error) {
+	return pp.PermissionlessPool.GetSocializingPoolAddress(opts)
+}
+
+func GetNextOperatorId(pnr *stader.PermissionedNodeRegistryContractManager, opts *bind.CallOpts) (*big.Int, error) {
+	return pnr.PermissionedNodeRegistry.NextOperatorId(opts)
+}
