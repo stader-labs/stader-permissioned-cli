@@ -129,7 +129,7 @@ func getStatus(c *cli.Context) error {
 		fmt.Printf("-Validator Withdraw Vault: %s\n\n", validatorInfo.WithdrawVaultAddress)
 		if validatorInfo.WithdrawVaultRewardBalance.Int64() > 0 && !validatorInfo.CrossedRewardsThreshold {
 			fmt.Printf("-Consensus Layer Rewards: %.6f\n", math.RoundDown(eth.WeiToEth(validatorInfo.WithdrawVaultRewardBalance), 18))
-			fmt.Printf("To claim consensus layer rewards use the %sstader-permissioned-cli node claim-cl-rewards %s command\n\n", log.ColorGreen, log.ColorReset)
+			fmt.Printf("To claim consensus layer rewards use the %sstader-permissioned-cli validator claim-cl-rewards %s command\n\n", log.ColorGreen, log.ColorReset)
 		} else if validatorInfo.CrossedRewardsThreshold {
 			fmt.Printf("Please wait for Stader Oracles to finalize your exit!\n")
 		}
