@@ -40,7 +40,7 @@ fail() {
 # Builds all of the CLI binaries
 build_cli() {
     echo -n "Building CLI binaries... "
-    docker run --rm -v $PWD:/stader-node staderlabs/stader-permissioned-builder:latest /stader-node/stader-cli/build.sh || fail "Error building CLI binaries."
+    docker run --rm -v $PWD:/stader-node staderdev/stader-node-builder:latest /stader-node/stader-cli/build.sh || fail "Error building CLI binaries."
     mv stader-cli/stader-permissioned-cli-* build/$VERSION
     echo "done!"
 }
