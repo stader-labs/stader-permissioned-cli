@@ -37,7 +37,7 @@ import (
 
 // Constants
 const (
-	stadernodeTag                      = "staderdev/stader-node:v" + shared.StaderVersion
+	stadernodeTag                      = "staderlabs/stader-permissioned:v" + shared.StaderVersion
 	NetworkID                   string = "network"
 	ProjectNameID               string = "projectName"
 	DaemonDataPath              string = "/.stader/data"
