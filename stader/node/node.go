@@ -54,6 +54,14 @@ func run(c *cli.Context) error {
 	if err != nil {
 		return err
 	}
+	w, err := services.GetWallet(c)
+	if err != nil {
+		return err
+	}
+	nodeAccount, err := w.GetNodeAccount()
+	if err != nil {
+		return err
+	}
 
 	// Configure
 	configureHTTP()
@@ -77,17 +85,6 @@ func run(c *cli.Context) error {
 			pnr, err := services.GetPermissionedNodeRegistry(c)
 			if err != nil {
 				errorLog.Printf("Could not get permissioned node registry: %s\n", err)
-				continue
-			}
-
-			w, err := services.GetWallet(c)
-			if err != nil {
-				errorLog.Printf("Could not get wallet: %s\n", err)
-				continue
-			}
-			nodeAccount, err := w.GetNodeAccount()
-			if err != nil {
-				errorLog.Printf("Could not get node account: %s\n", err)
 				continue
 			}
 
