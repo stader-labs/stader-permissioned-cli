@@ -32,10 +32,6 @@ func getContractsInfo(c *cli.Context) (*api.ContractsInfoResponse, error) {
 
 	response.BeaconNetwork = eth2DepositContract.ChainID
 	response.BeaconDepositContract = eth2DepositContract.Address
-	response.SdCollateralContract, err = services.GetSdCollateralAddress(c)
-	if err != nil {
-		return nil, err
-	}
 	response.EthxToken, err = services.GetEthxTokenAddress(c)
 	if err != nil {
 		return nil, err
