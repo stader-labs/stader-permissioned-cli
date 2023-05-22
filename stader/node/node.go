@@ -46,19 +46,19 @@ func RegisterCommands(app *cli.App, name string, aliases []string) {
 
 // Run daemon
 func run(c *cli.Context) error {
-	bc, err := services.GetBeaconClient(c)
-	if err != nil {
-		return err
-	}
-	w3signer, err := services.GetWeb3SignerClient(c)
-	if err != nil {
-		return err
-	}
 	w, err := services.GetWallet(c)
 	if err != nil {
 		return err
 	}
 	nodeAccount, err := w.GetNodeAccount()
+	if err != nil {
+		return err
+	}
+	bc, err := services.GetBeaconClient(c)
+	if err != nil {
+		return err
+	}
+	w3signer, err := services.GetWeb3SignerClient(c)
 	if err != nil {
 		return err
 	}
