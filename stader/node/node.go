@@ -46,19 +46,11 @@ func RegisterCommands(app *cli.App, name string, aliases []string) {
 
 // Run daemon
 func run(c *cli.Context) error {
-	w, err := services.GetWallet(c)
-	if err != nil {
-		return err
-	}
 	bc, err := services.GetBeaconClient(c)
 	if err != nil {
 		return err
 	}
 	w3signer, err := services.GetWeb3SignerClient(c)
-	if err != nil {
-		return err
-	}
-	nodeAccount, err := w.GetNodeAccount()
 	if err != nil {
 		return err
 	}
@@ -88,12 +80,12 @@ func run(c *cli.Context) error {
 				continue
 			}
 
-			w, err = services.GetWallet(c)
+			w, err := services.GetWallet(c)
 			if err != nil {
 				errorLog.Printf("Could not get wallet: %s\n", err)
 				continue
 			}
-			nodeAccount, err = w.GetNodeAccount()
+			nodeAccount, err := w.GetNodeAccount()
 			if err != nil {
 				errorLog.Printf("Could not get node account: %s\n", err)
 				continue
