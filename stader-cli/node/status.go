@@ -109,7 +109,7 @@ func getStatus(c *cli.Context) error {
 	fmt.Printf("The Operator has registered a total of %d validators\n\n", len(status.ValidatorInfos))
 
 	if totalUnclaimedSocializingPoolEth.Cmp(big.NewInt(0)) > 0 {
-		fmt.Printf("The Operator has %.6f ETH as unclaimed socializing pool rewards\n\n", math.RoundDown(eth.WeiToEth(totalUnclaimedSocializingPoolEth), 18))
+		fmt.Printf("The Operator has %.6f ETH as unclaimed socializing pool rewards\n", math.RoundDown(eth.WeiToEth(totalUnclaimedSocializingPoolEth), 18))
 		fmt.Printf("To claim socializing pool rewards use the %sstader-permissioned-cli node claim-sp-rewards%s command\n\n", log.ColorGreen, log.ColorReset)
 	}
 
