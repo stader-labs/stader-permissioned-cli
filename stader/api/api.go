@@ -37,7 +37,7 @@ import (
 // Waits for an auction transaction
 func waitForTransaction(c *cli.Context, hash common.Hash) (*apitypes.APIResponse, error) {
 
-	prn, err := services.GetPermissionlessNodeRegistry(c)
+	prn, err := services.GetPermissionedNodeRegistry(c)
 	if err != nil {
 		return nil, err
 	}
