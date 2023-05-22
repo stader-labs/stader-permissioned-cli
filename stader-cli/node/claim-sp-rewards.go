@@ -80,7 +80,7 @@ func ClaimSpRewards(c *cli.Context) error {
 		}
 		fmt.Printf("\n\n")
 
-		cycleSelection := cliutils.Prompt("Enter the cycles numbers in a comma separate format without any space (e.g. 1,2,3,4) or leave it blank to claim all cycles at once.", "^$|^\\d+(,\\d+)*$", "Unexpected input. Please enter a comma separated list of cycle numbers or leave it blank to claim all cycles at once.")
+		cycleSelection := cliutils.Prompt("Enter the cycle numbers for which you wish to claim the rewards in a comma separate format without any space (e.g. 1,2,3,4) or leave it blank to claim the rewards for all the cycles at once.", "^$|^\\d+(,\\d+)*$", "Unexpected input. Please enter a comma separated list of cycle numbers or leave it blank to claim all cycles at once.")
 		if cycleSelection == "" {
 			for _, cycle := range cycleIndexes {
 				cyclesToClaim[cycle.Int64()] = true
