@@ -57,7 +57,7 @@ func ClaimSpRewards(c *cli.Context) error {
 
 	fmt.Println("Following are the unclaimed cycles: \n")
 
-	fmt.Printf("%-18s%-14.30s%-14.10s%-10s\n", "Cycle Number", "Cycle Date", "ETH Rewards", "SD Rewards")
+	fmt.Printf("%-18s%-14.30s%-14.10s\n", "Cycle Number", "Cycle Date", "ETH Rewards")
 	cyclesToClaim := map[int64]bool{}
 	for {
 		for _, cycleInfo := range detailedCyclesInfo.DetailedCyclesInfo {
@@ -76,7 +76,7 @@ func ClaimSpRewards(c *cli.Context) error {
 				continue
 			}
 
-			fmt.Printf("%-18d%-14.30s%-14.4f%-.4f\n", cycleInfo.MerkleProofInfo.Cycle, cycleInfo.CycleTime.Format("2006-01-02"), ethRewardsConverted, sdRewardsConverted)
+			fmt.Printf("%-18d%-14.30s%-14.4f\n", cycleInfo.MerkleProofInfo.Cycle, cycleInfo.CycleTime.Format("2006-01-02"), ethRewardsConverted)
 		}
 		fmt.Printf("\n\n")
 
