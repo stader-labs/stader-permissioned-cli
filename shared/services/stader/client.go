@@ -55,11 +55,8 @@ import (
 const (
 	InstallerURL string = "https://stader-cli-beta.s3.amazonaws.com/%s/install.sh"
 
-	LegacyBackupFolder       string = "old_config_backup"
 	SettingsFile             string = "user-settings.yml"
 	BackupSettingsFile       string = "user-settings-backup.yml"
-	LegacyConfigFile         string = "config.yml"
-	LegacySettingsFile       string = "settings.yml"
 	PrometheusConfigTemplate string = "prometheus.tmpl"
 	PrometheusFile           string = "prometheus.yml"
 
