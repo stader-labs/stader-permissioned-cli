@@ -201,7 +201,7 @@ func NewStadernodeConfig(cfg *StaderConfig) *StaderNodeConfig {
 
 		staderConfigAddress: map[config.Network]string{
 			config.Network_Prater:   "0x8eF9036E524ce6340eF71844C29508C26Fbbe478",
-			config.Network_Devnet:   "0x8eF9036E524ce6340eF71844C29508C26Fbbe478",
+			config.Network_Devnet:   "0x198C5bC65acce5a35Ae7A8B7AEf4f92FA94C1c6E",
 			config.Network_Mainnet:  "0x8eF9036E524ce6340eF71844C29508C26Fbbe478",
 			config.Network_Zhejiang: "0x90Da3CA75532A17ca38440a32595F036ecE46E85",
 		},
