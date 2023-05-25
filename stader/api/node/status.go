@@ -1,6 +1,7 @@
 package node
 
 import (
+	"fmt"
 	stader_backend "github.com/stader-labs/stader-node/shared/types/stader-backend"
 	"github.com/stader-labs/stader-node/shared/utils/eth1"
 	pool_utils "github.com/stader-labs/stader-node/stader-lib/pool-utils"
@@ -104,6 +105,8 @@ func getStatus(c *cli.Context) (*api.NodeStatusResponse, error) {
 	if err != nil {
 		return nil, err
 	}
+
+	fmt.Printf("allow any Ca is %t\n", cfg.ExternalWeb3Signer.AllowAnyCa.Value.(bool))
 
 	// Response
 	response := api.NodeStatusResponse{}
