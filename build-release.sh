@@ -27,7 +27,7 @@
 # === Functions ===
 # =================
 
-DOCKER_ACCOUNT=staderdev
+DOCKER_ACCOUNT=staderlabs
 
 # Print a failure message to stderr and exit
 fail() {
