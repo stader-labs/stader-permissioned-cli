@@ -28,6 +28,8 @@ type ExternalWeb3SignerConfig struct {
 	Title string `yaml:"-"`
 
 	HttpUrl config.Parameter `yaml:"httpUrl,omitempty"`
+
+	AllowAnyCa config.Parameter `yaml:"allowAnyCa,omitempty"`
 }
 
 func (cfg *ExternalWeb3SignerConfig) GetConfigTitle() string {
@@ -99,12 +101,25 @@ func NewExternalWeb3Signer(cfg *StaderConfig) *ExternalWeb3SignerConfig {
 			CanBeBlank:           false,
 			OverwriteOnUpgrade:   false,
 		},
+
+		AllowAnyCa: config.Parameter{
+			ID:                   "allowAnyCa",
+			Name:                 "Allow Any CA",
+			Description:          "Configure whether you want to trust the CA of the web3signer. If the web3signer you are connected to uses a self-signed certificate, you will need to set this to true.",
+			Type:                 config.ParameterType_Bool,
+			Default:              map[config.Network]interface{}{config.Network_All: false},
+			AffectsContainers:    []config.ContainerID{config.ContainerID_Api},
+			EnvironmentVariables: []string{"W3_SIGNER_TRUST_CA"},
+			CanBeBlank:           false,
+			OverwriteOnUpgrade:   false,
+		},
 	}
 }
 
 func (cfg *ExternalWeb3SignerConfig) GetParameters() []*config.Parameter {
 	return []*config.Parameter{
 		&cfg.HttpUrl,
+		&cfg.AllowAnyCa,
 	}
 }
 
