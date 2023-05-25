@@ -107,7 +107,7 @@ func NewExternalWeb3Signer(cfg *StaderConfig) *ExternalWeb3SignerConfig {
 			Name:                 "Allow Any CA",
 			Description:          "Configure whether you want to trust the CA of the web3signer. If the web3signer you are connected to uses a self-signed certificate, you will need to set this to true.",
 			Type:                 config.ParameterType_Bool,
-			Default:              map[config.Network]interface{}{config.Network_All: false},
+			Default:              map[config.Network]interface{}{config.Network_All: true},
 			AffectsContainers:    []config.ContainerID{config.ContainerID_Api},
 			EnvironmentVariables: []string{"W3_SIGNER_TRUST_CA"},
 			CanBeBlank:           false,

@@ -320,9 +320,9 @@ func (cfg *StaderConfig) UpdateDefaults() error {
 		if err != nil {
 			return fmt.Errorf("error getting defaults for root param [%s] on network [%v]: %w", param.ID, currentNetwork, err)
 		}
-		//if param.OverwriteOnUpgrade {
-		param.Value = defaultValue
-		//}
+		if param.OverwriteOnUpgrade {
+			param.Value = defaultValue
+		}
 	}
 
 	// Update the subconfigs
@@ -332,9 +332,9 @@ func (cfg *StaderConfig) UpdateDefaults() error {
 			if err != nil {
 				return fmt.Errorf("error getting defaults for %s param [%s] on network [%v]: %w", subconfigName, param.ID, currentNetwork, err)
 			}
-			//if param.OverwriteOnUpgrade {
-			param.Value = defaultValue
-			//}
+			if param.OverwriteOnUpgrade {
+				param.Value = defaultValue
+			}
 		}
 	}
 
