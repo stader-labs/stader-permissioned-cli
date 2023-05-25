@@ -2,6 +2,7 @@ package web3signer_client
 
 import (
 	"bytes"
+	"crypto/tls"
 	"encoding/json"
 	"fmt"
 	"github.com/ethereum/go-ethereum/common"
@@ -26,12 +27,25 @@ const (
 // Beacon client using the standard Beacon HTTP REST API (https://ethereum.github.io/beacon-APIs/)
 type StandardHttpClient struct {
 	providerAddress string
+	httpClient      *http.Client
 }
 
 // Create a new client instance
-func NewStandardHttpClient(providerAddress string) *StandardHttpClient {
+func NewStandardHttpClient(providerAddress string, skipTlsVerification bool) *StandardHttpClient {
+	tlsConfig := &tls.Config{
+		InsecureSkipVerify: skipTlsVerification,
+	}
+
+	tr := &http.Transport{
+		TLSClientConfig: tlsConfig,
+	}
+	httpClient := &http.Client{
+		Transport: tr,
+	}
+
 	return &StandardHttpClient{
 		providerAddress: providerAddress,
+		httpClient:      httpClient,
 	}
 }
 
@@ -150,9 +164,8 @@ func (c *StandardHttpClient) HealthCheck() error {
 
 // Make a GET request to the beacon node
 func (c *StandardHttpClient) getRequest(requestPath string) ([]byte, int, error) {
-
 	// Send request
-	response, err := http.Get(fmt.Sprintf(RequestUrlFormat, c.providerAddress, requestPath))
+	response, err := c.httpClient.Get(fmt.Sprintf(RequestUrlFormat, c.providerAddress, requestPath))
 	if err != nil {
 		return []byte{}, 0, err
 	}
@@ -182,7 +195,7 @@ func (c *StandardHttpClient) postRequest(requestPath string, requestBody interfa
 	requestBodyReader := bytes.NewReader(requestBodyBytes)
 
 	// Send request
-	response, err := http.Post(fmt.Sprintf(RequestUrlFormat, c.providerAddress, requestPath), RequestContentType, requestBodyReader)
+	response, err := c.httpClient.Post(fmt.Sprintf(RequestUrlFormat, c.providerAddress, requestPath), RequestContentType, requestBodyReader)
 	if err != nil {
 		return []byte{}, 0, err
 	}
