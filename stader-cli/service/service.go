@@ -279,7 +279,7 @@ func startService(c *cli.Context, ignoreConfigSuggestion bool) error {
 	}
 
 	// Remove the upgrade flag if it's there
-	return staderClient.RemoveUpgradeFlagFile()
+	return nil
 
 }
 
