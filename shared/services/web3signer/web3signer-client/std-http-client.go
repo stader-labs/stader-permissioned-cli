@@ -32,6 +32,7 @@ type StandardHttpClient struct {
 
 // Create a new client instance
 func NewStandardHttpClient(providerAddress string, skipTlsVerification bool) *StandardHttpClient {
+	fmt.Printf("skipTlsVerification: %s\n", strconv.FormatBool(skipTlsVerification))
 	tlsConfig := &tls.Config{
 		InsecureSkipVerify: skipTlsVerification,
 	}
