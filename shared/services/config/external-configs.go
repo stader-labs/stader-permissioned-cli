@@ -29,7 +29,7 @@ type ExternalWeb3SignerConfig struct {
 
 	HttpUrl config.Parameter `yaml:"httpUrl,omitempty"`
 
-	TrustCa config.Parameter `yaml:"trustCa,omitempty"`
+	AllowAnyCa config.Parameter `yaml:"allowAnyCa,omitempty"`
 }
 
 func (cfg *ExternalWeb3SignerConfig) GetConfigTitle() string {
@@ -102,12 +102,12 @@ func NewExternalWeb3Signer(cfg *StaderConfig) *ExternalWeb3SignerConfig {
 			OverwriteOnUpgrade:   false,
 		},
 
-		TrustCa: config.Parameter{
-			ID:                   "trustCa",
-			Name:                 "Trust CA",
-			Description:          "Configure whether you want to trust the CA of the web3signer. If the web3signer you are connected to uses a self-signed certificate, you will need to set this to false.",
+		AllowAnyCa: config.Parameter{
+			ID:                   "AllowAnyCa",
+			Name:                 "Allow Any CA",
+			Description:          "Configure whether you want to trust the CA of the web3signer. If the web3signer you are connected to uses a self-signed certificate, you will need to set this to true.",
 			Type:                 config.ParameterType_Bool,
-			Default:              map[config.Network]interface{}{config.Network_All: true},
+			Default:              map[config.Network]interface{}{config.Network_All: false},
 			AffectsContainers:    []config.ContainerID{config.ContainerID_Api},
 			EnvironmentVariables: []string{"W3_SIGNER_TRUST_CA"},
 			CanBeBlank:           false,
@@ -119,7 +119,7 @@ func NewExternalWeb3Signer(cfg *StaderConfig) *ExternalWeb3SignerConfig {
 func (cfg *ExternalWeb3SignerConfig) GetParameters() []*config.Parameter {
 	return []*config.Parameter{
 		&cfg.HttpUrl,
-		&cfg.TrustCa,
+		&cfg.AllowAnyCa,
 	}
 }
 

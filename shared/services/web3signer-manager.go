@@ -16,9 +16,9 @@ type Web3SignerManager struct {
 
 func NewWeb3SignerManager(cfg *config.StaderConfig) (*Web3SignerManager, error) {
 	endPoint := cfg.ExternalWeb3Signer.HttpUrl.Value.(string)
-	trustCa := cfg.ExternalWeb3Signer.TrustCa.Value.(bool)
+	allowAnyCa := cfg.ExternalWeb3Signer.AllowAnyCa.Value.(bool)
 
-	client := web3signer_client.NewStandardHttpClient(endPoint, trustCa)
+	client := web3signer_client.NewStandardHttpClient(endPoint, allowAnyCa)
 	return &Web3SignerManager{
 		Web3SignerEndpoint: endPoint,
 		Web3signerClient:   client,
