@@ -278,7 +278,6 @@ func startService(c *cli.Context, ignoreConfigSuggestion bool) error {
 		return err
 	}
 
-	// Remove the upgrade flag if it's there
 	return nil
 
 }
