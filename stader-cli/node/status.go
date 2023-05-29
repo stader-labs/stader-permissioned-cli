@@ -36,8 +36,6 @@ func getStatus(c *cli.Context) error {
 		return err
 	}
 
-	totalRegisteredValidators := status.TotalNonTerminalValidators
-
 	totalUnclaimedSocializingPoolEth := big.NewInt(0)
 	totalUnclaimedSocializingPoolSd := big.NewInt(0)
 	for _, merkle := range status.UnclaimedSocializingPoolMerkles {
@@ -114,10 +112,7 @@ func getStatus(c *cli.Context) error {
 
 	fmt.Printf("%s=== Registered Validator Details ===%s\n", log.ColorGreen, log.ColorReset)
 
-	if totalRegisteredValidators.Int64() <= 0 {
-		fmt.Printf("The node has no registered validators. Please use the %sstader-permissioned-cli validator register%s command to register a validator with Stader\n\n", log.ColorGreen, log.ColorReset)
-		return nil
-	}
+	fmt.Printf("To view details of each validator, please use the %sstader-cli validator status%s command\n\n", log.ColorGreen, log.ColorReset)
 
 	return nil
 }
