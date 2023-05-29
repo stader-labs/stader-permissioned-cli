@@ -5,6 +5,7 @@ import (
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core/types"
+	"github.com/stader-labs/stader-node/stader-lib/contracts"
 	"github.com/stader-labs/stader-node/stader-lib/stader"
 	types2 "github.com/stader-labs/stader-node/stader-lib/types"
 	"math/big"
@@ -84,15 +85,6 @@ func CalculateValidatorWithdrawVaultWithdrawShare(executionClient stader.Executi
 	return vwv.ValidatorWithdrawVault.CalculateValidatorWithdrawalShare(opts)
 }
 
-func GetValidatorWithdrawVaultSettleStatus(executionClient stader.ExecutionClient, validatorWithdrawVaultAddress common.Address, opts *bind.CallOpts) (bool, error) {
-	vwv, err := stader.NewValidatorWithdrawVaultFactory(executionClient, validatorWithdrawVaultAddress)
-	if err != nil {
-		return false, err
-	}
-
-	return vwv.ValidatorWithdrawVault.VaultSettleStatus(opts)
-}
-
 func GetValidatorIdByPubKey(pnr *stader.PermissionedNodeRegistryContractManager, validatorPubKey []byte, opts *bind.CallOpts) (*big.Int, error) {
 	return pnr.PermissionedNodeRegistry.ValidatorIdByPubkey(opts, validatorPubKey)
 }
@@ -103,4 +95,29 @@ func GetNextValidatorId(pnr *stader.PermissionedNodeRegistryContractManager, opt
 
 func GetInputKeyCountLimit(pnr *stader.PermissionedNodeRegistryContractManager, opts *bind.CallOpts) (uint16, error) {
 	return pnr.PermissionedNodeRegistry.InputKeyCountLimit(opts)
+}
+
+func GetValidatorInfosByOperator(pnr *stader.PermissionedNodeRegistryContractManager, operatorAddress common.Address, pageNumber *big.Int, pageSize *big.Int, opts *bind.CallOpts) ([]contracts.Validator, error) {
+	return pnr.PermissionedNodeRegistry.GetValidatorsByOperator(opts, operatorAddress, pageNumber, pageSize)
+}
+
+func GetAllValidatorsInfoByOperator(pnr *stader.PermissionedNodeRegistryContractManager, operatorAddress common.Address, opts *bind.CallOpts) ([]contracts.Validator, error) {
+	finalValidators := []contracts.Validator{}
+	pageNumber := big.NewInt(1)
+	pageSize := big.NewInt(100)
+
+	for {
+		validators, err := pnr.PermissionedNodeRegistry.GetValidatorsByOperator(opts, operatorAddress, pageNumber, pageSize)
+		if err != nil {
+			return nil, err
+		}
+		if len(validators) == 0 {
+			break
+		}
+
+		finalValidators = append(finalValidators, validators...)
+		pageNumber.Add(pageNumber, big.NewInt(1))
+	}
+
+	return finalValidators, nil
 }

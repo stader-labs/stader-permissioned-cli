@@ -1,11 +1,14 @@
 package node
 
 import (
+	"fmt"
+	"github.com/stader-labs/stader-node/stader-lib/types"
 	"net/http"
 	"strconv"
 	"sync"
 	"time"
 
+	"github.com/fatih/color"
 	"github.com/stader-labs/stader-node/shared/services"
 	stader_backend "github.com/stader-labs/stader-node/shared/types/stader-backend"
 	"github.com/stader-labs/stader-node/shared/utils/crypto"
@@ -14,9 +17,6 @@ import (
 	"github.com/stader-labs/stader-node/shared/utils/stader"
 	"github.com/stader-labs/stader-node/shared/utils/stdr"
 	"github.com/stader-labs/stader-node/stader-lib/node"
-	"github.com/stader-labs/stader-node/stader-lib/types"
-
-	"github.com/fatih/color"
 	"github.com/urfave/cli"
 )
 
@@ -62,6 +62,10 @@ func run(c *cli.Context) error {
 	if err != nil {
 		return err
 	}
+	pnr, err := services.GetPermissionedNodeRegistry(c)
+	if err != nil {
+		return err
+	}
 
 	// Configure
 	configureHTTP()
@@ -82,40 +86,50 @@ func run(c *cli.Context) error {
 	// validator presigned loop
 	go func() {
 		for {
-			pnr, err := services.GetPermissionedNodeRegistry(c)
+			// Check the EC status
+			err := services.WaitEthClientSynced(c, false) // Force refresh the primary / fallback EC status
 			if err != nil {
-				errorLog.Printf("Could not get permissioned node registry: %s\n", err)
+				errorLog.Println(err)
 				continue
+			} else {
+				// Check the BC status
+				err := services.WaitBeaconClientSynced(c, false) // Force refresh the primary / fallback BC status
+				if err != nil {
+					errorLog.Println(err)
+					continue
+				}
 			}
 
 			publicKey, err := stader.GetPublicKey(c)
 			if err != nil {
-				errorLog.Printf("Could not get public key: %s\n", err)
+				errorLog.Printf("Failed to get public key: %s\n", err.Error())
 				continue
 			}
+
 			operatorId, err := node.GetOperatorId(pnr, nodeAccount.Address, nil)
 			if err != nil {
-				errorLog.Printf("Could not get operator id: %s\n", err)
+				errorLog.Printf("Failed to get operator id: %s\n", err.Error())
 				continue
 			}
 
 			// make a map of all validators actually registered with stader
 			// user might just move the validator keys to the directory. we don't wanna send the presigned msg of them
-
 			infoLog.Println("Building a map of user validators registered with stader")
-			registeredValidators, err := stdr.GetAllValidatorsRegisteredWithOperator(pnr, operatorId, nil)
+			registeredValidators, validatorPubKeys, err := stdr.GetAllValidatorsRegisteredWithOperator(pnr, operatorId, nodeAccount.Address, nil)
 			if err != nil {
-				errorLog.Printf("Could not get all validators registered with operator %s\n", operatorId)
+				errorLog.Printf("Could not get all validators registered with operator %s with error %s\n", operatorId, err.Error())
 				continue
 			}
-			infoLog.Printf("Found %d validators registered with operator %s\n", len(registeredValidators), operatorId.String())
 
+			infoLog.Printlnf("Found %d validators registered with operator %s", len(registeredValidators), operatorId)
 			infoLog.Println("Starting a pass of the presign daemon!")
 
 			currentHead, err := bc.GetBeaconHead()
 			if err != nil {
-				panic("not able to communicate with beacon chain!")
+				errorLog.Printf("Could not get beacon head with error %s\n", err.Error())
+				continue
 			}
+
 			forkInfo, err := bc.GetForkInfo()
 			if err != nil {
 				errorLog.Printf("Could not get fork info from beacon chain: %s\n", err)
@@ -127,92 +141,138 @@ func run(c *cli.Context) error {
 				continue
 			}
 
-			for validatorPubKey, validatorInfo := range registeredValidators {
-				infoLog.Printf("Checking validator Pub key: %s\n", validatorPubKey.String())
+			err = w.Reload()
+			if err != nil {
+				errorLog.Printf("Could not reload wallet: %s\n", err.Error())
+				continue
+			}
 
-				if stdr.IsValidatorTerminal(validatorInfo) {
-					errorLog.Printf("Validator pub key: %s is in terminal state in the stader contracts\n", validatorPubKey)
-					continue
+			preSignRegisteredMap, err := stader.BulkIsPresignedKeyRegistered(c, validatorPubKeys)
+			if err != nil {
+				errorLog.Printf("Could not bulk check presigned keys with error %s\n", err.Error())
+				continue
+			}
+
+			preSignSendMessages := []stader_backend.PreSignSendApiRequestType{}
+
+			pageNumber := 0
+			pageSize := 40
+			for {
+				startIndex := pageNumber * pageSize
+				if startIndex > len(validatorPubKeys) {
+					break
+				}
+				endIndex := (pageNumber + 1) * pageSize
+				if endIndex > len(validatorPubKeys) {
+					endIndex = len(validatorPubKeys)
 				}
 
-				// check if validator has not yet been registered on beacon chain
-				validatorStatus, err := bc.GetValidatorStatus(validatorPubKey, nil)
-				if err != nil {
-					errorLog.Printf("Error finding validator status for validator: %s\n", validatorPubKey)
-					continue
-				}
-				if !validatorStatus.Exists {
-					errorLog.Printf("Validator pub key: %s not found on beacon chain\n", validatorPubKey)
-					continue
+				infoLog.Printf("Starting a batch of %d validators\n", endIndex-startIndex)
+				infoLog.Printf("Starting index: %d, End index: %d\n", startIndex, endIndex)
+
+				validatorKeyBatch := validatorPubKeys[startIndex:endIndex]
+
+				for _, validatorPubKey := range validatorKeyBatch {
+					infoLog.Printf("Checking validator pubkey %s\n", validatorPubKey.String())
+					validatorInfo, ok := registeredValidators[validatorPubKey]
+					if !ok {
+						errorLog.Printf("Validator pub key: %s not found in stader contracts\n", validatorPubKey)
+						continue
+					}
+					if stdr.IsValidatorTerminal(validatorInfo) {
+						errorLog.Printf("Validator pub key: %s is in terminal state in the stader contracts\n", validatorPubKey)
+						continue
+					}
+
+					registeredPresign, ok := preSignRegisteredMap[validatorPubKey.String()]
+					if !ok {
+						errorLog.Printf("Could not query presign api to check if validator: %s is registered\n", validatorPubKey)
+						continue
+					}
+					if registeredPresign {
+						infoLog.Printf("Validator pub key: %s pre signed key already registered\n", validatorPubKey)
+						continue
+					} else {
+						infoLog.Printf("Validator pub key: %s pre signed key not registered. Creating presigned message\n", validatorPubKey)
+					}
+
+					// check if validator has not yet been registered on beacon chain
+					validatorStatus, err := bc.GetValidatorStatus(validatorPubKey, nil)
+					if err != nil {
+						errorLog.Printf("Error finding validator status for validator: %s\n", validatorPubKey)
+						continue
+					}
+					if !validatorStatus.Exists {
+						errorLog.Printf("Validator pub key: %s not found on beacon chain\n", validatorPubKey)
+						continue
+					}
+
+					// check if validator is already in an exiting phase, then no point sending a pre-signed message
+					if eth2.IsValidatorExiting(validatorStatus) {
+						errorLog.Printf("Validator pub key: %s already exiting or exited with status %s", validatorPubKey, validatorStatus.Status)
+						continue
+					}
+
+					exitEpoch := currentHead.Epoch
+
+					// get the presigned msg
+					hexSignature, err := w3signer.GetVoluntaryExitSignature(validatorPubKey.String(), validatorStatus.Index, exitEpoch, forkInfo, eth2Config)
+					if err != nil {
+						errorLog.Printf("Failed to generate the SignedExitMessage for validator with pub key: %s\n", validatorPubKey.String())
+						continue
+					}
+
+					signature, err := types.HexToValidatorSignature(hexSignature[2:])
+					if err != nil {
+						errorLog.Printf("Failed to convert signature to validator signature: %s\n", hexSignature)
+						continue
+					}
+
+					// encrypt the signature and srHash
+					exitSignatureEncrypted, err := crypto.EncryptUsingPublicKey([]byte(signature.String()), publicKey)
+					if err != nil {
+						errorLog.Printf("Failed to encrypt exit signature for validator: %s\n", validatorPubKey)
+						continue
+					}
+					exitSignatureEncryptedString := crypto.EncodeBase64(exitSignatureEncrypted)
+
+					// send it to the presigned api
+					preSignSendMessages = append(preSignSendMessages, stader_backend.PreSignSendApiRequestType{
+						Message: struct {
+							Epoch          string `json:"epoch"`
+							ValidatorIndex string `json:"validator_index"`
+						}{
+							Epoch:          strconv.FormatUint(exitEpoch, 10),
+							ValidatorIndex: strconv.FormatUint(validatorStatus.Index, 10),
+						},
+						Signature:          exitSignatureEncryptedString,
+						ValidatorPublicKey: validatorPubKey.String(),
+					})
 				}
 
-				// check if validator is already in an exiting phase, then no point sending a pre-signed message
-				if eth2.IsValidatorExiting(validatorStatus) {
-					errorLog.Printf("Validator pub key: %s already exiting or exited with status %s", validatorPubKey, validatorStatus.Status)
-					continue
+				//fmt.Printf("Sending %d presigned messages to stader backend\n", len(preSignSendMessages))
+				fmt.Printf("Sending %d presigned messages to stader backend\n", len(preSignSendMessages))
+				fmt.Printf("Pre-sign messages being sent are %v\n", preSignSendMessages)
+				if len(preSignSendMessages) > 0 {
+					res, err := stader.SendBulkPresignedMessageToStaderBackend(c, preSignSendMessages)
+					if err != nil {
+						errorLog.Printf("Sending bulk presigned message failed with %v\n", err)
+						continue
+					}
+					for pubKey, response := range *res {
+						if response.Success {
+							infoLog.Printf("Successfully sent the presigned message for validator: %s\n", pubKey)
+						} else {
+							errorLog.Printf("Failed to send the presigned api: %s\n", response.Message)
+						}
+					}
 				}
 
-				// check if the presigned message has been registered. if it has been registered, then continue
-				isRegistered, err := stader.IsPresignedKeyRegistered(c, validatorPubKey)
-				if isRegistered {
-					errorLog.Printf("Validator pub key: %s pre signed key already registered\n", validatorPubKey)
-					continue
-				} else if err != nil {
-					errorLog.Printf("Could not query presign api to check if validator: %s is registered\n", validatorPubKey)
-					continue
-				}
-
-				exitEpoch := currentHead.Epoch
-
-				hexSignature, err := w3signer.GetVoluntaryExitSignature(validatorPubKey.String(), validatorStatus.Index, exitEpoch, forkInfo, eth2Config)
-				if err != nil {
-					errorLog.Printf("Failed to generate the SignedExitMessage for validator with pub key: %s\n", validatorPubKey.String())
-					continue
-				}
-
-				signature, err := types.HexToValidatorSignature(hexSignature[2:])
-				if err != nil {
-					errorLog.Printf("Failed to convert signature to validator signature: %s\n", hexSignature)
-					continue
-				}
-
-				// encrypt the signature and srHash
-				exitSignatureEncrypted, err := crypto.EncryptUsingPublicKey([]byte(signature.String()), publicKey)
-				if err != nil {
-					errorLog.Printf("Failed to encrypt exit signature for validator: %s\n", validatorPubKey)
-					continue
-				}
-				//fmt.Printf("Encrypted exit signature: %v\n", exitSignatureEncrypted)
-				exitSignatureEncryptedString := crypto.EncodeBase64(exitSignatureEncrypted)
-
-				// send it to the presigned api
-				backendRes, err := stader.SendPresignedMessageToStaderBackend(c, stader_backend.PreSignSendApiRequestType{
-					Message: struct {
-						Epoch          string `json:"epoch"`
-						ValidatorIndex string `json:"validator_index"`
-					}{
-						Epoch:          strconv.FormatUint(exitEpoch, 10),
-						ValidatorIndex: strconv.FormatUint(validatorStatus.Index, 10),
-					},
-					Signature:          exitSignatureEncryptedString,
-					ValidatorPublicKey: validatorPubKey.String(),
-				})
-				if !backendRes.Success {
-					errorLog.Printf("Failed to send the presigned api: %s\n", backendRes.Message)
-					continue
-				} else if backendRes.Success {
-					errorLog.Printf("Successfully sent the presigned message for validator: %s\n", validatorPubKey)
-					continue
-				} else if err != nil {
-					errorLog.Printf("Sending presigned message failed with %v\n", err)
-					continue
-				}
-
-				time.Sleep(preSignedBatchCooldown)
+				pageNumber += 1
 			}
 
 			infoLog.Printf("Done with the pass of presign daemon")
-
+			// run loop every 12 hours
 			time.Sleep(preSignedCooldown)
 		}
 

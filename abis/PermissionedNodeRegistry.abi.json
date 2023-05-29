@@ -21,6 +21,11 @@
   },
   {
     "inputs": [],
+    "name": "DuplicatePoolIDOrPoolNotAdded",
+    "type": "error"
+  },
+  {
+    "inputs": [],
     "name": "InvalidKeyCount",
     "type": "error"
   },
@@ -848,6 +853,77 @@
         "internalType": "uint256",
         "name": "",
         "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_operator",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_pageNumber",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_pageSize",
+        "type": "uint256"
+      }
+    ],
+    "name": "getValidatorsByOperator",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "enum ValidatorStatus",
+            "name": "status",
+            "type": "uint8"
+          },
+          {
+            "internalType": "bytes",
+            "name": "pubkey",
+            "type": "bytes"
+          },
+          {
+            "internalType": "bytes",
+            "name": "preDepositSignature",
+            "type": "bytes"
+          },
+          {
+            "internalType": "bytes",
+            "name": "depositSignature",
+            "type": "bytes"
+          },
+          {
+            "internalType": "address",
+            "name": "withdrawVaultAddress",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "operatorId",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "depositBlock",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "withdrawnBlock",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct Validator[]",
+        "name": "",
+        "type": "tuple[]"
       }
     ],
     "stateMutability": "view",

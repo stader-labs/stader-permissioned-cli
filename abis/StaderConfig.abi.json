@@ -271,6 +271,32 @@
   },
   {
     "inputs": [],
+    "name": "ETHX_SUPPLY_POR_FEED",
+    "outputs": [
+      {
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "ETH_BALANCE_POR_FEED",
+    "outputs": [
+      {
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "ETH_DEPOSIT_CONTRACT",
     "outputs": [
       {
@@ -804,7 +830,33 @@
   },
   {
     "inputs": [],
+    "name": "getETHBalancePORFeedProxy",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "getETHDepositContract",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getETHXSupplyPORFeedProxy",
     "outputs": [
       {
         "internalType": "address",
@@ -1496,6 +1548,32 @@
     "inputs": [
       {
         "internalType": "address",
+        "name": "_ethBalanceProxy",
+        "type": "address"
+      }
+    ],
+    "name": "updateETHBalancePORFeedProxy",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_ethXSupplyProxy",
+        "type": "address"
+      }
+    ],
+    "name": "updateETHXSupplyPORFeedProxy",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
         "name": "_ethX",
         "type": "address"
       }
@@ -1587,7 +1665,7 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "_payments",
+        "name": "_operatorRewardsCollector",
         "type": "address"
       }
     ],

@@ -5,6 +5,7 @@ abigen --abi ./../../abis/StaderVaultFactory.abi.json --pkg contracts --type Vau
 abigen --abi ./../../abis/ValidatorWithdrawVault.abi.json --pkg contracts --type ValidatorWithdrawVault --out validator-withdraw-vault.go;
 abigen --abi ./../../abis/StakePoolManager.abi.json --pkg contracts --type StakePoolManager --out stake-pool-manager.go;
 abigen --abi ./../../abis/StaderConfig.abi.json --pkg contracts --type StaderConfig --out stader-config.go;
+abigen --abi ./../../abis/StaderOracle.abi.json --pkg contracts --type StaderOracle --out stader-oracle.go;
 abigen --abi ./../../abis/SocializingPool.json --pkg contracts --type SocializingPool --out socializing-pool.go;
 abigen --abi ./../../abis/PoolUtils.abi.json --pkg contracts --type PoolUtils --out pool-utils.go;
 abigen --abi ./../../abis/PermissionedPool.abi.json --pkg contracts --type PermissionedPool --out permissioned-pool.go;

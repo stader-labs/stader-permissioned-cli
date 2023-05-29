@@ -1,10 +1,10 @@
 package stdr
 
 import (
-	"fmt"
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/stader-labs/stader-node/shared/services/beacon"
+	"github.com/stader-labs/stader-node/stader-lib/contracts"
 	"github.com/stader-labs/stader-node/stader-lib/node"
 	"github.com/stader-labs/stader-node/stader-lib/stader"
 	"github.com/stader-labs/stader-node/stader-lib/types"
@@ -38,33 +38,25 @@ type ValidatorInfo struct {
 	WithdrawnTime                    time.Time
 }
 
-func GetAllValidatorsRegisteredWithOperator(pnr *stader.PermissionedNodeRegistryContractManager, operatorId *big.Int, opts *bind.CallOpts) (map[types.ValidatorPubkey]types.ValidatorContractInfo, error) {
-	totalOperatorKeys, err := node.GetTotalValidatorKeys(pnr, operatorId, opts)
+func GetAllValidatorsRegisteredWithOperator(pnr *stader.PermissionedNodeRegistryContractManager, operatorId *big.Int, operatorAddress common.Address, opts *bind.CallOpts) (map[types.ValidatorPubkey]contracts.Validator, []types.ValidatorPubkey, error) {
+	validators, err := node.GetAllValidatorsInfoByOperator(pnr, operatorAddress, opts)
 	if err != nil {
-		return nil, err
-	}
-	fmt.Printf("Total operator keys: %d\n", totalOperatorKeys)
-
-	validators := make(map[types.ValidatorPubkey]types.ValidatorContractInfo)
-	for i := big.NewInt(0); i.Cmp(totalOperatorKeys) < 0; i.Add(i, big.NewInt(1)) {
-		validatorId, err := node.GetValidatorIdByOperatorId(pnr, operatorId, i, opts)
-		if err != nil {
-			return nil, err
-		}
-
-		validatorInfo, err := node.GetValidatorInfo(pnr, validatorId, opts)
-		if err != nil {
-			return nil, err
-		}
-
-		validators[types.BytesToValidatorPubkey(validatorInfo.Pubkey)] = validatorInfo
+		return nil, []types.ValidatorPubkey{}, err
 	}
 
-	return validators, err
+	validatorInfoMap := make(map[types.ValidatorPubkey]contracts.Validator)
+	validatorPubKeys := []types.ValidatorPubkey{}
+	for _, validator := range validators {
+		pubKey := types.BytesToValidatorPubkey(validator.Pubkey)
+		validatorInfoMap[pubKey] = validator
+		validatorPubKeys = append(validatorPubKeys, pubKey)
+	}
+
+	return validatorInfoMap, validatorPubKeys, err
 
 }
 
-func IsValidatorTerminal(validatorInfo types.ValidatorContractInfo) bool {
+func IsValidatorTerminal(validatorInfo contracts.Validator) bool {
 	return validatorInfo.Status == 1 || validatorInfo.Status == 2
 }
 

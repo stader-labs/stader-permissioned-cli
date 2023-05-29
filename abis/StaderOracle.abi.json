@@ -11,12 +11,47 @@
   },
   {
     "inputs": [],
+    "name": "CooldownNotComplete",
+    "type": "error"
+  },
+  {
+    "inputs": [],
     "name": "DuplicateSubmissionFromNode",
     "type": "error"
   },
   {
     "inputs": [],
+    "name": "ERChangeLimitCrossed",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ERChangeLimitNotCrossed",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ERPermissibleChangeOutofBounds",
+    "type": "error"
+  },
+  {
+    "inputs": [],
     "name": "FrequencyUnchanged",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "InspectionModeActive",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "InsufficientTrustedNodes",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "InvalidERDataSource",
     "type": "error"
   },
   {
@@ -27,11 +62,6 @@
   {
     "inputs": [],
     "name": "InvalidMerkleRootIndex",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "InvalidNetworkBalances",
     "type": "error"
   },
   {
@@ -98,6 +128,38 @@
     "anonymous": false,
     "inputs": [
       {
+        "indexed": false,
+        "internalType": "bool",
+        "name": "isPORBasedERData",
+        "type": "bool"
+      }
+    ],
+    "name": "ERDataSourceToggled",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "bool",
+        "name": "erInspectionMode",
+        "type": "bool"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "time",
+        "type": "uint256"
+      }
+    ],
+    "name": "ERInspectionModeActivated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
         "indexed": true,
         "internalType": "address",
         "name": "from",
@@ -118,12 +180,6 @@
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "stakingEth",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
         "name": "ethxSupply",
         "type": "uint256"
       },
@@ -134,7 +190,7 @@
         "type": "uint256"
       }
     ],
-    "name": "BalancesSubmitted",
+    "name": "ExchangeRateSubmitted",
     "type": "event"
   },
   {
@@ -155,12 +211,6 @@
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "stakingEth",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
         "name": "ethxSupply",
         "type": "uint256"
       },
@@ -171,7 +221,7 @@
         "type": "uint256"
       }
     ],
-    "name": "BalancesUpdated",
+    "name": "ExchangeRateUpdated",
     "type": "event"
   },
   {
@@ -530,6 +580,19 @@
     "inputs": [
       {
         "indexed": false,
+        "internalType": "uint256",
+        "name": "erChangeLimit",
+        "type": "uint256"
+      }
+    ],
+    "name": "UpdatedERChangeLimit",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
         "internalType": "address",
         "name": "staderConfig",
         "type": "address"
@@ -737,6 +800,19 @@
   },
   {
     "inputs": [],
+    "name": "ER_CHANGE_MAX_BPS",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "ETHX_ER_UF",
     "outputs": [
       {
@@ -751,6 +827,19 @@
   {
     "inputs": [],
     "name": "MAX_ER_UPDATE_FREQUENCY",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "MIN_TRUSTED_NODES",
     "outputs": [
       {
         "internalType": "uint256",
@@ -828,6 +917,20 @@
   },
   {
     "inputs": [],
+    "name": "closeERInspectionMode",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "disableERInspectionMode",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "disableSafeMode",
     "outputs": [],
     "stateMutability": "nonpayable",
@@ -842,6 +945,45 @@
   },
   {
     "inputs": [],
+    "name": "erChangeLimit",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "erInspectionMode",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "erInspectionModeStartBlock",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "exchangeRate",
     "outputs": [
       {
@@ -852,11 +994,6 @@
       {
         "internalType": "uint256",
         "name": "totalETHBalance",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "totalStakingETHBalance",
         "type": "uint256"
       },
       {
@@ -914,11 +1051,6 @@
           {
             "internalType": "uint256",
             "name": "totalETHBalance",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "totalStakingETHBalance",
             "type": "uint256"
           },
           {
@@ -1146,6 +1278,42 @@
     "name": "initialize",
     "outputs": [],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "inspectionModeExchangeRate",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "reportingBlockNumber",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "totalETHBalance",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "totalETHXSupply",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "isPORFeedBasedERData",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -1399,11 +1567,6 @@
           },
           {
             "internalType": "uint256",
-            "name": "totalStakingETHBalance",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
             "name": "totalETHXSupply",
             "type": "uint256"
           }
@@ -1413,7 +1576,7 @@
         "type": "tuple"
       }
     ],
-    "name": "submitBalances",
+    "name": "submitExchangeRateData",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -1629,6 +1792,13 @@
   },
   {
     "inputs": [],
+    "name": "togglePORFeedBasedERData",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "trustedNodesCount",
     "outputs": [
       {
@@ -1638,6 +1808,26 @@
       }
     ],
     "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_erChangeLimit",
+        "type": "uint256"
+      }
+    ],
+    "name": "updateERChangeLimit",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "updateERFromPORFeed",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {

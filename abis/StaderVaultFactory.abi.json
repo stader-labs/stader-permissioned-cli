@@ -456,11 +456,11 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "_vaultProxyImpl",
+        "name": "_staderConfig",
         "type": "address"
       }
     ],
-    "name": "updateProxyAddress",
+    "name": "updateStaderConfig",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -469,11 +469,11 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "_staderConfig",
+        "name": "_vaultProxyImpl",
         "type": "address"
       }
     ],
-    "name": "updateStaderConfig",
+    "name": "updateVaultProxyAddress",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
