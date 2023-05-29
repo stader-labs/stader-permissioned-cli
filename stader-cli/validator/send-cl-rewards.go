@@ -22,32 +22,32 @@ func SendClRewards(c *cli.Context, validatorPubKey types.ValidatorPubkey) error 
 	// Print what network we're on
 	err = cliutils.PrintNetwork(staderClient)
 
-	canClaimClRewardsResponse, err := staderClient.CanSendClRewards(validatorPubKey)
+	canSendClRewardsResponse, err := staderClient.CanSendClRewards(validatorPubKey)
 	if err != nil {
 		return err
 	}
-	if canClaimClRewardsResponse.OperatorNotRegistered {
+	if canSendClRewardsResponse.OperatorNotRegistered {
 		fmt.Printf("Operator not registered\n")
 		return nil
 	}
-	if canClaimClRewardsResponse.NoClRewards {
+	if canSendClRewardsResponse.NoClRewards {
 		fmt.Printf("No CL rewards to withdraw for validator %s\n", validatorPubKey.String())
 		return nil
 	}
-	if canClaimClRewardsResponse.TooManyClRewards {
+	if canSendClRewardsResponse.TooManyClRewards {
 		fmt.Printf("Too many CL rewards to withdraw for validator %s\n. Please use stader-permissioned-cli node settle-funds command to withdraw remaining amount", validatorPubKey.String())
 		return nil
 	}
-	if canClaimClRewardsResponse.ValidatorNotFound {
+	if canSendClRewardsResponse.ValidatorNotFound {
 		fmt.Printf("Validator %s not found\n", validatorPubKey.String())
 		return nil
 	}
-	if canClaimClRewardsResponse.VaultAlreadySettled {
+	if canSendClRewardsResponse.VaultAlreadySettled {
 		fmt.Printf("Vault for validator %s has already been settled\n", validatorPubKey.String())
 		return nil
 	}
 
-	err = gas.AssignMaxFeeAndLimit(canClaimClRewardsResponse.GasInfo, staderClient, c.Bool("yes"))
+	err = gas.AssignMaxFeeAndLimit(canSendClRewardsResponse.GasInfo, staderClient, c.Bool("yes"))
 	if err != nil {
 		return err
 	}
