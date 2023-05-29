@@ -9,6 +9,7 @@ import (
 	"github.com/stader-labs/stader-node/stader-lib/types"
 	"github.com/stader-labs/stader-node/stader-lib/utils/eth"
 	"github.com/urfave/cli"
+	"math/big"
 )
 
 func getValidatorStatus(c *cli.Context) error {
@@ -44,13 +45,13 @@ func getValidatorStatus(c *cli.Context) error {
 
 	fmt.Printf("The Operator has registered a total of %d validators\n\n", len(status.ValidatorInfos))
 
-	//if status.TotalValidatorClRewards.Cmp(big.NewInt(0)) > 0 {
-	//	fmt.Printf(
-	//		"The Operator has a total of %.6f ETH as CL rewards for all validators. These rewards are sent to the claim vault periodically by Stader. Once it is sent to the claim vault, the operator can use the %sstader-cli node claim-rewards%s command to claim for all validators in one transaction\n", math.RoundDown(eth.WeiToEth(status.TotalValidatorClRewards), 6), log.ColorGreen, log.ColorReset)
-	//	fmt.Println("If the operator wishes to claim CL rewards by themselves, follow these steps:")
-	//	fmt.Printf("1. Use the %sstader-cli node send-cl-rewards --validator-pub-key%s command to claim the CL rewards\n", log.ColorGreen, log.ColorReset)
-	//	fmt.Printf("2. Use the %sstader-cli node claim-rewards%s command to claim the CL rewards from the claim vault to your operator reward address\n\n", log.ColorGreen, log.ColorReset)
-	//}
+	if status.TotalClRewards.Cmp(big.NewInt(0)) > 0 {
+		fmt.Printf(
+			"The Operator has a total of %.6f ETH as CL rewards for all validators. These rewards are sent to the claim vault periodically by Stader. Once it is sent to the claim vault, the operator can use the %sstader-cli node claim-rewards%s command to claim for all validators in one transaction\n", math.RoundDown(eth.WeiToEth(status.TotalClRewards), 6), log.ColorGreen, log.ColorReset)
+		fmt.Println("If the operator wishes to claim CL rewards by themselves, follow these steps:")
+		fmt.Printf("1. Use the %sstader-cli node send-cl-rewards --validator-pub-key%s command to claim the CL rewards\n", log.ColorGreen, log.ColorReset)
+		fmt.Printf("2. Use the %sstader-cli node claim-rewards%s command to claim the CL rewards from the claim vault to your operator reward address\n\n", log.ColorGreen, log.ColorReset)
+	}
 
 	fmt.Printf("%s=== Registered Validator Details ===%s\n", log.ColorGreen, log.ColorReset)
 
