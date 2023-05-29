@@ -60,7 +60,7 @@ func IsValidatorTerminal(validatorInfo contracts.Validator) bool {
 	return validatorInfo.Status == 1 || validatorInfo.Status == 2
 }
 
-func GetValidatorRunningStatus(beaconValidatorStatus beacon.ValidatorStatus, validatorContractInfo types.ValidatorContractInfo) (string, error) {
+func GetValidatorRunningStatus(beaconValidatorStatus beacon.ValidatorStatus, validatorContractInfo contracts.Validator) (string, error) {
 	if validatorContractInfo.Status != 4 || !beaconValidatorStatus.Exists {
 		return ValidatorState[validatorContractInfo.Status], nil
 	}

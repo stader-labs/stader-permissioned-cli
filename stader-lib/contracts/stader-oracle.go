@@ -43,17 +43,17 @@ type MissedAttestationPenaltyData struct {
 	SortedPubkeys        [][]byte
 }
 
-// RewardsData is an auto generated low-level Go binding around an user-defined struct.
-type RewardsData struct {
-	ReportingBlockNumber *big.Int
-	Index                *big.Int
-	MerkleRoot           [32]byte
-	PoolId               uint8
-	OperatorETHRewards   *big.Int
-	UserETHRewards       *big.Int
-	ProtocolETHRewards   *big.Int
-	OperatorSDRewards    *big.Int
-}
+//// RewardsData is an auto generated low-level Go binding around an user-defined struct.
+//type RewardsData struct {
+//	ReportingBlockNumber *big.Int
+//	Index                *big.Int
+//	MerkleRoot           [32]byte
+//	PoolId               uint8
+//	OperatorETHRewards   *big.Int
+//	UserETHRewards       *big.Int
+//	ProtocolETHRewards   *big.Int
+//	OperatorSDRewards    *big.Int
+//}
 
 // SDPriceData is an auto generated low-level Go binding around an user-defined struct.
 type SDPriceData struct {

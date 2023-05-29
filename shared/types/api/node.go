@@ -2,6 +2,7 @@ package api
 
 import (
 	stader_backend "github.com/stader-labs/stader-node/shared/types/stader-backend"
+	"github.com/stader-labs/stader-node/stader-lib/contracts"
 	"math/big"
 	"time"
 
@@ -40,6 +41,7 @@ type NodeStatusResponse struct {
 	BeaconChainUrl                    string                             `json:"beaconChainUrl"`
 	ExecutionChainUrl                 string                             `json:"executionChainUrl"`
 	OperatorWhitelisted               bool                               `json:"operatorWhitelisted"`
+	TotalClRewards                    *big.Int                           `json:"totalClRewards"`
 }
 
 type CanRegisterNodeResponse struct {
@@ -195,11 +197,11 @@ type ExitValidatorResponse struct {
 }
 
 type ValidatorInfoResponse struct {
-	ValidatorInfo types.ValidatorContractInfo `json:"validatorInfo"`
-	ClRewards     *big.Int                    `json:"clRewards"`
-	DisplayStatus string                      `json:"displayStatus"`
-	Status        string                      `json:"status"`
-	Error         string                      `json:"error"`
+	ValidatorInfo contracts.Validator `json:"validatorInfo"`
+	ClRewards     *big.Int            `json:"clRewards"`
+	DisplayStatus string              `json:"displayStatus"`
+	Status        string              `json:"status"`
+	Error         string              `json:"error"`
 }
 
 type CanUpdateSocializeElResponse struct {

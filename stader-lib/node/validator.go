@@ -59,7 +59,7 @@ func GetValidatorIdByOperatorId(pnr *stader.PermissionedNodeRegistryContractMana
 }
 
 // TODO - bchain - make these inline structs into types
-func GetValidatorInfo(pnr *stader.PermissionedNodeRegistryContractManager, validatorId *big.Int, opts *bind.CallOpts) (types2.ValidatorContractInfo, error) {
+func GetValidatorInfo(pnr *stader.PermissionedNodeRegistryContractManager, validatorId *big.Int, opts *bind.CallOpts) (contracts.Validator, error) {
 	return pnr.PermissionedNodeRegistry.ValidatorRegistry(opts, validatorId)
 }
 

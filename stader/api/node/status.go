@@ -192,6 +192,7 @@ func getStatus(c *cli.Context) (*api.NodeStatusResponse, error) {
 
 		validatorInfoArray := make([]stdr.ValidatorInfo, totalValidatorKeys.Int64())
 
+		totalClRewards := big.NewInt(0)
 		for i := int64(0); i < totalValidatorKeys.Int64(); i++ {
 			validatorIndex, err := node.GetValidatorIdByOperatorId(pnr, operatorId, big.NewInt(i), nil)
 			if err != nil {
@@ -260,10 +261,12 @@ func getStatus(c *cli.Context) (*api.NodeStatusResponse, error) {
 				WithdrawnTime:                    withdrawTime,
 			}
 
+			totalClRewards.Add(totalClRewards, withdrawVaultRewardShares.OperatorShare)
 			validatorInfoArray[i] = validatorInfo
 		}
 
 		response.ValidatorInfos = validatorInfoArray
+		response.TotalClRewards = totalClRewards
 
 		claimedMerkles, unclaimedMerkles, err := GetClaimedAndUnclaimedSocializingPoolMerkles(c)
 		if err != nil {

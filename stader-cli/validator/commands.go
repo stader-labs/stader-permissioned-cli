@@ -113,6 +113,30 @@ func RegisterCommands(app *cli.App, name string, aliases []string) {
 					return GetValidatorInfo(c, validatorPubKey)
 				},
 			},
+			{
+				Name:      "export",
+				Aliases:   []string{"e"},
+				Usage:     "Export validator info to a csv file",
+				UsageText: "stader-cli validator export",
+				Flags:     []cli.Flag{},
+				Action: func(c *cli.Context) error {
+
+					// Run
+					return exportValidatorStatus(c)
+				},
+			},
+			{
+				Name:      "status",
+				Aliases:   []string{"s"},
+				Usage:     "Validator Status",
+				UsageText: "stader-cli validator status",
+				Flags:     []cli.Flag{},
+				Action: func(c *cli.Context) error {
+
+					// Run
+					return getValidatorStatus(c)
+				},
+			},
 		},
 	})
 }
