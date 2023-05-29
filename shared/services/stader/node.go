@@ -214,33 +214,33 @@ func (c *Client) NodeSend(amountWei *big.Int, token string, toAddress common.Add
 	return response, nil
 }
 
-func (c *Client) CanClaimClRewards(validatorPubKey types.ValidatorPubkey) (api.CanClaimClRewardsResponse, error) {
-	responseBytes, err := c.callAPI(fmt.Sprintf("validator can-claim-cl-rewards %s", validatorPubKey))
+func (c *Client) CanSendClRewards(validatorPubKey types.ValidatorPubkey) (api.CanSendClRewardsResponse, error) {
+	responseBytes, err := c.callAPI(fmt.Sprintf("validator can-send-cl-rewards %s", validatorPubKey))
 	if err != nil {
-		return api.CanClaimClRewardsResponse{}, fmt.Errorf("could not get validator can-claim-cl-rewards response: %w", err)
+		return api.CanSendClRewardsResponse{}, fmt.Errorf("could not get validator can-send-cl-rewards response: %w", err)
 	}
-	var response api.CanClaimClRewardsResponse
+	var response api.CanSendClRewardsResponse
 	if err := json.Unmarshal(responseBytes, &response); err != nil {
-		return api.CanClaimClRewardsResponse{}, fmt.Errorf("could not decode validator can-claim-cl-rewards response: %w", err)
+		return api.CanSendClRewardsResponse{}, fmt.Errorf("could not decode validator can-send-cl-rewards response: %w", err)
 	}
 	if response.Error != "" {
-		return api.CanClaimClRewardsResponse{}, fmt.Errorf("could not get validator can-claim-cl-rewards response: %s", response.Error)
+		return api.CanSendClRewardsResponse{}, fmt.Errorf("could not get validator can-send-cl-rewards response: %s", response.Error)
 	}
 
 	return response, nil
 }
 
-func (c *Client) ClaimClRewards(validatorPubKey types.ValidatorPubkey) (api.ClaimClRewardsResponse, error) {
-	responseBytes, err := c.callAPI(fmt.Sprintf("validator claim-cl-rewards %s", validatorPubKey))
+func (c *Client) SendClRewards(validatorPubKey types.ValidatorPubkey) (api.SendClRewardsResponse, error) {
+	responseBytes, err := c.callAPI(fmt.Sprintf("validator send-cl-rewards %s", validatorPubKey))
 	if err != nil {
-		return api.ClaimClRewardsResponse{}, fmt.Errorf("could not get validator claim-cl-rewards response: %w", err)
+		return api.SendClRewardsResponse{}, fmt.Errorf("could not get validator send-cl-rewards response: %w", err)
 	}
-	var response api.ClaimClRewardsResponse
+	var response api.SendClRewardsResponse
 	if err := json.Unmarshal(responseBytes, &response); err != nil {
-		return api.ClaimClRewardsResponse{}, fmt.Errorf("could not decode validator claim-cl-rewards response: %w", err)
+		return api.SendClRewardsResponse{}, fmt.Errorf("could not decode validator send-cl-rewards response: %w", err)
 	}
 	if response.Error != "" {
-		return api.ClaimClRewardsResponse{}, fmt.Errorf("could not get validator claim-cl-rewards response: %s", response.Error)
+		return api.SendClRewardsResponse{}, fmt.Errorf("could not get validator send-cl-rewards response: %s", response.Error)
 	}
 
 	return response, nil
@@ -290,6 +290,38 @@ func (c *Client) GetDetailedCyclesInfo(cycles []*big.Int) (api.CyclesDetailedInf
 	}
 	if response.Error != "" {
 		return api.CyclesDetailedInfo{}, fmt.Errorf("could not get node detailed-cycles-info response: %s", response.Error)
+	}
+
+	return response, nil
+}
+
+func (c *Client) CanClaimRewards() (api.CanClaimRewards, error) {
+	responseBytes, err := c.callAPI("node can-claim-rewards")
+	if err != nil {
+		return api.CanClaimRewards{}, fmt.Errorf("could not get node can-claim-rewards response: %w", err)
+	}
+	var response api.CanClaimRewards
+	if err := json.Unmarshal(responseBytes, &response); err != nil {
+		return api.CanClaimRewards{}, fmt.Errorf("could not decode node can-claim-rewards response: %w", err)
+	}
+	if response.Error != "" {
+		return api.CanClaimRewards{}, fmt.Errorf("could not get node can-claim-rewards response: %s", response.Error)
+	}
+
+	return response, nil
+}
+
+func (c *Client) ClaimRewards() (api.ClaimRewards, error) {
+	responseBytes, err := c.callAPI("node claim-rewards")
+	if err != nil {
+		return api.ClaimRewards{}, fmt.Errorf("could not get node claim-rewards response: %w", err)
+	}
+	var response api.ClaimRewards
+	if err := json.Unmarshal(responseBytes, &response); err != nil {
+		return api.ClaimRewards{}, fmt.Errorf("could not decode node claim-rewards response: %w", err)
+	}
+	if response.Error != "" {
+		return api.ClaimRewards{}, fmt.Errorf("could not get node claim-rewards response: %s", response.Error)
 	}
 
 	return response, nil

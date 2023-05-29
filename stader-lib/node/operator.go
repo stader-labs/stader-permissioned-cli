@@ -40,6 +40,19 @@ func UpdateOperatorDetails(pnr *stader.PermissionedNodeRegistryContractManager, 
 	return tx, nil
 }
 
+func EstimateClaimOperatorRewards(orc *stader.OperatorRewardsCollectorContractManager, opts *bind.TransactOpts) (stader.GasInfo, error) {
+	return orc.OperatorRewardsCollectorContract.GetTransactionGasInfo(opts, "claim")
+}
+
+func ClaimOperatorRewards(orc *stader.OperatorRewardsCollectorContractManager, opts *bind.TransactOpts) (*types.Transaction, error) {
+	tx, err := orc.OperatorRewardsCollector.Claim(opts)
+	if err != nil {
+		return nil, fmt.Errorf("Could not claim operator rewards: %w", err)
+	}
+
+	return tx, nil
+}
+
 func EstimateWithdrawFromNodeElVault(client stader.ExecutionClient, nevAddress common.Address, opts *bind.TransactOpts) (stader.GasInfo, error) {
 	nev, err := stader.NewNodeElRewardVaultFactory(client, nevAddress)
 	if err != nil {
@@ -76,6 +89,10 @@ func GetOperatorInfo(pnr *stader.PermissionedNodeRegistryContractManager, operat
 
 func GetNodeElRewardAddress(vf *stader.VaultFactoryContractManager, poolId uint8, operatorId *big.Int, opts *bind.CallOpts) (common.Address, error) {
 	return vf.VaultFactory.ComputeNodeELRewardVaultAddress(opts, poolId, operatorId)
+}
+
+func GetOperatorRewardsCollectorBalance(orc *stader.OperatorRewardsCollectorContractManager, operatorRewardAddress common.Address, opts *bind.CallOpts) (*big.Int, error) {
+	return orc.OperatorRewardsCollector.Balances(opts, operatorRewardAddress)
 }
 
 func GetSocializingPoolContract(pp *stader.PermissionlessPoolContractManager, opts *bind.CallOpts) (common.Address, error) {

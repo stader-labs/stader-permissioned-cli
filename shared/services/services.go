@@ -180,6 +180,14 @@ func GetStaderOracleAddress(c *cli.Context) (common.Address, error) {
 	return stader_config.GetStaderOracleAddress(sdcfg, nil)
 }
 
+func GetOperatorRewardsCollectorAddress(c *cli.Context) (common.Address, error) {
+	sdcfg, err := GetStaderConfigContract(c)
+	if err != nil {
+		return common.Address{}, err
+	}
+	return stader_config.GetOperatorRewardsCollectorAddress(sdcfg, nil)
+}
+
 func GetPoolUtilsAddress(c *cli.Context) (common.Address, error) {
 	sdcfg, err := GetStaderConfigContract(c)
 	if err != nil {
@@ -329,6 +337,25 @@ func GetPoolUtilsContract(c *cli.Context) (*stader.PoolUtilsContractManager, err
 	}
 
 	return stader.NewPoolUtils(ec, poolUtilsAddress)
+}
+
+func GetOperatorRewardsCollectorContract(c *cli.Context) (*stader.OperatorRewardsCollectorContractManager, error) {
+	cfg, err := getConfig(c)
+	if err != nil {
+		return nil, err
+	}
+	ec, err := getEthClient(c, cfg)
+
+	if err != nil {
+		return nil, err
+	}
+
+	operatorRewardsCollector, err := GetOperatorRewardsCollectorAddress(c)
+	if err != nil {
+		return nil, err
+	}
+
+	return stader.NewOperatorRewardsCollector(ec, operatorRewardsCollector)
 }
 
 func GetBeaconClient(c *cli.Context) (*BeaconClientManager, error) {

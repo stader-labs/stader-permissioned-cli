@@ -12,7 +12,7 @@ import (
 	"github.com/urfave/cli"
 )
 
-func ClaimClRewards(c *cli.Context, validatorPubKey types.ValidatorPubkey) error {
+func SendClRewards(c *cli.Context, validatorPubKey types.ValidatorPubkey) error {
 	staderClient, err := stader.NewClientFromCtx(c)
 	if err != nil {
 		return err
@@ -22,7 +22,7 @@ func ClaimClRewards(c *cli.Context, validatorPubKey types.ValidatorPubkey) error
 	// Print what network we're on
 	err = cliutils.PrintNetwork(staderClient)
 
-	canClaimClRewardsResponse, err := staderClient.CanClaimClRewards(validatorPubKey)
+	canClaimClRewardsResponse, err := staderClient.CanSendClRewards(validatorPubKey)
 	if err != nil {
 		return err
 	}
@@ -59,19 +59,19 @@ func ClaimClRewards(c *cli.Context, validatorPubKey types.ValidatorPubkey) error
 		return nil
 	}
 
-	res, err := staderClient.ClaimClRewards(validatorPubKey)
+	res, err := staderClient.SendClRewards(validatorPubKey)
 	if err != nil {
 		return err
 	}
 
-	fmt.Printf("Claiming %.6f CL Rewards to Operator Reward Address: %s\n\n", math.RoundDown(eth.WeiToEth(res.ClRewardsAmount), 6), res.OperatorRewardAddress)
+	fmt.Printf("Send %.6f CL Rewards to Operator Reward Collector\n\n", math.RoundDown(eth.WeiToEth(res.ClRewardsAmount), 6))
 	cliutils.PrintTransactionHash(staderClient, res.TxHash)
 	if _, err = staderClient.WaitForTransaction(res.TxHash); err != nil {
 		return err
 	}
 
 	// Log & return
-	fmt.Printf("Successfully Claimed %.6f CL Rewards to Operator Reward Address: %s\n\n", math.RoundDown(eth.WeiToEth(res.ClRewardsAmount), 6), res.OperatorRewardAddress)
+	fmt.Printf("Successfully Sent %.6f CL Rewards to Operator Reward Collector: %s\n\n", math.RoundDown(eth.WeiToEth(res.ClRewardsAmount), 6))
 
 	return nil
 }

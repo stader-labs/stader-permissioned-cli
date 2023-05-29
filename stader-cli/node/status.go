@@ -119,30 +119,5 @@ func getStatus(c *cli.Context) error {
 		return nil
 	}
 
-	//for i := 0; i < len(status.ValidatorInfos); i++ {
-	//	fmt.Printf("%d)\n", i+1)
-	//	validatorInfo := status.ValidatorInfos[i]
-	//	validatorPubKey := types.BytesToValidatorPubkey(validatorInfo.Pubkey)
-	//	fmt.Printf("-Validator Pub Key: %s\n\n", validatorPubKey)
-	//	fmt.Printf("-Validator Status: %s\n\n", validatorInfo.StatusToDisplay)
-	//	fmt.Printf("-Validator Withdraw Vault: %s\n\n", validatorInfo.WithdrawVaultAddress)
-	//	if validatorInfo.WithdrawVaultRewardBalance.Int64() > 0 && !validatorInfo.CrossedRewardsThreshold {
-	//		fmt.Printf("-Consensus Layer Rewards: %.6f\n", math.RoundDown(eth.WeiToEth(validatorInfo.WithdrawVaultRewardBalance), 18))
-	//		fmt.Printf("To claim consensus layer rewards use the %sstader-permissioned-cli validator claim-cl-rewards %s command\n\n", log.ColorGreen, log.ColorReset)
-	//	} else if validatorInfo.CrossedRewardsThreshold {
-	//		fmt.Printf("Please wait for Stader Oracles to finalize your exit!\n")
-	//	}
-	//
-	//	if validatorInfo.Status > 3 {
-	//		fmt.Printf("-Deposit time: %s\n\n", validatorInfo.DepositTime.Format("2006-01-02 15:04:05"))
-	//	}
-	//
-	//	if validatorInfo.WithdrawnBlock.Int64() > 0 {
-	//		fmt.Printf("-Withdraw Time: %s\n\n", validatorInfo.WithdrawnTime.Format("2006-01-02 15:04:05"))
-	//	}
-	//
-	//	fmt.Printf("\n\n")
-	//}
-
 	return nil
 }

@@ -134,6 +134,20 @@ func RegisterCommands(app *cli.App, name string, aliases []string) {
 				},
 			},
 			{
+				Name:      "claim-rewards",
+				Aliases:   []string{"wer"},
+				Usage:     "Claim rewards from claim vault to the operator reward address",
+				UsageText: "stader-cli node claim-rewards",
+				Flags: []cli.Flag{cli.BoolFlag{
+					Name:  "yes, y",
+					Usage: "Automatically confirm rewards transfer to operator reward address",
+				}},
+				Action: func(c *cli.Context) error {
+					// Run
+					return ClaimRewards(c)
+				},
+			},
+			{
 				Name:      "claim-sp-rewards",
 				Aliases:   []string{"cspr"},
 				Usage:     "Claim Socializing Pool Rewards for given cycles",

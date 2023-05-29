@@ -119,9 +119,9 @@ func RegisterSubcommands(command *cli.Command, name string, aliases []string) {
 				},
 			},
 			{
-				Name:      "can-claim-cl-rewards",
-				Usage:     "Can claim cl rewards of a validator",
-				UsageText: "stader-permissioned-cli api node can-claim-cl-rewards --validator-pub-key",
+				Name:      "can-send-cl-rewards",
+				Usage:     "Can send cl rewards of a validator to operator reward collector",
+				UsageText: "stader-permissioned-cli api node can-send-cl-rewards --validator-pub-key",
 				Action: func(c *cli.Context) error {
 
 					validatorPubKey, err := cliutils.ValidatePubkey("validator-pub-key", c.Args().Get(0))
@@ -129,15 +129,15 @@ func RegisterSubcommands(command *cli.Command, name string, aliases []string) {
 						return err
 					}
 
-					api.PrintResponse(CanClaimClRewards(c, validatorPubKey))
+					api.PrintResponse(CanSendClRewards(c, validatorPubKey))
 					return nil
 
 				},
 			},
 			{
-				Name:      "claim-cl-rewards",
-				Usage:     "Claim cl rewards of a validator",
-				UsageText: "stader-permissioned-cli api node claim-cl-rewards --validator-pub-key",
+				Name:      "send-cl-rewards",
+				Usage:     "send cl rewards of a validator to operator reward collector",
+				UsageText: "stader-permissioned-cli api node send-cl-rewards --validator-pub-key",
 				Action: func(c *cli.Context) error {
 
 					validatorPubKey, err := cliutils.ValidatePubkey("validator-pub-key", c.Args().Get(0))
@@ -145,7 +145,7 @@ func RegisterSubcommands(command *cli.Command, name string, aliases []string) {
 						return err
 					}
 
-					api.PrintResponse(ClaimClRewards(c, validatorPubKey))
+					api.PrintResponse(SendClRewards(c, validatorPubKey))
 					return nil
 
 				},

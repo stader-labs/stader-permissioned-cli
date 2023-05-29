@@ -12,3 +12,4 @@ abigen --abi ./../../abis/PermissionedPool.abi.json --pkg contracts --type Permi
 abigen --abi ./../../abis/PermissionedNodeRegistry.abi.json --pkg contracts --type PermissionedNodeRegistry --out permissioned-node-registry.go;
 abigen --abi ./../../abis/Penalty.abi.json --pkg contracts --type PenaltyTracker --out penalty.go;
 abigen --abi ./../../abis/NodeElRewardVault.abi.json --pkg contracts --type NodeElRewardVault --out node-el-reward-vault.go;
+abigen --abi ./../../abis/OperatorRewardsCollector.abi.json --pkg contracts --type OperatorRewardsCollector --out operator-rewards-collector.go;

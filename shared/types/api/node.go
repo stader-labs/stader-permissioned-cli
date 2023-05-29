@@ -222,7 +222,7 @@ type UpdateSocializeElResponse struct {
 	TxHash common.Hash `json:"txHash"`
 }
 
-type CanClaimClRewardsResponse struct {
+type CanSendClRewardsResponse struct {
 	Status                string         `json:"status"`
 	Error                 string         `json:"error"`
 	OperatorNotRegistered bool           `json:"operatorNotRegistered"`
@@ -233,12 +233,26 @@ type CanClaimClRewardsResponse struct {
 	GasInfo               stader.GasInfo `json:"gasInfo"`
 }
 
-type ClaimClRewardsResponse struct {
+type SendClRewardsResponse struct {
 	Status                string         `json:"status"`
 	Error                 string         `json:"error"`
 	ClRewardsAmount       *big.Int       `json:"clRewardsAmount"`
 	OperatorRewardAddress common.Address `json:"operatorRewardAddress"`
 	TxHash                common.Hash    `json:"txHash"`
+}
+
+type CanClaimRewards struct {
+	Status  string         `json:"status"`
+	Error   string         `json:"error"`
+	GasInfo stader.GasInfo `json:"gasInfo"`
+}
+
+type ClaimRewards struct {
+	Status                 string         `json:"status"`
+	Error                  string         `json:"error"`
+	OperatorRewardsBalance *big.Int       `json:"operatorRewardsBalance"`
+	OperatorRewardAddress  common.Address `json:"operatorRewardAddress"`
+	TxHash                 common.Hash    `json:"txHash"`
 }
 
 type CanSettleExitFunds struct {
