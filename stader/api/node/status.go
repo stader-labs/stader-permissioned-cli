@@ -190,18 +190,16 @@ func getStatus(c *cli.Context) (*api.NodeStatusResponse, error) {
 
 		response.TotalNonTerminalValidators = big.NewInt(int64(totalNonTerminalValidatorKeys))
 
+		validatorInfoMap, _, err := stdr.GetAllValidatorsRegisteredWithOperator(pnr, operatorId, nodeAccount.Address, nil)
+		if err != nil {
+			return nil, err
+		}
+
 		validatorInfoArray := make([]stdr.ValidatorInfo, totalValidatorKeys.Int64())
 
+		i := 0
 		totalClRewards := big.NewInt(0)
-		for i := int64(0); i < totalValidatorKeys.Int64(); i++ {
-			validatorIndex, err := node.GetValidatorIdByOperatorId(pnr, operatorId, big.NewInt(i), nil)
-			if err != nil {
-				return nil, err
-			}
-			validatorContractInfo, err := node.GetValidatorInfo(pnr, validatorIndex, nil)
-			if err != nil {
-				return nil, err
-			}
+		for _, validatorContractInfo := range validatorInfoMap {
 			withdrawVaultBalance, err := tokens.GetEthBalance(pnr.Client, validatorContractInfo.WithdrawVaultAddress, nil)
 			if err != nil {
 				return nil, err
@@ -263,6 +261,7 @@ func getStatus(c *cli.Context) (*api.NodeStatusResponse, error) {
 
 			totalClRewards.Add(totalClRewards, withdrawVaultRewardShares.OperatorShare)
 			validatorInfoArray[i] = validatorInfo
+			i += 1
 		}
 
 		response.ValidatorInfos = validatorInfoArray
