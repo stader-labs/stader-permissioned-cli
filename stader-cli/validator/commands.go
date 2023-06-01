@@ -117,7 +117,7 @@ func RegisterCommands(app *cli.App, name string, aliases []string) {
 				Name:      "export",
 				Aliases:   []string{"e"},
 				Usage:     "Export validator info to a csv file",
-				UsageText: "stader-cli validator export",
+				UsageText: "stader-permissioned-cli validator export",
 				Flags:     []cli.Flag{},
 				Action: func(c *cli.Context) error {
 
@@ -129,7 +129,7 @@ func RegisterCommands(app *cli.App, name string, aliases []string) {
 				Name:      "status",
 				Aliases:   []string{"s"},
 				Usage:     "Validator Status",
-				UsageText: "stader-cli validator status",
+				UsageText: "stader-permissioned-cli validator status",
 				Flags:     []cli.Flag{},
 				Action: func(c *cli.Context) error {
 

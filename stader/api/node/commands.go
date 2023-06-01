@@ -366,7 +366,7 @@ func RegisterSubcommands(command *cli.Command, name string, aliases []string) {
 			{
 				Name:      "can-claim-rewards",
 				Usage:     "Can claim rewards to operator reward address from operator reward collector",
-				UsageText: "stader-cli api node can-claim-rewards",
+				UsageText: "stader-permissioned-cli api node can-claim-rewards",
 				Action: func(c *cli.Context) error {
 
 					// Validate args
@@ -382,7 +382,7 @@ func RegisterSubcommands(command *cli.Command, name string, aliases []string) {
 			{
 				Name:      "claim-rewards",
 				Usage:     "Claim rewards to operator reward address from operator reward collector",
-				UsageText: "stader-cli api node claim-rewards",
+				UsageText: "stader-permissioned-cli api node claim-rewards",
 				Action: func(c *cli.Context) error {
 
 					// Validate args

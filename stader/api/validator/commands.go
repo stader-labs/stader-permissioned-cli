@@ -58,7 +58,7 @@ func RegisterSubcommands(command *cli.Command, name string, aliases []string) {
 				Name:      "register",
 				Aliases:   []string{"d"},
 				Usage:     "Register the validators with stader",
-				UsageText: "stader api validator register validator-list",
+				UsageText: "stader-permissioned-cli api validator register validator-list",
 				Action: func(c *cli.Context) error {
 
 					// Validate args
