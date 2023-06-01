@@ -105,6 +105,16 @@ func getStatus(c *cli.Context) error {
 	}
 	fmt.Printf("The Operator has registered a total of %d validators\n\n", len(status.ValidatorInfos))
 
+	if status.OperatorClaimVaultBalance.Cmp(big.NewInt(0)) > 0 {
+		fmt.Printf(
+			"The Operator %s%s%s has aggregated total rewards of %.6f ETH in the claim vault\n\n",
+			log.ColorBlue,
+			status.AccountAddress,
+			log.ColorReset,
+			math.RoundDown(eth.WeiToEth(status.OperatorClaimVaultBalance), 6))
+		fmt.Printf("To transfer the rewards to your operator address use the %sstader-cli node claim-rewards%s command\n\n", log.ColorGreen, log.ColorReset)
+	}
+
 	if totalUnclaimedSocializingPoolEth.Cmp(big.NewInt(0)) > 0 {
 		fmt.Printf("The Operator has %.6f ETH as unclaimed socializing pool rewards\n", math.RoundDown(eth.WeiToEth(totalUnclaimedSocializingPoolEth), 18))
 		fmt.Printf("To claim socializing pool rewards use the %sstader-permissioned-cli node claim-sp-rewards%s command\n\n", log.ColorGreen, log.ColorReset)

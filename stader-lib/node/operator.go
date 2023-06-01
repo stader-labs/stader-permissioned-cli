@@ -91,8 +91,8 @@ func GetNodeElRewardAddress(vf *stader.VaultFactoryContractManager, poolId uint8
 	return vf.VaultFactory.ComputeNodeELRewardVaultAddress(opts, poolId, operatorId)
 }
 
-func GetOperatorRewardsCollectorBalance(orc *stader.OperatorRewardsCollectorContractManager, operatorRewardAddress common.Address, opts *bind.CallOpts) (*big.Int, error) {
-	return orc.OperatorRewardsCollector.Balances(opts, operatorRewardAddress)
+func GetOperatorRewardsCollectorBalance(orc *stader.OperatorRewardsCollectorContractManager, operatorAddress common.Address, opts *bind.CallOpts) (*big.Int, error) {
+	return orc.OperatorRewardsCollector.Balances(opts, operatorAddress)
 }
 
 func GetSocializingPoolContract(pp *stader.PermissionlessPoolContractManager, opts *bind.CallOpts) (common.Address, error) {

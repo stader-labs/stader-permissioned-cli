@@ -42,6 +42,7 @@ type NodeStatusResponse struct {
 	ExecutionChainUrl                 string                             `json:"executionChainUrl"`
 	OperatorWhitelisted               bool                               `json:"operatorWhitelisted"`
 	TotalClRewards                    *big.Int                           `json:"totalClRewards"`
+	OperatorClaimVaultBalance         *big.Int                           `json:"operatorClaimVaultBalance"`
 }
 
 type CanRegisterNodeResponse struct {

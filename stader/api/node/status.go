@@ -96,6 +96,10 @@ func getStatus(c *cli.Context) (*api.NodeStatusResponse, error) {
 	if err != nil {
 		return nil, err
 	}
+	orc, err := services.GetOperatorRewardsCollectorContract(c)
+	if err != nil {
+		return nil, err
+	}
 	w3signer, err := services.GetWeb3SignerClient(c)
 	if err != nil {
 		return nil, err
@@ -163,6 +167,12 @@ func getStatus(c *cli.Context) (*api.NodeStatusResponse, error) {
 		response.OperatorActive = operatorRegistry.Active
 		response.OperatorAddress = operatorRegistry.OperatorAddress
 		response.OperatorRewardAddress = operatorRegistry.OperatorRewardAddress
+
+		operatorClaimVaultBalance, err := node.GetOperatorRewardsCollectorBalance(orc, operatorRegistry.OperatorAddress, nil)
+		if err != nil {
+			return nil, err
+		}
+		response.OperatorClaimVaultBalance = operatorClaimVaultBalance
 
 		operatorReward, err := tokens.GetEthBalance(pnr.Client, operatorRegistry.OperatorRewardAddress, nil)
 		if err != nil {
