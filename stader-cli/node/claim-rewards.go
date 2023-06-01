@@ -27,12 +27,16 @@ func ClaimRewards(c *cli.Context) error {
 	err = cliutils.PrintNetwork(staderClient)
 
 	// Check if we can Withdraw El Rewards
-	canClaimElRewardsResponse, err := staderClient.CanClaimRewards()
+	canClaimRewards, err := staderClient.CanClaimRewards()
 	if err != nil {
 		return err
 	}
+	if canClaimRewards.NoRewards {
+		fmt.Println("No rewards to claim.")
+		return nil
+	}
 
-	err = gas.AssignMaxFeeAndLimit(canClaimElRewardsResponse.GasInfo, staderClient, c.Bool("yes"))
+	err = gas.AssignMaxFeeAndLimit(canClaimRewards.GasInfo, staderClient, c.Bool("yes"))
 	if err != nil {
 		return err
 	}

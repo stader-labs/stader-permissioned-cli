@@ -243,9 +243,10 @@ type SendClRewardsResponse struct {
 }
 
 type CanClaimRewards struct {
-	Status  string         `json:"status"`
-	Error   string         `json:"error"`
-	GasInfo stader.GasInfo `json:"gasInfo"`
+	Status    string         `json:"status"`
+	Error     string         `json:"error"`
+	NoRewards bool           `json:"noRewards"`
+	GasInfo   stader.GasInfo `json:"gasInfo"`
 }
 
 type ClaimRewards struct {
