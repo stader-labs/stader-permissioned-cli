@@ -3,7 +3,6 @@ package node
 import (
 	"fmt"
 	"github.com/stader-labs/stader-node/stader-lib/types"
-	"math/big"
 	"net/http"
 	"strconv"
 	"sync"
@@ -68,6 +67,11 @@ func run(c *cli.Context) error {
 		return err
 	}
 
+	err = services.WaitNodeRegistered(c, nodeAccount.Address, true)
+	if err != nil {
+		return err
+	}
+
 	// Configure
 	configureHTTP()
 
@@ -110,10 +114,6 @@ func run(c *cli.Context) error {
 			operatorId, err := node.GetOperatorId(pnr, nodeAccount.Address, nil)
 			if err != nil {
 				errorLog.Printf("Failed to get operator id: %s\n", err.Error())
-				continue
-			}
-			if operatorId.Cmp(big.NewInt(0)) == 0 {
-				errorLog.Println("Operator is not registered. Skipping presign loop.")
 				continue
 			}
 

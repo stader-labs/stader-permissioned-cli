@@ -23,7 +23,9 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/ethereum/go-ethereum/common"
 	"log"
+	"math/big"
 	"sync"
 	"time"
 
@@ -42,6 +44,7 @@ var ethClientSyncPollInterval, _ = time.ParseDuration("5s")
 var beaconClientSyncPollInterval, _ = time.ParseDuration("5s")
 var ethClientRecentBlockThreshold, _ = time.ParseDuration("5m")
 var ethClientStatusRefreshInterval, _ = time.ParseDuration("60s")
+var checkNodeRegisteredInterval, _ = time.ParseDuration("10s")
 
 //
 // Service requirements
@@ -155,6 +158,29 @@ func WaitEthClientSynced(c *cli.Context, verbose bool) error {
 func WaitBeaconClientSynced(c *cli.Context, verbose bool) error {
 	_, err := waitBeaconClientSynced(c, verbose, 0)
 	return err
+}
+
+func WaitNodeRegistered(c *cli.Context, operatorAddress common.Address, verbose bool) error {
+	if err := WaitNodeWallet(c, verbose); err != nil {
+		return err
+	}
+	for {
+		pnr, err := GetPermissionedNodeRegistry(c)
+		if err != nil {
+			return err
+		}
+		operatorId, err := node.GetOperatorId(pnr, operatorAddress, nil)
+		if err != nil {
+			return err
+		}
+		if operatorId.Cmp(big.NewInt(0)) != 0 {
+			return nil
+		}
+		if verbose {
+			log.Printf("The node is not registered with Stader, retrying in %s...\n", checkNodeRegisteredInterval.String())
+		}
+		time.Sleep(checkNodeRegisteredInterval)
+	}
 }
 
 //
