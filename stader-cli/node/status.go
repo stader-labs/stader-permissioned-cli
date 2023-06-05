@@ -112,7 +112,7 @@ func getStatus(c *cli.Context) error {
 
 	if status.OperatorClaimVaultBalance.Cmp(big.NewInt(0)) > 0 {
 		fmt.Printf(
-			"The Operator %s%s%s has aggregated total rewards of %.6f ETH in the claim vault\n\n",
+			"The Operator %s%s%s has aggregated total claims of %.6f ETH in the claim vault\n\n",
 			log.ColorBlue,
 			status.AccountAddress,
 			log.ColorReset,
