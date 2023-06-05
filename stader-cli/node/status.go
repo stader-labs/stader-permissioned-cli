@@ -112,7 +112,7 @@ func getStatus(c *cli.Context) error {
 			status.AccountAddress,
 			log.ColorReset,
 			math.RoundDown(eth.WeiToEth(status.OperatorClaimVaultBalance), 6))
-		fmt.Printf("To transfer the rewards to your operator address use the %sstader-cli node claim-rewards%s command\n\n", log.ColorGreen, log.ColorReset)
+		fmt.Printf("To transfer the rewards to your operator address use the %sstader-permissioned-cli node claim-rewards%s command\n\n", log.ColorGreen, log.ColorReset)
 	}
 
 	if totalUnclaimedSocializingPoolEth.Cmp(big.NewInt(0)) > 0 {
@@ -122,7 +122,7 @@ func getStatus(c *cli.Context) error {
 
 	fmt.Printf("%s=== Registered Validator Details ===%s\n", log.ColorGreen, log.ColorReset)
 
-	fmt.Printf("To view details of each validator, please use the %sstader-cli validator status%s command\n\n", log.ColorGreen, log.ColorReset)
+	fmt.Printf("To view details of each validator, please use the %sstader-permissioned-cli validator status%s command\n\n", log.ColorGreen, log.ColorReset)
 
 	return nil
 }

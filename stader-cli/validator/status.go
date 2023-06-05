@@ -39,7 +39,7 @@ func getValidatorStatus(c *cli.Context) error {
 	}
 
 	if !status.Registered {
-		fmt.Printf("The node is not registered with Stader. Please use the %sstader-cli node register%s to register with Stader", log.ColorGreen, log.ColorReset)
+		fmt.Printf("The node is not registered with Stader. Please use the %sstader-permissioned-cli node register%s to register with Stader", log.ColorGreen, log.ColorReset)
 		return nil
 	}
 
@@ -49,20 +49,20 @@ func getValidatorStatus(c *cli.Context) error {
 		fmt.Printf(
 			"The Operator has a total of %.6f ETH as CL rewards for all validators.\n"+
 				"These rewards are sent to the claim vault periodically by Stader.\n"+
-				"Once it is sent to the claim vault, the operator can use the %sstader-cli node claim-rewards%s command to claim for all validators in one transaction\n", math.RoundDown(eth.WeiToEth(status.TotalClRewards), 6), log.ColorGreen, log.ColorReset)
+				"Once it is sent to the claim vault, the operator can use the %sstader-permissioned-cli node claim-rewards%s command to claim for all validators in one transaction\n", math.RoundDown(eth.WeiToEth(status.TotalClRewards), 6), log.ColorGreen, log.ColorReset)
 		fmt.Println("If the operator wishes to claim CL rewards by themselves, follow these steps:")
-		fmt.Printf("1. Use the %sstader-cli node send-cl-rewards --validator-pub-key%s command to claim the CL rewards\n", log.ColorGreen, log.ColorReset)
-		fmt.Printf("2. Use the %sstader-cli node claim-rewards%s command to claim the CL rewards from the claim vault to your operator reward address\n\n", log.ColorGreen, log.ColorReset)
+		fmt.Printf("1. Use the %sstader-permissioned-cli node send-cl-rewards --validator-pub-key%s command to claim the CL rewards\n", log.ColorGreen, log.ColorReset)
+		fmt.Printf("2. Use the %sstader-permissioned-cli node claim-rewards%s command to claim the CL rewards from the claim vault to your operator reward address\n\n", log.ColorGreen, log.ColorReset)
 	}
 
 	fmt.Printf("%s=== Registered Validator Details ===%s\n", log.ColorGreen, log.ColorReset)
 
 	if len(status.ValidatorInfos) == 0 {
-		fmt.Printf("The node has no registered validators. Please use the %sstader-cli validator deposit%s command to register a validator with Stader\n\n", log.ColorGreen, log.ColorReset)
+		fmt.Printf("The node has no registered validators. Please use the %sstader-permissioned-cli validator register%s command to register a validator with Stader\n\n", log.ColorGreen, log.ColorReset)
 		return nil
 	}
 
-	fmt.Printf("Download all your validator details to a csv file using %sstader-cli validator export%scommand\n\n", log.ColorGreen, log.ColorReset)
+	fmt.Printf("Download all your validator details to a csv file using %sstader-permissioned-cli validator export%scommand\n\n", log.ColorGreen, log.ColorReset)
 
 	for i := 0; i < len(status.ValidatorInfos); i++ {
 		fmt.Printf("%d)\n", i+1)

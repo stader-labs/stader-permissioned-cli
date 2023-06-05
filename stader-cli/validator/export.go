@@ -40,12 +40,12 @@ func exportValidatorStatus(c *cli.Context) error {
 	}
 
 	if !status.Registered {
-		fmt.Printf("The node is not registered with Stader. Please use the %sstader-cli node register%s to register with Stader", log.ColorGreen, log.ColorReset)
+		fmt.Printf("The node is not registered with Stader. Please use the %sstader-permissioned-cli node register%s to register with Stader", log.ColorGreen, log.ColorReset)
 		return nil
 	}
 
 	if len(status.ValidatorInfos) == 0 {
-		fmt.Printf("The node has no registered validators. Please use the %sstader-cli validator register%s command to register a validator with Stader\n\n", log.ColorGreen, log.ColorReset)
+		fmt.Printf("The node has no registered validators. Please use the %sstader-permissioned-cli validator register%s command to register a validator with Stader\n\n", log.ColorGreen, log.ColorReset)
 		return nil
 	}
 

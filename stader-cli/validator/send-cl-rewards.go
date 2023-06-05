@@ -54,7 +54,7 @@ func SendClRewards(c *cli.Context, validatorPubKey types.ValidatorPubkey) error 
 
 	// Prompt for confirmation
 	if !(c.Bool("yes") || cliutils.Confirm(fmt.Sprintf(
-		"Are you sure you want to Send CL rewards for validator %s to the Operator reward vault?", validatorPubKey))) {
+		"Are you sure you want to Send CL rewards for validator %s to the claim vault?", validatorPubKey))) {
 		fmt.Println("Cancelled.")
 		return nil
 	}
@@ -64,14 +64,14 @@ func SendClRewards(c *cli.Context, validatorPubKey types.ValidatorPubkey) error 
 		return err
 	}
 
-	fmt.Printf("Sending %.6f CL Rewards to Operator Reward Collector\n\n", math.RoundDown(eth.WeiToEth(res.ClRewardsAmount), 6))
+	fmt.Printf("Sending %.6f CL Rewards to Claim Vault\n\n", math.RoundDown(eth.WeiToEth(res.ClRewardsAmount), 6))
 	cliutils.PrintTransactionHash(staderClient, res.TxHash)
 	if _, err = staderClient.WaitForTransaction(res.TxHash); err != nil {
 		return err
 	}
 
 	// Log & return
-	fmt.Printf("Successfully Sent %.6f CL Rewards to Operator Reward Collector\n\n", math.RoundDown(eth.WeiToEth(res.ClRewardsAmount), 6))
+	fmt.Printf("Successfully Sent %.6f CL Rewards to Claim Vault\n\n", math.RoundDown(eth.WeiToEth(res.ClRewardsAmount), 6))
 
 	return nil
 }

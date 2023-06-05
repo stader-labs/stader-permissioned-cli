@@ -136,11 +136,11 @@ func RegisterCommands(app *cli.App, name string, aliases []string) {
 			{
 				Name:      "claim-rewards",
 				Aliases:   []string{"wer"},
-				Usage:     "Claim rewards from claim vault to the operator reward address",
+				Usage:     "Claim rewards from claim vault to the claim vault",
 				UsageText: "stader-cli node claim-rewards",
 				Flags: []cli.Flag{cli.BoolFlag{
 					Name:  "yes, y",
-					Usage: "Automatically confirm rewards transfer to operator reward address",
+					Usage: "Automatically confirm rewards transfer to claim vault",
 				}},
 				Action: func(c *cli.Context) error {
 					// Run

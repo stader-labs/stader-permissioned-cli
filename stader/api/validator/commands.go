@@ -120,7 +120,7 @@ func RegisterSubcommands(command *cli.Command, name string, aliases []string) {
 			},
 			{
 				Name:      "can-send-cl-rewards",
-				Usage:     "Can send cl rewards of a validator to operator reward collector",
+				Usage:     "Can send cl rewards of a validator to claim vault",
 				UsageText: "stader-permissioned-cli api node can-send-cl-rewards --validator-pub-key",
 				Action: func(c *cli.Context) error {
 
@@ -136,7 +136,7 @@ func RegisterSubcommands(command *cli.Command, name string, aliases []string) {
 			},
 			{
 				Name:      "send-cl-rewards",
-				Usage:     "send cl rewards of a validator to operator reward collector",
+				Usage:     "send cl rewards of a validator to claim vault",
 				UsageText: "stader-permissioned-cli api node send-cl-rewards --validator-pub-key",
 				Action: func(c *cli.Context) error {
 
