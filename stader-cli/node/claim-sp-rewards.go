@@ -55,7 +55,7 @@ func ClaimSpRewards(c *cli.Context) error {
 		cycleIndexes = append(cycleIndexes, big.NewInt(cycleInfo.MerkleProofInfo.Cycle))
 	}
 
-	fmt.Println("Following are the unclaimed cycles: \n")
+	fmt.Println("Following are the unclaimed cycles: ")
 
 	fmt.Printf("%-18s%-14.30s%-14.10s\n", "Cycle Number", "Cycle Date", "ETH Rewards")
 	cyclesToClaim := map[int64]bool{}
