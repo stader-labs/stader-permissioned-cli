@@ -105,6 +105,11 @@ func getStatus(c *cli.Context) error {
 	}
 	fmt.Printf("The Operator has registered a total of %d validators\n\n", len(status.ValidatorInfos))
 
+	if totalUnclaimedSocializingPoolEth.Cmp(big.NewInt(0)) > 0 {
+		fmt.Printf("The Operator has %.6f ETH as unclaimed socializing pool rewards\n", math.RoundDown(eth.WeiToEth(totalUnclaimedSocializingPoolEth), 18))
+		fmt.Printf("To claim socializing pool rewards use the %sstader-permissioned-cli node claim-sp-rewards%s command\n\n", log.ColorGreen, log.ColorReset)
+	}
+
 	if status.OperatorClaimVaultBalance.Cmp(big.NewInt(0)) > 0 {
 		fmt.Printf(
 			"The Operator %s%s%s has aggregated total rewards of %.6f ETH in the claim vault\n\n",
@@ -112,12 +117,7 @@ func getStatus(c *cli.Context) error {
 			status.AccountAddress,
 			log.ColorReset,
 			math.RoundDown(eth.WeiToEth(status.OperatorClaimVaultBalance), 6))
-		fmt.Printf("To transfer the rewards to your operator address use the %sstader-permissioned-cli node claim-rewards%s command\n\n", log.ColorGreen, log.ColorReset)
-	}
-
-	if totalUnclaimedSocializingPoolEth.Cmp(big.NewInt(0)) > 0 {
-		fmt.Printf("The Operator has %.6f ETH as unclaimed socializing pool rewards\n", math.RoundDown(eth.WeiToEth(totalUnclaimedSocializingPoolEth), 18))
-		fmt.Printf("To claim socializing pool rewards use the %sstader-permissioned-cli node claim-sp-rewards%s command\n\n", log.ColorGreen, log.ColorReset)
+		fmt.Printf("To transfer the claims to your operator address use the %sstader-permissioned-cli node claim-rewards%s command\n\n", log.ColorGreen, log.ColorReset)
 	}
 
 	fmt.Printf("%s=== Registered Validator Details ===%s\n", log.ColorGreen, log.ColorReset)
