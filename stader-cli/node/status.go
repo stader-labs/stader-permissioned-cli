@@ -112,10 +112,7 @@ func getStatus(c *cli.Context) error {
 
 	if status.OperatorClaimVaultBalance.Cmp(big.NewInt(0)) > 0 {
 		fmt.Printf(
-			"The Operator %s%s%s has aggregated total claims of %.6f ETH in the claim vault\n\n",
-			log.ColorBlue,
-			status.AccountAddress,
-			log.ColorReset,
+			"The Operator has aggregated total claims of %.6f ETH in the claim vault\n\n",
 			math.RoundDown(eth.WeiToEth(status.OperatorClaimVaultBalance), 6))
 		fmt.Printf("To transfer the claims to your operator reward address use the %sstader-permissioned-cli node claim-rewards%s command\n\n", log.ColorGreen, log.ColorReset)
 	}
