@@ -47,7 +47,9 @@ func getValidatorStatus(c *cli.Context) error {
 
 	if status.TotalClRewards.Cmp(big.NewInt(0)) > 0 {
 		fmt.Printf(
-			"The Operator has a total of %.6f ETH as CL rewards for all validators. These rewards are sent to the claim vault periodically by Stader. Once it is sent to the claim vault, the operator can use the %sstader-cli node claim-rewards%s command to claim for all validators in one transaction\n", math.RoundDown(eth.WeiToEth(status.TotalClRewards), 6), log.ColorGreen, log.ColorReset)
+			"The Operator has a total of %.6f ETH as CL rewards for all validators.\n"+
+				"These rewards are sent to the claim vault periodically by Stader.\n"+
+				"Once it is sent to the claim vault, the operator can use the %sstader-cli node claim-rewards%s command to claim for all validators in one transaction\n", math.RoundDown(eth.WeiToEth(status.TotalClRewards), 6), log.ColorGreen, log.ColorReset)
 		fmt.Println("If the operator wishes to claim CL rewards by themselves, follow these steps:")
 		fmt.Printf("1. Use the %sstader-cli node send-cl-rewards --validator-pub-key%s command to claim the CL rewards\n", log.ColorGreen, log.ColorReset)
 		fmt.Printf("2. Use the %sstader-cli node claim-rewards%s command to claim the CL rewards from the claim vault to your operator reward address\n\n", log.ColorGreen, log.ColorReset)
@@ -68,6 +70,7 @@ func getValidatorStatus(c *cli.Context) error {
 		validatorPubKey := types.BytesToValidatorPubkey(validatorInfo.Pubkey)
 		fmt.Printf("-Validator Pub Key: %s\n\n", validatorPubKey)
 		fmt.Printf("-Validator Status: %s\n\n", validatorInfo.StatusToDisplay)
+		fmt.Printf("-Validator Withdraw Url: %s\n\n", validatorInfo.WithdrawVaultAddress)
 		if validatorInfo.WithdrawVaultRewardBalance.Int64() > 0 && !validatorInfo.CrossedRewardsThreshold {
 			fmt.Printf("-Validator Consensus Layer Rewards: %.6f\n\n", math.RoundDown(eth.WeiToEth(validatorInfo.WithdrawVaultRewardBalance), 18))
 		} else if validatorInfo.CrossedRewardsThreshold {
