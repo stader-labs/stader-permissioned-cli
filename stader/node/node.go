@@ -203,7 +203,7 @@ func run(c *cli.Context) error {
 					// check if validator has not yet been registered on beacon chain
 					validatorStatus, err := bc.GetValidatorStatus(validatorPubKey, nil)
 					if err != nil {
-						errorLog.Printf("Error finding validator status for validator: %s\n", validatorPubKey)
+						errorLog.Printf("Error finding validator status for validator: %s err: %s\n", validatorPubKey, err.Error())
 						continue
 					}
 					if !validatorStatus.Exists {
@@ -222,20 +222,20 @@ func run(c *cli.Context) error {
 					// get the presigned msg
 					hexSignature, err := w3signer.GetVoluntaryExitSignature(validatorPubKey.String(), validatorStatus.Index, exitEpoch, forkInfo, eth2Config)
 					if err != nil {
-						errorLog.Printf("Failed to generate the SignedExitMessage for validator with pub key: %s\n", validatorPubKey.String())
+						errorLog.Printf("Failed to generate the SignedExitMessage for validator with pub key: %s with err: %s\n", validatorPubKey.String(), err.Error())
 						continue
 					}
 
 					signature, err := types.HexToValidatorSignature(hexSignature[2:])
 					if err != nil {
-						errorLog.Printf("Failed to convert signature to validator signature: %s\n", hexSignature)
+						errorLog.Printf("Failed to convert signature to validator signature: %s with err: %s\n", hexSignature, err.Error())
 						continue
 					}
 
 					// encrypt the signature and srHash
 					exitSignatureEncrypted, err := crypto.EncryptUsingPublicKey([]byte(signature.String()), publicKey)
 					if err != nil {
-						errorLog.Printf("Failed to encrypt exit signature for validator: %s\n", validatorPubKey)
+						errorLog.Printf("Failed to encrypt exit signature for validator: %s with err: %s\n", validatorPubKey, err.Error())
 						continue
 					}
 					exitSignatureEncryptedString := crypto.EncodeBase64(exitSignatureEncrypted)
