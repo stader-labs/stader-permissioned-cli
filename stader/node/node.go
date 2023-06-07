@@ -66,6 +66,10 @@ func run(c *cli.Context) error {
 		return err
 	}
 
+	err = services.WaitEthClientSynced(c, true)
+	if err != nil {
+		return err
+	}
 	err = services.WaitNodeRegistered(c, nodeAccount.Address, true)
 	if err != nil {
 		return err
