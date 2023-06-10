@@ -11,10 +11,6 @@ func GetRewardsThreshold(sdConfig *stader.StaderConfigContractManager, opts *bin
 	return sdConfig.StaderConfig.GetRewardsThreshold(opts)
 }
 
-func GetSocializingPoolChangeThreshold(sdConfig *stader.StaderConfigContractManager, opts *bind.CallOpts) (*big.Int, error) {
-	return sdConfig.StaderConfig.GetSocializingPoolOptInCoolingPeriod(opts)
-}
-
 func GetOperatorNameMaxLength(sdConfig *stader.StaderConfigContractManager, opts *bind.CallOpts) (*big.Int, error) {
 	return sdConfig.StaderConfig.GetOperatorMaxNameLength(opts)
 }
@@ -23,20 +19,12 @@ func GetSocializingPoolContractAddress(sdConfig *stader.StaderConfigContractMana
 	return sdConfig.StaderConfig.GetPermissionedSocializingPool(opts)
 }
 
-func GetPermissionlessNodeRegistryAddress(sdConfig *stader.StaderConfigContractManager, opts *bind.CallOpts) (common.Address, error) {
-	return sdConfig.StaderConfig.GetPermissionlessNodeRegistry(opts)
-}
-
 func GetPermissionedNodeRegistryAddress(sdConfig *stader.StaderConfigContractManager, opts *bind.CallOpts) (common.Address, error) {
 	return sdConfig.StaderConfig.GetPermissionedNodeRegistry(opts)
 }
 
 func GetVaultFactoryAddress(sdConfig *stader.StaderConfigContractManager, opts *bind.CallOpts) (common.Address, error) {
 	return sdConfig.StaderConfig.GetVaultFactory(opts)
-}
-
-func GetPermissionlessPoolAddress(sdConfig *stader.StaderConfigContractManager, opts *bind.CallOpts) (common.Address, error) {
-	return sdConfig.StaderConfig.GetPermissionlessPool(opts)
 }
 
 func GetPermissionedPoolAddress(sdConfig *stader.StaderConfigContractManager, opts *bind.CallOpts) (common.Address, error) {
@@ -65,10 +53,6 @@ func GetPenaltyTrackerAddress(sdConfig *stader.StaderConfigContractManager, opts
 
 func GetStakePoolManagerAddress(sdConfig *stader.StaderConfigContractManager, opts *bind.CallOpts) (common.Address, error) {
 	return sdConfig.StaderConfig.GetStakePoolManager(opts)
-}
-
-func GetSdCollateralAddress(sdConfig *stader.StaderConfigContractManager, opts *bind.CallOpts) (common.Address, error) {
-	return sdConfig.StaderConfig.GetSDCollateral(opts)
 }
 
 func GetOperatorRewardsCollectorAddress(sdConfig *stader.StaderConfigContractManager, opts *bind.CallOpts) (common.Address, error) {

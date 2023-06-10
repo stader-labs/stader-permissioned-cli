@@ -5,10 +5,6 @@ import (
 	"github.com/stader-labs/stader-node/stader-lib/stader"
 )
 
-func IsPermissionlessNodeRegistryPaused(pnr *stader.PermissionlessNodeRegistryContractManager, opts *bind.CallOpts) (bool, error) {
-	return pnr.PermissionlessNodeRegistry.Paused(opts)
-}
-
 func IsPermissionedNodeRegistryPaused(pnr *stader.PermissionedNodeRegistryContractManager, opts *bind.CallOpts) (bool, error) {
 	return pnr.PermissionedNodeRegistry.Paused(opts)
 }
