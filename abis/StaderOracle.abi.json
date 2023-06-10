@@ -540,6 +540,19 @@
     "anonymous": false,
     "inputs": [
       {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "trustedNodeChangeCoolingPeriod",
+        "type": "uint256"
+      }
+    ],
+    "name": "TrustedNodeChangeCoolingPeriodUpdated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
         "indexed": true,
         "internalType": "address",
         "name": "node",
@@ -1367,6 +1380,19 @@
     "type": "function"
   },
   {
+    "inputs": [],
+    "name": "lastTrustedNodeCountChangeBlock",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
       {
         "internalType": "bytes32",
@@ -1383,6 +1409,13 @@
       }
     ],
     "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "pause",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -1799,6 +1832,19 @@
   },
   {
     "inputs": [],
+    "name": "trustedNodeChangeCoolingPeriod",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "trustedNodesCount",
     "outputs": [
       {
@@ -1808,6 +1854,13 @@
       }
     ],
     "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "unpause",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -1858,6 +1911,19 @@
       }
     ],
     "name": "updateStaderConfig",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_trustedNodeChangeCoolingPeriod",
+        "type": "uint256"
+      }
+    ],
+    "name": "updateTrustedNodeChangeCoolingPeriod",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

@@ -53,22 +53,6 @@ func ClaimOperatorRewards(orc *stader.OperatorRewardsCollectorContractManager, o
 	return tx, nil
 }
 
-func EstimateWithdrawFromNodeElVault(client stader.ExecutionClient, nevAddress common.Address, opts *bind.TransactOpts) (stader.GasInfo, error) {
-	nev, err := stader.NewNodeElRewardVaultFactory(client, nevAddress)
-	if err != nil {
-		return stader.GasInfo{}, err
-	}
-	return nev.NodeElRewardVaultContract.GetTransactionGasInfo(opts, "withdraw")
-}
-
-func WithdrawFromNodeElVault(client stader.ExecutionClient, nevAddress common.Address, opts *bind.TransactOpts) (*types.Transaction, error) {
-	nev, err := stader.NewNodeElRewardVaultFactory(client, nevAddress)
-	if err != nil {
-		return nil, err
-	}
-	return nev.NodeElRewardVault.Withdraw(opts)
-}
-
 func GetOperatorId(pnr *stader.PermissionedNodeRegistryContractManager, nodeAddress common.Address, opts *bind.CallOpts) (*big.Int, error) {
 	operatorId, err := pnr.PermissionedNodeRegistry.OperatorIDByAddress(opts, nodeAddress)
 	if err != nil {
@@ -97,8 +81,4 @@ func GetOperatorRewardsCollectorBalance(orc *stader.OperatorRewardsCollectorCont
 
 func GetSocializingPoolContract(pp *stader.PermissionlessPoolContractManager, opts *bind.CallOpts) (common.Address, error) {
 	return pp.PermissionlessPool.GetSocializingPoolAddress(opts)
-}
-
-func GetNextOperatorId(pnr *stader.PermissionedNodeRegistryContractManager, opts *bind.CallOpts) (*big.Int, error) {
-	return pnr.PermissionedNodeRegistry.NextOperatorId(opts)
 }
