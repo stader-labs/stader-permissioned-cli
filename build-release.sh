@@ -27,7 +27,8 @@
 # === Functions ===
 # =================
 
-DOCKER_ACCOUNT=staderdev
+DOCKER_ACCOUNT=staderlabs
+S3_BUCKET=stader-cli-permissioned
 
 # Print a failure message to stderr and exit
 fail() {
@@ -55,7 +56,7 @@ build_install_packages() {
     tar cfJ stader-node-install.tar.xz install || fail "Error building installer package."
     mv stader-node-install.tar.xz build/$VERSION
     cp install.sh build/$VERSION
-    aws s3 cp build/$VERSION s3://stader-cli-beta/$VERSION --recursive
+    aws s3 cp build/$VERSION s3://$S3_BUCKET/$VERSION --recursive
     echo "done!"
 
 }

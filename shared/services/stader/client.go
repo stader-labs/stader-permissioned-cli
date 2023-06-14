@@ -53,7 +53,7 @@ import (
 
 // Config
 const (
-	InstallerURL string = "https://stader-cli-beta.s3.amazonaws.com/%s/install.sh"
+	InstallerURL string = "https://stader-cli-permissioned.s3.amazonaws.com/%s/install.sh"
 
 	SettingsFile             string = "user-settings.yml"
 	BackupSettingsFile       string = "user-settings-backup.yml"
