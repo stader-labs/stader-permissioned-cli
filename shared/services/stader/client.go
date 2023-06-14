@@ -267,7 +267,7 @@ func (c *Client) UpdatePrometheusConfiguration(settings map[string]string) error
 }
 
 // Install the Stader service
-func (c *Client) InstallService(verbose, noDeps bool, network, version, path string, dataPath string) error {
+func (c *Client) InstallService(verbose, noDeps bool, network, version, path string, dataPath string, bucket string) error {
 
 	downloader, err := c.getDownloader()
 	if err != nil {
@@ -287,6 +287,9 @@ func (c *Client) InstallService(verbose, noDeps bool, network, version, path str
 	}
 	if dataPath != "" {
 		flags = append(flags, fmt.Sprintf("-u %s", dataPath))
+	}
+	if bucket != "" {
+		flags = append(flags, fmt.Sprintf("-b %s", bucket))
 	}
 
 	// Initialize installation command
