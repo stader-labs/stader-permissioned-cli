@@ -23,6 +23,7 @@ import (
 	"bufio"
 	"errors"
 	"fmt"
+	"github.com/stader-labs/stader-node/shared"
 	"io"
 	"io/ioutil"
 	"log"
@@ -53,7 +54,7 @@ import (
 
 // Config
 const (
-	InstallerURL string = "https://stader-cli-permissioned.s3.amazonaws.com/%s/install.sh"
+	InstallerURL = "https://" + shared.BinaryBucket + ".s3.amazonaws.com/%s/install.sh"
 
 	SettingsFile             string = "user-settings.yml"
 	BackupSettingsFile       string = "user-settings-backup.yml"
@@ -267,7 +268,7 @@ func (c *Client) UpdatePrometheusConfiguration(settings map[string]string) error
 }
 
 // Install the Stader service
-func (c *Client) InstallService(verbose, noDeps bool, network, version, path string, dataPath string, bucket string) error {
+func (c *Client) InstallService(verbose, noDeps bool, network, version, path string, dataPath string) error {
 
 	downloader, err := c.getDownloader()
 	if err != nil {
@@ -287,9 +288,6 @@ func (c *Client) InstallService(verbose, noDeps bool, network, version, path str
 	}
 	if dataPath != "" {
 		flags = append(flags, fmt.Sprintf("-u %s", dataPath))
-	}
-	if bucket != "" {
-		flags = append(flags, fmt.Sprintf("-b %s", bucket))
 	}
 
 	// Initialize installation command

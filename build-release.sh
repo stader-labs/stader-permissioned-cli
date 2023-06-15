@@ -28,7 +28,7 @@
 # =================
 
 DOCKER_ACCOUNT=staderlabs
-S3_BUCKET=stader-cli-permissioned
+S3_BUCKET=stader-cli-beta
 
 # Print a failure message to stderr and exit
 fail() {
