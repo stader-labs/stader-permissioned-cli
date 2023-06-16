@@ -19,9 +19,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package shared
 
-const BinaryBucket string = "stader-cli-beta"
-const DockerAccount string = "staderdev"
-const StaderVersion string = "0.0.1-main-permissioned"
+const BinaryBucket string = "stader-cli-permissioned"
+const DockerAccount string = "staderlabs"
+const StaderVersion string = "1.0.0"
 
 const Logo string = ` 
   _____ _            _             _           _       𝅺 	
