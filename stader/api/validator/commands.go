@@ -79,7 +79,7 @@ func RegisterSubcommands(command *cli.Command, name string, aliases []string) {
 			{
 				Name:      "can-exit-validator",
 				Usage:     "Can validator exit",
-				UsageText: "stader-permissioned-cli api node can-exit-validator validator-pub-key",
+				UsageText: "stader-permissioned-cli api validator can-exit-validator validator-pub-key",
 				Action: func(c *cli.Context) error {
 
 					// Validate args
@@ -100,7 +100,7 @@ func RegisterSubcommands(command *cli.Command, name string, aliases []string) {
 			{
 				Name:      "exit-validator",
 				Usage:     "Exit validator",
-				UsageText: "stader-permissioned-cli api node exit-validator validator-pub-key",
+				UsageText: "stader-permissioned-cli api validator exit-validator validator-pub-key",
 				Action: func(c *cli.Context) error {
 
 					// Validate args
@@ -121,7 +121,7 @@ func RegisterSubcommands(command *cli.Command, name string, aliases []string) {
 			{
 				Name:      "can-send-cl-rewards",
 				Usage:     "Can send cl rewards of a validator to claim vault",
-				UsageText: "stader-permissioned-cli api node can-send-cl-rewards --validator-pub-key",
+				UsageText: "stader-permissioned-cli api validator can-send-cl-rewards --validator-pub-key",
 				Action: func(c *cli.Context) error {
 
 					validatorPubKey, err := cliutils.ValidatePubkey("validator-pub-key", c.Args().Get(0))
@@ -137,7 +137,7 @@ func RegisterSubcommands(command *cli.Command, name string, aliases []string) {
 			{
 				Name:      "send-cl-rewards",
 				Usage:     "send cl rewards of a validator to claim vault",
-				UsageText: "stader-permissioned-cli api node send-cl-rewards --validator-pub-key",
+				UsageText: "stader-permissioned-cli api validator send-cl-rewards --validator-pub-key",
 				Action: func(c *cli.Context) error {
 
 					validatorPubKey, err := cliutils.ValidatePubkey("validator-pub-key", c.Args().Get(0))
@@ -153,7 +153,7 @@ func RegisterSubcommands(command *cli.Command, name string, aliases []string) {
 			{
 				Name:      "get-validator-info",
 				Usage:     "Get info of a particular validator",
-				UsageText: "stader-permissioned-cli api node get-validator-info --validator-pub-key",
+				UsageText: "stader-permissioned-cli api validator get-validator-info --validator-pub-key",
 				Action: func(c *cli.Context) error {
 
 					validatorPubKey, err := cliutils.ValidatePubkey("validator-pub-key", c.Args().Get(0))
