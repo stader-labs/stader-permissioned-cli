@@ -151,7 +151,7 @@ func RegisterCommands(app *cli.App, name string, aliases []string) {
 				Name:      "claim-sp-rewards",
 				Aliases:   []string{"cspr"},
 				Usage:     "Claim Socializing Pool Rewards for given cycles",
-				UsageText: "stader-permissioned-cli node claim-sp-rewards --download-merkles-proofs --yes",
+				UsageText: "stader-permissioned-cli node claim-sp-rewards",
 				Flags: []cli.Flag{
 					cli.BoolFlag{
 						Name:  "yes, y",

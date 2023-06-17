@@ -44,7 +44,7 @@ func RegisterCommands(app *cli.App, name string, aliases []string) {
 				Name:      "send-cl-rewards",
 				Aliases:   []string{"ccr"},
 				Usage:     "Send all Consensus Layer rewards to the claim vault.",
-				UsageText: "stader-permissioned-cli node send-cl-rewards --validator-pub-key",
+				UsageText: "stader-permissioned-cli validator send-cl-rewards --validator-pub-key",
 				Flags: []cli.Flag{
 					cli.StringFlag{
 						Name:  "validator-pub-key, vpk",
@@ -69,7 +69,7 @@ func RegisterCommands(app *cli.App, name string, aliases []string) {
 				Name:      "exit-validator",
 				Aliases:   []string{"e"},
 				Usage:     "Exit validator",
-				UsageText: "stader-permissioned-cli node exit-validator --validator-pub-key",
+				UsageText: "stader-permissioned-cli validator exit-validator --validator-pub-key",
 				Flags: []cli.Flag{
 					cli.StringFlag{
 						Name:  "validator-pub-key, vpk",
@@ -96,7 +96,7 @@ func RegisterCommands(app *cli.App, name string, aliases []string) {
 				Name:      "get-validator-info",
 				Aliases:   []string{"gvi"},
 				Usage:     "Get info for a specific validator",
-				UsageText: "stader-permissioned-cli node get-validator-info --validator-pub-key",
+				UsageText: "stader-permissioned-cli validator get-validator-info --validator-pub-key",
 				Flags: []cli.Flag{
 					cli.StringFlag{
 						Name:  "validator-pub-key, vpk",
