@@ -9,17 +9,17 @@ require (
 	github.com/blang/semver/v4 v4.0.0
 	github.com/btcsuite/btcd v0.23.1
 	github.com/btcsuite/btcd/btcutil v1.1.2
-	github.com/docker/distribution v2.8.1+incompatible // indirect
+	github.com/docker/distribution v2.8.2+incompatible // indirect
 	github.com/docker/docker v20.10.18+incompatible
 	github.com/docker/go-connections v0.4.0 // indirect
-	github.com/dustin/go-humanize v1.0.0
 	github.com/ethereum/go-ethereum v1.10.26
 	github.com/fatih/color v1.13.0
 	github.com/ferranbt/fastssz v0.1.2
 	github.com/glendc/go-external-ip v0.1.0
+	github.com/go-ole/go-ole v1.2.6 // indirect
+	github.com/google/go-cmp v0.5.9 // indirect
 	github.com/google/uuid v1.3.0
 	github.com/herumi/bls-eth-go-binary v1.28.1 // indirect
-	github.com/imdario/mergo v0.3.13
 	github.com/klauspost/cpuid/v2 v2.1.1
 	github.com/mitchellh/go-homedir v1.1.0
 	github.com/moby/term v0.0.0-20220808134915-39b0c02b01ae // indirect
@@ -27,13 +27,12 @@ require (
 	github.com/opencontainers/go-digest v1.0.0 // indirect
 	github.com/opencontainers/image-spec v1.0.2 // indirect
 	github.com/pbnjay/memory v0.0.0-20210728143218-7b4eea64cf58
-	github.com/prometheus/client_golang v1.13.0
 	github.com/prysmaticlabs/go-bitfield v0.0.0-20210809151128-385d8c5e3fb7
 	github.com/prysmaticlabs/prysm/v3 v3.1.1
+	github.com/rivo/uniseg v0.4.4 // indirect
 	github.com/sethvargo/go-password v0.2.0
-	github.com/shirou/gopsutil/v3 v3.23.1
-	github.com/stader-labs/ethcli-ui/configuration v0.0.0-20230417074835-1faaf2c4a385
-	github.com/stader-labs/ethcli-ui/wizard v0.0.0-20230415152554-173e0a8a51a9
+	github.com/stretchr/testify v1.8.1 // indirect
+	github.com/tklauser/go-sysconf v0.3.11 // indirect
 	github.com/tyler-smith/go-bip39 v1.1.0
 	github.com/urfave/cli v1.22.10
 	github.com/wealdtech/go-eth2-types/v2 v2.7.0
@@ -42,7 +41,9 @@ require (
 	golang.org/x/crypto v0.7.0
 	golang.org/x/sync v0.1.0
 	golang.org/x/term v0.7.0
+	golang.org/x/text v0.9.0 // indirect
 	google.golang.org/grpc v1.49.0 // indirect
+	google.golang.org/protobuf v1.28.1 // indirect
 	gopkg.in/yaml.v2 v2.4.0
 	gotest.tools/v3 v3.3.0 // indirect
 )
