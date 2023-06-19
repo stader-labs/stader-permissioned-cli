@@ -17,9 +17,9 @@
 #stader-cli
 #.vscode
 #.DS_Store
-#stader-cli/stader-cli
+#stader-cli/stader-permissioned-cli
 
 *.log
 
 .vscode/launch.json
-stader-cli/stader-cli
+stader-cli/stader-permissioned-cli
