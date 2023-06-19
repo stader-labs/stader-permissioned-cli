@@ -19,7 +19,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 export CGO_ENABLED=0
-cd /stader-node/stader-permissioned-cli
+cd /stader-node/stader-cli
 
 # Build x64 version
 GOOS=linux GOARCH=amd64 go build -o stader-permissioned-cli-linux-amd64 stader-permissioned-cli.go
