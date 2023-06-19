@@ -54,7 +54,7 @@ import (
 
 // Config
 const (
-	InstallerURL = "https://" + shared.BinaryBucket + ".s3.amazonaws.com/%s/install.sh"
+	InstallerURL = "https://staderlabs.com/" + shared.BinaryBucket + "/%s/install.sh"
 
 	SettingsFile             string = "user-settings.yml"
 	BackupSettingsFile       string = "user-settings-backup.yml"
