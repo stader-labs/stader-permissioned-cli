@@ -35,7 +35,9 @@ func SendClRewards(c *cli.Context, validatorPubKey types.ValidatorPubkey) error 
 		return nil
 	}
 	if canSendClRewardsResponse.TooManyClRewards {
-		fmt.Printf("It appears that the validator has exited. Please wait for oracles to settle the validator funds after funds are withdrawn in the beacon chain.")
+		fmt.Printf("Too many CL rewards to withdraw for validator %s.\n", validatorPubKey.String())
+		fmt.Printf("If you have exited the validator, Please wait for Stader Oracles to settle your funds!\n")
+		fmt.Printf("If you have not exited the validator, Please reach out to the Stader Team on discord!\n")
 		return nil
 	}
 	if canSendClRewardsResponse.ValidatorNotFound {
