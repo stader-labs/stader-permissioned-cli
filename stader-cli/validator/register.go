@@ -74,7 +74,7 @@ func registerValidators(c *cli.Context, validatorPubKeyList string) error {
 
 	fmt.Println("Your validators are now in Initialized status.")
 	fmt.Println("Your validators will be matched with a 1Eth deposit by stader which will be followed by the remaining 31Eth deposit")
-	fmt.Println("You can check the status of your validator with `stader-permissioned-cli node status`.")
+	fmt.Println("You can check the status of your validator with `stader-permissioned-cli validator status`.")
 
 	return nil
 
