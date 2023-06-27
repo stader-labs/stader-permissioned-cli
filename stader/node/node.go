@@ -87,6 +87,11 @@ func run(c *cli.Context) error {
 		return err
 	}
 
+	publicKey, err := stader.GetPublicKey(c)
+	if err != nil {
+		return err
+	}
+
 	// Wait group to handle the various threads
 	wg := new(sync.WaitGroup)
 	wg.Add(2)
@@ -106,12 +111,6 @@ func run(c *cli.Context) error {
 					errorLog.Println(err)
 					continue
 				}
-			}
-
-			publicKey, err := stader.GetPublicKey(c)
-			if err != nil {
-				errorLog.Printf("Failed to get public key: %s\n", err.Error())
-				continue
 			}
 
 			operatorId, err := node.GetOperatorId(pnr, nodeAccount.Address, nil)
