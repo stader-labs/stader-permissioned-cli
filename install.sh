@@ -131,9 +131,9 @@ fi
 
 # Get package files URL
 if [ "$PACKAGE_VERSION" = "latest" ]; then
-    PACKAGE_URL="https://staderlabs.com/eth/stader-node-build/permissioned/latest/stader-node-install.tar.xz"
+    PACKAGE_URL="https://staderlabs.com/eth/releases/stader-node-build/permissioned/latest/stader-node-install.tar.xz"
 else
-    PACKAGE_URL="https://staderlabs.com/eth/stader-node-build/permissioned/$PACKAGE_VERSION/stader-node-install.tar.xz"
+    PACKAGE_URL="https://staderlabs.com/eth/releases/stader-node-build/permissioned/$PACKAGE_VERSION/stader-node-install.tar.xz"
 fi
 
 
