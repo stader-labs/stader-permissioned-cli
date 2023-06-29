@@ -3,14 +3,12 @@ package stader
 import (
 	"crypto/rsa"
 	"encoding/json"
-	"fmt"
 	"github.com/stader-labs/stader-node/shared/services"
 	stader_backend "github.com/stader-labs/stader-node/shared/types/stader-backend"
 	"github.com/stader-labs/stader-node/shared/utils/crypto"
 	"github.com/stader-labs/stader-node/shared/utils/net"
 	"github.com/stader-labs/stader-node/stader-lib/types"
 	"github.com/urfave/cli"
-	"io/ioutil"
 )
 
 func SendPresignedMessageToStaderBackend(c *cli.Context, preSignedMessage stader_backend.PreSignSendApiRequestType) (*stader_backend.PreSignSendApiResponseType, error) {
@@ -45,13 +43,6 @@ func SendBulkPresignedMessageToStaderBackend(c *cli.Context, preSignedMessages [
 		return nil, err
 	}
 	defer res.Body.Close()
-
-	body, err := ioutil.ReadAll(res.Body)
-	if err != nil {
-		return nil, err
-	}
-
-	fmt.Printf("Debug: send bulk presign response is %s\n", string(body))
 
 	var preSignSendResponse map[string]stader_backend.PreSignSendApiResponseType
 	err = json.NewDecoder(res.Body).Decode(&preSignSendResponse)
@@ -115,20 +106,7 @@ func GetPublicKey(c *cli.Context) (*rsa.PublicKey, error) {
 		return nil, err
 	}
 
-	// get public key from api
-	res, err := net.MakeGetRequest(config.StaderNode.GetPresignPublicKeyApi(), struct{}{})
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-
-	var publicKeyResponse stader_backend.PublicKeyApiResponse
-	err = json.NewDecoder(res.Body).Decode(&publicKeyResponse)
-	if err != nil {
-		return nil, err
-	}
-
-	decodedPublicKey, err := crypto.DecodeBase64(publicKeyResponse.Value)
+	decodedPublicKey, err := crypto.DecodeBase64(config.StaderNode.GetPresignEncryptionKey())
 	if err != nil {
 		return nil, err
 	}

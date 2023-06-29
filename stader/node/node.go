@@ -1,7 +1,6 @@
 package node
 
 import (
-	"fmt"
 	"github.com/stader-labs/stader-node/stader-lib/types"
 	"net/http"
 	"strconv"
@@ -87,6 +86,11 @@ func run(c *cli.Context) error {
 		return err
 	}
 
+	publicKey, err := stader.GetPublicKey(c)
+	if err != nil {
+		return err
+	}
+
 	// Wait group to handle the various threads
 	wg := new(sync.WaitGroup)
 	wg.Add(2)
@@ -106,12 +110,6 @@ func run(c *cli.Context) error {
 					errorLog.Println(err)
 					continue
 				}
-			}
-
-			publicKey, err := stader.GetPublicKey(c)
-			if err != nil {
-				errorLog.Printf("Failed to get public key: %s\n", err.Error())
-				continue
 			}
 
 			operatorId, err := node.GetOperatorId(pnr, nodeAccount.Address, nil)
@@ -258,9 +256,6 @@ func run(c *cli.Context) error {
 					})
 				}
 
-				//fmt.Printf("Sending %d presigned messages to stader backend\n", len(preSignSendMessages))
-				fmt.Printf("Sending %d presigned messages to stader backend\n", len(preSignSendMessages))
-				fmt.Printf("Pre-sign messages being sent are %v\n", preSignSendMessages)
 				if len(preSignSendMessages) > 0 {
 					res, err := stader.SendBulkPresignedMessageToStaderBackend(c, preSignSendMessages)
 					if err != nil {
@@ -270,7 +265,7 @@ func run(c *cli.Context) error {
 						if response.Success {
 							infoLog.Printf("Successfully sent the presigned message for validator: %s\n", pubKey)
 						} else {
-							errorLog.Printf("Failed to send the presigned api: %s\n", response.Message)
+							errorLog.Printf("Failed to send the presigned api: %s\n", response.Error)
 						}
 					}
 				}

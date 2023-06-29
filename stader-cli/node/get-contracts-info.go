@@ -35,6 +35,7 @@ func getContractsInfo(c *cli.Context) error {
 	fmt.Printf("Stader Oracle: %s\n\n", response.StaderOracle)
 	fmt.Printf("Stader Config: %s\n\n", response.StaderConfig)
 	fmt.Printf("Stake Pool Manager: %s\n\n", response.StakePoolManager)
+	fmt.Printf("Pre-sign encryption key is %s\n\n", response.EncryptionKey)
 
 	return nil
 }
