@@ -11,16 +11,19 @@ import (
 
 func BytesToPublicKey(pub []byte) (*rsa.PublicKey, error) {
 	block, _ := pem.Decode(pub)
+	if block == nil {
+		return nil, fmt.Errorf("failed to parse PEM block containing the key")
+	}
 	b := block.Bytes
 	var err error
 
-	key, err := x509.ParsePKCS1PublicKey(b)
+	key, err := x509.ParsePKIXPublicKey(b)
 	if err != nil {
 		fmt.Printf("Error using x509.ParsePKIXPublicKey %v\n", err)
 		return nil, err
 	}
 
-	return key, nil
+	return key.(*rsa.PublicKey), nil
 }
 
 func BytesToPrivateKey(pub []byte) (*rsa.PrivateKey, error) {
