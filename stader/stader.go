@@ -837,7 +837,7 @@ Public License instead of this License. But first, please read
 		Aliases: []string{"c"},
 		Usage:   "Show the copyright",
 		Action: func(c *cli.Context) error {
-			fmt.Println("(c) 2023 Rocket Pool Pty Ltd. Modified under GNU GPL v3. [1.0.0].\n(c) 2023 Stakeinfra Technologies Inc.")
+			fmt.Println("(c) 2023 Rocket Pool Pty Ltd. Modified under GNU GPL v3. [1.2.0].\n(c) 2023 Stakeinfra Technologies Inc.")
 			return nil
 		},
 	})
