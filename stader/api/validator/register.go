@@ -2,7 +2,9 @@ package validator
 
 import (
 	"fmt"
+	"github.com/prysmaticlabs/prysm/v3/crypto/bls"
 	string_utils "github.com/stader-labs/stader-node/shared/utils/string-utils"
+	"github.com/stader-labs/stader-node/shared/utils/validator"
 	"github.com/stader-labs/stader-node/stader-lib/node"
 	"github.com/stader-labs/stader-node/stader-lib/types"
 	"github.com/urfave/cli"
@@ -13,6 +15,31 @@ import (
 	"github.com/stader-labs/stader-node/shared/types/api"
 	"github.com/stader-labs/stader-node/shared/utils/eth1"
 )
+
+func VerifyDepositSignatures(validatorPubKey types.ValidatorPubkey, preDepositHash [32]byte, depositHash [32]byte, preDepositSignature string, depositSignature string) (bool, error) {
+	signaturesToVerify := [][]byte{}
+	signaturesToVerify = append(signaturesToVerify, []byte(preDepositSignature))
+	signaturesToVerify = append(signaturesToVerify, []byte(depositSignature))
+
+	msgsSigned := [][32]byte{}
+	msgsSigned = append(msgsSigned, preDepositHash)
+	msgsSigned = append(msgsSigned, depositHash)
+
+	pubKey, err := bls.PublicKeyFromBytes(validatorPubKey[:])
+	if err != nil {
+		return false, err
+	}
+	pubKeys := []bls.PublicKey{}
+	pubKeys = append(pubKeys, pubKey)
+	pubKeys = append(pubKeys, pubKey)
+
+	res, err := bls.VerifyMultipleSignatures(signaturesToVerify, msgsSigned, pubKeys)
+	if err != nil {
+		return false, err
+	}
+
+	return res, nil
+}
 
 func canRegisterValidators(c *cli.Context, validatorList string) (*api.CanRegisterValidatorsResponse, error) {
 	if err := services.RequireNodeWallet(c); err != nil {
@@ -180,6 +207,15 @@ func canRegisterValidators(c *cli.Context, validatorList string) (*api.CanRegist
 			return nil, err
 		}
 
+		_, preDepositRootHash, err := validator.GetDepositDataSigningRoot(validatorPubkey, withdrawCredentials, eth2Config, 1000000000)
+		if err != nil {
+			return nil, err
+		}
+		_, depositRootHash, err := validator.GetDepositDataSigningRoot(validatorPubkey, withdrawCredentials, eth2Config, 31000000000)
+		if err != nil {
+			return nil, err
+		}
+
 		preDepositSignature, err := web3SignerClient.GetDepositDataSignature(validatorPubkey, withdrawCredentials.String(), big.NewInt(1000000000), eth2Config)
 		if err != nil {
 			return nil, err
@@ -207,6 +243,14 @@ func canRegisterValidators(c *cli.Context, validatorList string) (*api.CanRegist
 		pubKeys[i] = decodedHexPubKey.Bytes()
 		preDepositSignatures[i] = decodedHexPreDepositSignature.Bytes()
 		depositSignatures[i] = decodedHexDepositSignature.Bytes()
+
+		res, err := VerifyDepositSignatures(decodedHexPubKey, preDepositRootHash, depositRootHash, preDepositSignature, depositSignature)
+		if err != nil {
+			return nil, err
+		}
+		if !res {
+			return nil, fmt.Errorf("Deposit signatures are invalid for validator: %s\n", decodedHexPubKey.String())
+		}
 
 		newValidatorKey.Add(newValidatorKey, big.NewInt(1))
 	}
