@@ -2,7 +2,7 @@ package validator
 
 import (
 	"fmt"
-	"github.com/prysmaticlabs/prysm/v3/crypto/bls"
+	"github.com/stader-labs/stader-node/shared/utils/eth2"
 	string_utils "github.com/stader-labs/stader-node/shared/utils/string-utils"
 	"github.com/stader-labs/stader-node/shared/utils/validator"
 	"github.com/stader-labs/stader-node/stader-lib/node"
@@ -15,31 +15,6 @@ import (
 	"github.com/stader-labs/stader-node/shared/types/api"
 	"github.com/stader-labs/stader-node/shared/utils/eth1"
 )
-
-func VerifyDepositSignatures(validatorPubKey types.ValidatorPubkey, preDepositHash [32]byte, depositHash [32]byte, preDepositSignature string, depositSignature string) (bool, error) {
-	signaturesToVerify := [][]byte{}
-	signaturesToVerify = append(signaturesToVerify, []byte(preDepositSignature))
-	signaturesToVerify = append(signaturesToVerify, []byte(depositSignature))
-
-	msgsSigned := [][32]byte{}
-	msgsSigned = append(msgsSigned, preDepositHash)
-	msgsSigned = append(msgsSigned, depositHash)
-
-	pubKey, err := bls.PublicKeyFromBytes(validatorPubKey[:])
-	if err != nil {
-		return false, err
-	}
-	pubKeys := []bls.PublicKey{}
-	pubKeys = append(pubKeys, pubKey)
-	pubKeys = append(pubKeys, pubKey)
-
-	res, err := bls.VerifyMultipleSignatures(signaturesToVerify, msgsSigned, pubKeys)
-	if err != nil {
-		return false, err
-	}
-
-	return res, nil
-}
 
 func canRegisterValidators(c *cli.Context, validatorList string) (*api.CanRegisterValidatorsResponse, error) {
 	if err := services.RequireNodeWallet(c); err != nil {
@@ -244,7 +219,14 @@ func canRegisterValidators(c *cli.Context, validatorList string) (*api.CanRegist
 		preDepositSignatures[i] = decodedHexPreDepositSignature.Bytes()
 		depositSignatures[i] = decodedHexDepositSignature.Bytes()
 
-		res, err := VerifyDepositSignatures(decodedHexPubKey, preDepositRootHash, depositRootHash, preDepositSignature, depositSignature)
+		res, err := eth2.VerifyBlsSignatures(decodedHexPubKey, preDepositRootHash, decodedHexPreDepositSignature)
+		if err != nil {
+			return nil, err
+		}
+		if !res {
+			return nil, fmt.Errorf("Pre-Deposit signatures are invalid for validator: %s\n", decodedHexPubKey.String())
+		}
+		res, err = eth2.VerifyBlsSignatures(decodedHexPubKey, depositRootHash, decodedHexDepositSignature)
 		if err != nil {
 			return nil, err
 		}

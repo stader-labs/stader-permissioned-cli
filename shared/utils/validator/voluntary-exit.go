@@ -58,3 +58,30 @@ func GetSignedExitMessage(validatorKey *eth2types.BLSPrivateKey, validatorIndex 
 	return types.BytesToValidatorSignature(signature), srHash, nil
 
 }
+
+func GetExitMessageHash(validatorIndex uint64, epoch uint64, signatureDomain []byte) ([32]byte, error) {
+	// Build voluntary exit message
+	exitMessage := eth2.VoluntaryExit{
+		Epoch:          epoch,
+		ValidatorIndex: validatorIndex,
+	}
+
+	// Get object root
+	or, err := exitMessage.HashTreeRoot()
+	if err != nil {
+		return [32]byte{}, err
+	}
+
+	// Get signing root
+	sr := eth2.SigningRoot{
+		ObjectRoot: or[:],
+		Domain:     signatureDomain,
+	}
+
+	srHash, err := sr.HashTreeRoot()
+	if err != nil {
+		return [32]byte{}, nil
+	}
+
+	return srHash, nil
+}

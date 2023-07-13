@@ -20,7 +20,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package eth2
 
 import (
+	"github.com/prysmaticlabs/prysm/v3/crypto/bls"
 	"github.com/stader-labs/stader-node/shared/services/beacon"
+	"github.com/stader-labs/stader-node/stader-lib/types"
 )
 
 // Get an eth2 epoch number by time
@@ -53,4 +55,26 @@ func IsValidatorActive(validatorStatus beacon.ValidatorStatus) bool {
 	}
 
 	return false
+}
+
+func VerifyBlsSignatures(validatorPubKey types.ValidatorPubkey, msg [32]byte, signature types.ValidatorSignature) (bool, error) {
+	signaturesToVerify := [][]byte{}
+	signaturesToVerify = append(signaturesToVerify, signature.Bytes())
+
+	msgsSigned := [][32]byte{}
+	msgsSigned = append(msgsSigned, msg)
+
+	pubKey, err := bls.PublicKeyFromBytes(validatorPubKey[:])
+	if err != nil {
+		return false, err
+	}
+	pubKeys := []bls.PublicKey{}
+	pubKeys = append(pubKeys, pubKey)
+
+	res, err := bls.VerifyMultipleSignatures(signaturesToVerify, msgsSigned, pubKeys)
+	if err != nil {
+		return false, err
+	}
+
+	return res, nil
 }
