@@ -12,6 +12,10 @@ import (
 	"time"
 )
 
+const POOL_TYPE = 2
+const PRE_DEPOSIT_AMOUNT = 1000000000
+const DEPOSIT_AMOUNT = 31000000000
+
 var ValidatorState = map[uint8]string{
 	0: "Initialized",
 	1: "Invalid Signature Submitted",

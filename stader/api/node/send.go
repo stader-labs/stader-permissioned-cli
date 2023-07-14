@@ -53,7 +53,7 @@ func canNodeSend(c *cli.Context, amountWei *big.Int, token string) (*api.CanNode
 	if err != nil {
 		return nil, err
 	}
-	ethxt, err := services.GetEthxTokenContract(c)
+	ethxt, err := services.GetETHxTokenContract(c)
 	if err != nil {
 		return nil, err
 	}
@@ -143,7 +143,7 @@ func nodeSend(c *cli.Context, amountWei *big.Int, token string, to common.Addres
 	if err != nil {
 		return nil, err
 	}
-	ethxt, err := services.GetEthxTokenContract(c)
+	ethxt, err := services.GetETHxTokenContract(c)
 	if err != nil {
 		return nil, err
 	}

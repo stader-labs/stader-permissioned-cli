@@ -89,7 +89,7 @@ func RegisterCommands(app *cli.App, name string, aliases []string) {
 			{
 				Name:      "send",
 				Aliases:   []string{"n"},
-				Usage:     "Send ETH or SD, EthX tokens from the node account to an address.",
+				Usage:     "Send ETH,SD or ETHx tokens from the node account to an address.",
 				UsageText: "stader-permissioned-cli node send [options] amount token to",
 				Flags: []cli.Flag{
 					cli.BoolFlag{

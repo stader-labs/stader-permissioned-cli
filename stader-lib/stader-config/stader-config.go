@@ -35,7 +35,7 @@ func GetSdTokenAddress(sdConfig *stader.StaderConfigContractManager, opts *bind.
 	return sdConfig.StaderConfig.GetStaderToken(opts)
 }
 
-func GetEthxTokenAddress(sdConfig *stader.StaderConfigContractManager, opts *bind.CallOpts) (common.Address, error) {
+func GetETHxTokenAddress(sdConfig *stader.StaderConfigContractManager, opts *bind.CallOpts) (common.Address, error) {
 	return sdConfig.StaderConfig.GetETHxToken(opts)
 }
 

@@ -140,7 +140,7 @@ type ContractsInfoResponse struct {
 	BeaconNetwork            uint64         `json:"beaconNetwork"`
 	PermissionedNodeRegistry common.Address `json:"permissionedNodeRegistry"`
 	VaultFactory             common.Address `json:"vaultFactory"`
-	EthxToken                common.Address `json:"ethxToken"`
+	ETHxToken                common.Address `json:"ethxToken"`
 	SdToken                  common.Address `json:"sdToken"`
 	SdCollateralContract     common.Address `json:"sdCollateralContract"`
 	SocializingPoolContract  common.Address `json:"socializingPoolContract"`

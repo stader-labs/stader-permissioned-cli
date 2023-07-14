@@ -153,13 +153,13 @@ func GetSdTokenAddress(c *cli.Context) (common.Address, error) {
 	return stader_config.GetSdTokenAddress(sdcfg, nil)
 }
 
-func GetEthxTokenAddress(c *cli.Context) (common.Address, error) {
+func GetETHxTokenAddress(c *cli.Context) (common.Address, error) {
 	sdcfg, err := GetStaderConfigContract(c)
 	if err != nil {
 		return common.Address{}, err
 	}
 
-	return stader_config.GetEthxTokenAddress(sdcfg, nil)
+	return stader_config.GetETHxTokenAddress(sdcfg, nil)
 }
 
 func GetSocializingPoolAddress(c *cli.Context) (common.Address, error) {
@@ -303,7 +303,7 @@ func GetSdTokenContract(c *cli.Context) (*stader.Erc20TokenContractManager, erro
 	return stader.NewErc20TokenContract(ec, sdTokenAddress)
 }
 
-func GetEthxTokenContract(c *cli.Context) (*stader.Erc20TokenContractManager, error) {
+func GetETHxTokenContract(c *cli.Context) (*stader.Erc20TokenContractManager, error) {
 	cfg, err := getConfig(c)
 	if err != nil {
 		return nil, err
@@ -313,7 +313,7 @@ func GetEthxTokenContract(c *cli.Context) (*stader.Erc20TokenContractManager, er
 		return nil, err
 	}
 
-	ethxTokenAddress, err := GetEthxTokenAddress(c)
+	ethxTokenAddress, err := GetETHxTokenAddress(c)
 	if err != nil {
 		return nil, err
 	}
