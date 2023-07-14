@@ -28,7 +28,7 @@ func getContractsInfo(c *cli.Context) error {
 	fmt.Printf("Network: %d\n\n", response.Network)
 	fmt.Printf("Permissioned Node Registry: %s\n\n", response.PermissionedNodeRegistry)
 	fmt.Printf("Vault Factory: %s\n\n", response.VaultFactory)
-	fmt.Printf("EthX Token: %s\n\n", response.EthxToken)
+	fmt.Printf("ETHx Token: %s\n\n", response.ETHxToken)
 	fmt.Printf("Sd Token: %s\n\n", response.SdToken)
 	fmt.Printf("Socializing Pool: %s\n\n", response.SocializingPoolContract)
 	fmt.Printf("Permissioned Pool: %s\n\n", response.PermissionedPool)

@@ -3,6 +3,7 @@ package validator
 import (
 	"fmt"
 	"github.com/stader-labs/stader-node/shared/utils/eth2"
+	"github.com/stader-labs/stader-node/shared/utils/stdr"
 	string_utils "github.com/stader-labs/stader-node/shared/utils/string-utils"
 	"github.com/stader-labs/stader-node/shared/utils/validator"
 	"github.com/stader-labs/stader-node/stader-lib/node"
@@ -172,7 +173,7 @@ func canRegisterValidators(c *cli.Context, validatorList string) (*api.CanRegist
 	newValidatorKey := operatorKeyCount
 
 	for i, validatorPubkey := range validators {
-		rewardWithdrawVault, err := node.ComputeWithdrawVaultAddress(vfc, 2, operatorId, newValidatorKey, nil)
+		rewardWithdrawVault, err := node.ComputeWithdrawVaultAddress(vfc, stdr.POOL_TYPE, operatorId, newValidatorKey, nil)
 		if err != nil {
 			return nil, err
 		}
@@ -182,20 +183,20 @@ func canRegisterValidators(c *cli.Context, validatorList string) (*api.CanRegist
 			return nil, err
 		}
 
-		_, preDepositRootHash, err := validator.GetDepositDataSigningRoot(validatorPubkey[2:], withdrawCredentials, eth2Config, 1000000000)
+		_, preDepositRootHash, err := validator.GetDepositDataSigningRoot(validatorPubkey[2:], withdrawCredentials, eth2Config, stdr.PRE_DEPOSIT_AMOUNT)
 		if err != nil {
 			return nil, err
 		}
-		_, depositRootHash, err := validator.GetDepositDataSigningRoot(validatorPubkey[2:], withdrawCredentials, eth2Config, 31000000000)
+		_, depositRootHash, err := validator.GetDepositDataSigningRoot(validatorPubkey[2:], withdrawCredentials, eth2Config, stdr.DEPOSIT_AMOUNT)
 		if err != nil {
 			return nil, err
 		}
 
-		preDepositSignature, err := web3SignerClient.GetDepositDataSignature(validatorPubkey, withdrawCredentials.String(), big.NewInt(1000000000), eth2Config)
+		preDepositSignature, err := web3SignerClient.GetDepositDataSignature(validatorPubkey, withdrawCredentials.String(), big.NewInt(stdr.PRE_DEPOSIT_AMOUNT), eth2Config)
 		if err != nil {
 			return nil, err
 		}
-		depositSignature, err := web3SignerClient.GetDepositDataSignature(validatorPubkey, withdrawCredentials.String(), big.NewInt(31000000000), eth2Config)
+		depositSignature, err := web3SignerClient.GetDepositDataSignature(validatorPubkey, withdrawCredentials.String(), big.NewInt(stdr.DEPOSIT_AMOUNT), eth2Config)
 		if err != nil {
 			return nil, err
 		}
@@ -321,7 +322,7 @@ func registerValidators(c *cli.Context, validatorList string) (*api.ValidatorReg
 
 	for i, validatorPubkey := range validators {
 
-		rewardWithdrawVault, err := node.ComputeWithdrawVaultAddress(vfc, 2, operatorId, newValidatorKey, nil)
+		rewardWithdrawVault, err := node.ComputeWithdrawVaultAddress(vfc, stdr.POOL_TYPE, operatorId, newValidatorKey, nil)
 		if err != nil {
 			return nil, err
 		}
@@ -331,11 +332,11 @@ func registerValidators(c *cli.Context, validatorList string) (*api.ValidatorReg
 			return nil, err
 		}
 
-		preDepositSignature, err := web3SignerClient.GetDepositDataSignature(validatorPubkey, withdrawCredentials.String(), big.NewInt(1000000000), eth2Config)
+		preDepositSignature, err := web3SignerClient.GetDepositDataSignature(validatorPubkey, withdrawCredentials.String(), big.NewInt(stdr.PRE_DEPOSIT_AMOUNT), eth2Config)
 		if err != nil {
 			return nil, err
 		}
-		depositSignature, err := web3SignerClient.GetDepositDataSignature(validatorPubkey, withdrawCredentials.String(), big.NewInt(31000000000), eth2Config)
+		depositSignature, err := web3SignerClient.GetDepositDataSignature(validatorPubkey, withdrawCredentials.String(), big.NewInt(stdr.DEPOSIT_AMOUNT), eth2Config)
 		if err != nil {
 			return nil, err
 		}

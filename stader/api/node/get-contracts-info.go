@@ -33,7 +33,7 @@ func getContractsInfo(c *cli.Context) (*api.ContractsInfoResponse, error) {
 
 	response.BeaconNetwork = eth2DepositContract.ChainID
 	response.BeaconDepositContract = eth2DepositContract.Address
-	response.EthxToken, err = services.GetEthxTokenAddress(c)
+	response.ETHxToken, err = services.GetETHxTokenAddress(c)
 	if err != nil {
 		return nil, err
 	}
