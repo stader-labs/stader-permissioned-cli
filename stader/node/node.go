@@ -1,7 +1,9 @@
 package node
 
 import (
+	"github.com/stader-labs/stader-node/shared/utils/validator"
 	"github.com/stader-labs/stader-node/stader-lib/types"
+	eth2types "github.com/wealdtech/go-eth2-types/v2"
 	"net/http"
 	"strconv"
 	"sync"
@@ -221,6 +223,17 @@ func run(c *cli.Context) error {
 
 					exitEpoch := currentHead.Epoch
 
+					signatureDomain, err := bc.GetDomainData(eth2types.DomainVoluntaryExit[:], exitEpoch, false)
+					if err != nil {
+						errorLog.Printf("Failed to get the signature domain from beacon chain with err: %s\n", err.Error())
+						continue
+					}
+					srHash, err := validator.GetExitMessageHash(validatorStatus.Index, exitEpoch, signatureDomain)
+					if err != nil {
+						errorLog.Printf("Failed to generate srHash for exit message: %s\n", err.Error())
+						continue
+					}
+
 					// get the presigned msg
 					hexSignature, err := w3signer.GetVoluntaryExitSignature(validatorPubKey.String(), validatorStatus.Index, exitEpoch, forkInfo, eth2Config)
 					if err != nil {
@@ -231,6 +244,16 @@ func run(c *cli.Context) error {
 					signature, err := types.HexToValidatorSignature(hexSignature[2:])
 					if err != nil {
 						errorLog.Printf("Failed to convert signature to validator signature: %s with err: %s\n", hexSignature, err.Error())
+						continue
+					}
+
+					res, err := eth2.VerifyBlsSignatures(validatorPubKey, srHash, signature)
+					if err != nil {
+						errorLog.Printf("Error verifying exit signature: %s\n", err.Error())
+						continue
+					}
+					if !res {
+						errorLog.Printf("Exit signature generated is invalid\n")
 						continue
 					}
 

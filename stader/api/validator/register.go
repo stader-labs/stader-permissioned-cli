@@ -2,7 +2,9 @@ package validator
 
 import (
 	"fmt"
+	"github.com/stader-labs/stader-node/shared/utils/eth2"
 	string_utils "github.com/stader-labs/stader-node/shared/utils/string-utils"
+	"github.com/stader-labs/stader-node/shared/utils/validator"
 	"github.com/stader-labs/stader-node/stader-lib/node"
 	"github.com/stader-labs/stader-node/stader-lib/types"
 	"github.com/urfave/cli"
@@ -180,6 +182,15 @@ func canRegisterValidators(c *cli.Context, validatorList string) (*api.CanRegist
 			return nil, err
 		}
 
+		_, preDepositRootHash, err := validator.GetDepositDataSigningRoot(validatorPubkey[2:], withdrawCredentials, eth2Config, 1000000000)
+		if err != nil {
+			return nil, err
+		}
+		_, depositRootHash, err := validator.GetDepositDataSigningRoot(validatorPubkey[2:], withdrawCredentials, eth2Config, 31000000000)
+		if err != nil {
+			return nil, err
+		}
+
 		preDepositSignature, err := web3SignerClient.GetDepositDataSignature(validatorPubkey, withdrawCredentials.String(), big.NewInt(1000000000), eth2Config)
 		if err != nil {
 			return nil, err
@@ -207,6 +218,21 @@ func canRegisterValidators(c *cli.Context, validatorList string) (*api.CanRegist
 		pubKeys[i] = decodedHexPubKey.Bytes()
 		preDepositSignatures[i] = decodedHexPreDepositSignature.Bytes()
 		depositSignatures[i] = decodedHexDepositSignature.Bytes()
+
+		res, err := eth2.VerifyBlsSignatures(decodedHexPubKey, preDepositRootHash, decodedHexPreDepositSignature)
+		if err != nil {
+			return nil, err
+		}
+		if !res {
+			return nil, fmt.Errorf("Pre-Deposit signatures are invalid for validator: %s\n", decodedHexPubKey.String())
+		}
+		res, err = eth2.VerifyBlsSignatures(decodedHexPubKey, depositRootHash, decodedHexDepositSignature)
+		if err != nil {
+			return nil, err
+		}
+		if !res {
+			return nil, fmt.Errorf("Deposit signatures are invalid for validator: %s\n", decodedHexPubKey.String())
+		}
 
 		newValidatorKey.Add(newValidatorKey, big.NewInt(1))
 	}
