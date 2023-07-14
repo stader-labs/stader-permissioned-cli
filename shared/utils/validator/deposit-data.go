@@ -20,7 +20,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package validator
 
 import (
-	"fmt"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/stader-labs/stader-node/shared/types/eth2"
 	"github.com/stader-labs/stader-node/stader-lib/types"
@@ -79,7 +78,6 @@ func GetDepositDataSigningRoot(validatorPubKey string, withdrawCredentials commo
 	if err != nil {
 		return eth2.DepositDataNoSignature{}, common.Hash{}, err
 	}
-	fmt.Printf("validatorPubKeyHex: %s", validatorPubKeyHex.String())
 	dd := eth2.DepositDataNoSignature{
 		PublicKey:             validatorPubKeyHex[:],
 		WithdrawalCredentials: withdrawCredentials[:],

@@ -182,11 +182,11 @@ func canRegisterValidators(c *cli.Context, validatorList string) (*api.CanRegist
 			return nil, err
 		}
 
-		_, preDepositRootHash, err := validator.GetDepositDataSigningRoot(validatorPubkey, withdrawCredentials, eth2Config, 1000000000)
+		_, preDepositRootHash, err := validator.GetDepositDataSigningRoot(validatorPubkey[2:], withdrawCredentials, eth2Config, 1000000000)
 		if err != nil {
 			return nil, err
 		}
-		_, depositRootHash, err := validator.GetDepositDataSigningRoot(validatorPubkey, withdrawCredentials, eth2Config, 31000000000)
+		_, depositRootHash, err := validator.GetDepositDataSigningRoot(validatorPubkey[2:], withdrawCredentials, eth2Config, 31000000000)
 		if err != nil {
 			return nil, err
 		}
