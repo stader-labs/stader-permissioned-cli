@@ -223,13 +223,11 @@ func run(c *cli.Context) error {
 
 					exitEpoch := currentHead.Epoch
 
-					infoLog.Printf("Getting signature domain\n")
 					signatureDomain, err := bc.GetDomainData(eth2types.DomainVoluntaryExit[:], exitEpoch, false)
 					if err != nil {
 						errorLog.Printf("Failed to get the signature domain from beacon chain with err: %s\n", err.Error())
 						continue
 					}
-					infoLog.Printf("Getting exit message hash\n")
 					srHash, err := validator.GetExitMessageHash(validatorStatus.Index, exitEpoch, signatureDomain)
 					if err != nil {
 						errorLog.Printf("Failed to generate srHash for exit message: %s\n", err.Error())
@@ -249,7 +247,6 @@ func run(c *cli.Context) error {
 						continue
 					}
 
-					infoLog.Printlnf("Verifying signature\n")
 					res, err := eth2.VerifyBlsSignatures(validatorPubKey, srHash, signature)
 					if err != nil {
 						errorLog.Printf("Error verifying exit signature: %s\n", err.Error())
@@ -259,7 +256,6 @@ func run(c *cli.Context) error {
 						errorLog.Printf("Exit signature generated is invalid\n")
 						continue
 					}
-					infoLog.Printlnf("Successfully verified signature!")
 
 					// encrypt the signature and srHash
 					exitSignatureEncrypted, err := crypto.EncryptUsingPublicKey([]byte(signature.String()), publicKey)
