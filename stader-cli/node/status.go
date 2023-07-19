@@ -6,6 +6,7 @@ import (
 	cliutils "github.com/stader-labs/stader-node/shared/utils/cli"
 	"github.com/stader-labs/stader-node/shared/utils/log"
 	"github.com/stader-labs/stader-node/shared/utils/math"
+	"github.com/stader-labs/stader-node/shared/utils/net"
 	"github.com/stader-labs/stader-node/stader-lib/utils/eth"
 	"github.com/urfave/cli"
 	"math/big"
@@ -54,8 +55,16 @@ func getStatus(c *cli.Context) error {
 	}
 
 	fmt.Printf("%s=== Services Connection Status ===%s\n", log.ColorGreen, log.ColorReset)
+	isHttpsUrl, err := net.IsUrlHttps(status.Web3SignerUrl)
+	if err != nil {
+		return err
+	}
 	if status.Web3SignerConnectionSuccess {
-		fmt.Printf("The node is connected to the Web3Signer at %s.\n\n", status.Web3SignerUrl)
+		fmt.Printf("The node is connected to the Web3Signer at %s.\n", status.Web3SignerUrl)
+		if !isHttpsUrl {
+			fmt.Printf("%sWARNING: The Web3Signer is not using HTTPS. Please use HTTPS for security reasons.%s\n", log.ColorRed, log.ColorReset)
+		}
+		fmt.Printf("\n")
 	} else {
 		fmt.Printf("Web3Signer Connection Failed with error: %s. \n\n", status.Web3SignerConnectionError)
 	}
