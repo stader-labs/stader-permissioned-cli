@@ -95,7 +95,6 @@ type CanRegisterValidatorsResponse struct {
 	Error                    string         `json:"error"`
 	CanDeposit               bool           `json:"CanDeposit"`
 	InsufficientBalance      bool           `json:"insufficientBalance"`
-	InvalidAmount            bool           `json:"invalidAmount"`
 	OperatorNotRegistered    bool           `json:"operatorNotRegistered"`
 	OperatorNotActive        bool           `json:"operatorNotActive"`
 	DepositPaused            bool           `json:"depositPaused"`
