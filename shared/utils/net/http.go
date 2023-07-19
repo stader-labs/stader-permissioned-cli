@@ -55,3 +55,12 @@ func MakeGetRequest(requestUrl string, queryParameters interface{}) (*http.Respo
 
 	return resp, nil
 }
+
+func IsUrlHttps(httpUrl string) (bool, error) {
+	parsedUrl, err := url.Parse(httpUrl)
+	if err != nil {
+		return false, err
+	}
+
+	return parsedUrl.Scheme == "https", nil
+}
