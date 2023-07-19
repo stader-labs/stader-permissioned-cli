@@ -21,6 +21,7 @@ package config
 
 import (
 	"fmt"
+	"github.com/stader-labs/stader-node/shared/utils/net"
 	"io/ioutil"
 	"net/url"
 	"os"
@@ -369,6 +370,14 @@ func (cfg *StaderConfig) GetChanges(oldConfig *StaderConfig) (map[string][]confi
 // Checks to see if the current configuration is valid; if not, returns a list of errors
 func (cfg *StaderConfig) Validate() []string {
 	errors := []string{}
+	// check if web3signer url is https
+	web3SignerUrl := cfg.ExternalWeb3Signer.HttpUrl.Value.(string)
+	isHttps, err := net.IsUrlHttps(web3SignerUrl)
+	if err != nil {
+		errors = append(errors, fmt.Sprintf("error validating web3signer url: %s", err.Error()))
+	} else if !isHttps {
+		errors = append(errors, fmt.Sprintf("web3signer url must be https"))
+	}
 
 	return errors
 }
