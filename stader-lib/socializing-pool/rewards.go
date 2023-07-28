@@ -37,3 +37,7 @@ func HasClaimedRewards(sp *stader.SocializingPoolContractManager, address common
 func IsSocializingPoolPaused(sp *stader.SocializingPoolContractManager, opts *bind.CallOpts) (bool, error) {
 	return sp.SocializingPool.Paused(opts)
 }
+
+func GetSocializingPoolInitialBlock(sp *stader.SocializingPoolContractManager, opts *bind.CallOpts) (*big.Int, error) {
+	return sp.SocializingPool.InitialBlock(opts)
+}
