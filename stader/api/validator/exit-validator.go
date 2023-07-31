@@ -1,12 +1,15 @@
 package validator
 
 import (
+	"fmt"
 	"github.com/stader-labs/stader-node/shared/services"
 	"github.com/stader-labs/stader-node/shared/types/api"
 	"github.com/stader-labs/stader-node/shared/utils/eth2"
+	"github.com/stader-labs/stader-node/shared/utils/validator"
 	"github.com/stader-labs/stader-node/stader-lib/node"
 	"github.com/stader-labs/stader-node/stader-lib/types"
 	"github.com/urfave/cli"
+	eth2types "github.com/wealdtech/go-eth2-types/v2"
 	"math/big"
 )
 
@@ -112,10 +115,32 @@ func exitValidator(c *cli.Context, validatorPubKey types.ValidatorPubkey) (*api.
 		return nil, err
 	}
 
-	//fmt.Printf("hex version of pub key is %s\n", validatorPubKey.Hex())
 	hexExitSignature, err := w3signer.GetVoluntaryExitSignature(validatorPubKey.String(), validatorIndex, head.Epoch, forkInfo, eth2Config)
 	if err != nil {
 		return nil, err
+	}
+
+	signature, err := types.HexToValidatorSignature(hexExitSignature[2:])
+	if err != nil {
+		return nil, err
+	}
+
+	signatureDomain, err := bc.GetDomainData(eth2types.DomainVoluntaryExit[:], head.Epoch, false)
+	if err != nil {
+		return nil, err
+	}
+
+	srHash, err := validator.GetExitMessageHash(validatorIndex, head.Epoch, signatureDomain)
+	if err != nil {
+		return nil, err
+	}
+
+	res, err := eth2.VerifyBlsSignatures(validatorPubKey, srHash, signature)
+	if err != nil {
+		return nil, err
+	}
+	if !res {
+		return nil, fmt.Errorf("invalid signature")
 	}
 	exitSignature, err := types.HexToValidatorSignature(hexExitSignature[2:])
 	if err != nil {
