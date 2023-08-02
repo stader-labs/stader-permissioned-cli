@@ -62,7 +62,7 @@ func getValidatorStatus(c *cli.Context) error {
 		return nil
 	}
 
-	fmt.Printf("Download all your validator details to a csv file using %sstader-permissioned-cli validator export%scommand\n\n", log.ColorGreen, log.ColorReset)
+	fmt.Printf("Download all your validator details to a csv file using %sstader-permissioned-cli validator export%s command\n\n", log.ColorGreen, log.ColorReset)
 
 	for i := 0; i < len(status.ValidatorInfos); i++ {
 		fmt.Printf("%d)\n", i+1)
