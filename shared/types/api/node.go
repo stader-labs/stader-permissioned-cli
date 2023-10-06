@@ -1,10 +1,11 @@
 package api
 
 import (
-	stader_backend "github.com/stader-labs/stader-node/shared/types/stader-backend"
-	"github.com/stader-labs/stader-node/stader-lib/contracts"
 	"math/big"
 	"time"
+
+	stader_backend "github.com/stader-labs/stader-node/shared/types/stader-backend"
+	"github.com/stader-labs/stader-node/stader-lib/contracts"
 
 	"github.com/stader-labs/stader-node/shared/utils/stdr"
 	"github.com/stader-labs/stader-node/stader-lib/stader"
@@ -376,12 +377,13 @@ type UpdateOperatorName struct {
 }
 
 type CanUpdateOperatorRewardAddress struct {
-	Status                    string         `json:"status"`
-	Error                     string         `json:"error"`
-	OperatorNotActive         bool           `json:"operatorNotActive"`
-	OperatorRewardAddressZero bool           `json:"operatorRewardAddressZero"`
-	NothingToUpdate           bool           `json:"nothingToUpdate"`
-	GasInfo                   stader.GasInfo `json:"gasInfo"`
+	Status                             string         `json:"status"`
+	Error                              string         `json:"error"`
+	OperatorNotActive                  bool           `json:"operatorNotActive"`
+	OperatorRewardAddressZero          bool           `json:"operatorRewardAddressZero"`
+	NothingToUpdate                    bool           `json:"nothingToUpdate"`
+	OperatorAddressAndRewardNotTheSame bool           `json:"operatorAddressAndRewardNotTheSame"`
+	GasInfo                            stader.GasInfo `json:"gasInfo"`
 }
 
 type UpdateOperatorRewardAddress struct {

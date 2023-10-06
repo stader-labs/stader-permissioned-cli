@@ -2,6 +2,7 @@ package node
 
 import (
 	"fmt"
+
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/stader-labs/stader-node/shared/services"
 	"github.com/stader-labs/stader-node/shared/types/api"
@@ -52,6 +53,11 @@ func CanUpdateOperatorRewardAddress(c *cli.Context, operatorRewardAddress common
 		return &response, nil
 	}
 
+	if operatorInfo.OperatorAddress != operatorInfo.OperatorRewardAddress {
+		response.OperatorAddressAndRewardNotTheSame = true
+		return &response, nil
+	}
+
 	if eth1.IsZeroAddress(operatorRewardAddress) {
 		response.OperatorRewardAddressZero = true
 		return &response, nil
@@ -63,7 +69,7 @@ func CanUpdateOperatorRewardAddress(c *cli.Context, operatorRewardAddress common
 	}
 
 	// estimate gas
-	gasInfo, err := node.EstimateUpdateOperatorDetails(pnr, operatorInfo.OperatorName, operatorRewardAddress, opts)
+	gasInfo, err := node.EstimateUpdateOperatorRewardAddress(pnr, nodeAccount.Address, operatorRewardAddress, opts)
 	if err != nil {
 		return nil, err
 	}
@@ -108,7 +114,7 @@ func UpdateOperatorRewardAddress(c *cli.Context, operatorRewardAddress common.Ad
 		return nil, err
 	}
 
-	tx, err := node.UpdateOperatorDetails(pnr, operatorInfo.OperatorName, operatorRewardAddress, opts)
+	tx, err := node.UpdateOperatorRewardAddress(pnr, operatorInfo.OperatorAddress, operatorRewardAddress, opts)
 	if err != nil {
 		return nil, err
 	}

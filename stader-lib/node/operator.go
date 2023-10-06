@@ -2,12 +2,13 @@ package node
 
 import (
 	"fmt"
+	"math/big"
+
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/stader-labs/stader-node/stader-lib/stader"
 	types2 "github.com/stader-labs/stader-node/stader-lib/types"
-	"math/big"
 )
 
 func EstimateOnboardNodeOperator(pnr *stader.PermissionedNodeRegistryContractManager, operatorName string, operatorRewarderAddress common.Address, opts *bind.TransactOpts) (stader.GasInfo, error) {
@@ -27,12 +28,25 @@ func IsOperatorWhitelisted(pnr *stader.PermissionedNodeRegistryContractManager, 
 	return pnr.PermissionedNodeRegistry.PermissionList(opts, operatorAddress)
 }
 
-func EstimateUpdateOperatorDetails(pnr *stader.PermissionedNodeRegistryContractManager, operatorName string, operatorRewarderAddress common.Address, opts *bind.TransactOpts) (stader.GasInfo, error) {
-	return pnr.PermissionedNodeRegistryContract.GetTransactionGasInfo(opts, "updateOperatorDetails", operatorName, operatorRewarderAddress)
+func EstimateUpdateOperatorName(pnr *stader.PermissionedNodeRegistryContractManager, operatorName string, opts *bind.TransactOpts) (stader.GasInfo, error) {
+	return pnr.PermissionedNodeRegistryContract.GetTransactionGasInfo(opts, "updateOperatorName", operatorName)
 }
 
-func UpdateOperatorDetails(pnr *stader.PermissionedNodeRegistryContractManager, operatorName string, operatorRewarderAddress common.Address, opts *bind.TransactOpts) (*types.Transaction, error) {
-	tx, err := pnr.PermissionedNodeRegistry.UpdateOperatorDetails(opts, operatorName, operatorRewarderAddress)
+func UpdateOperatorName(pnr *stader.PermissionedNodeRegistryContractManager, operatorName string, opts *bind.TransactOpts) (*types.Transaction, error) {
+	tx, err := pnr.PermissionedNodeRegistry.UpdateOperatorName(opts, operatorName)
+	if err != nil {
+		return nil, err
+	}
+
+	return tx, nil
+}
+
+func EstimateUpdateOperatorRewardAddress(pnr *stader.PermissionedNodeRegistryContractManager, operatorAddress common.Address, rewardAddress common.Address, opts *bind.TransactOpts) (stader.GasInfo, error) {
+	return pnr.PermissionedNodeRegistryContract.GetTransactionGasInfo(opts, "proposeRewardAddress", operatorAddress, rewardAddress)
+}
+
+func UpdateOperatorRewardAddress(pnr *stader.PermissionedNodeRegistryContractManager, operatorAddress common.Address, rewardAddress common.Address, opts *bind.TransactOpts) (*types.Transaction, error) {
+	tx, err := pnr.PermissionedNodeRegistry.ProposeRewardAddress(opts, operatorAddress, rewardAddress)
 	if err != nil {
 		return nil, err
 	}
