@@ -60,11 +60,13 @@ func ClaimSpRewards(c *cli.Context) error {
 		if !ok {
 			return fmt.Errorf("Unable to parse eth rewards: %s", cycleInfo.MerkleProofInfo.Eth)
 		}
-		if ethRewards.Cmp(big.NewInt(0)) != 0 {
-			cycleIndexes = append(cycleIndexes, big.NewInt(cycleInfo.MerkleProofInfo.Cycle))
+		if ethRewards.Cmp(big.NewInt(0)) == 0 {
+			continue
 		}
+		cycleIndexes = append(cycleIndexes, big.NewInt(cycleInfo.MerkleProofInfo.Cycle))
 	}
 
+	fmt.Printf("Cycle indexes are %v\n", cycleIndexes)
 	fmt.Println("Following are the unclaimed cycles: ")
 
 	fmt.Printf("%-18s%-14.30s%-14.10s\n", "Cycle Number", "Cycle Date", "ETH Rewards")
