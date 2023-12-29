@@ -2,15 +2,16 @@ package node
 
 import (
 	"fmt"
+	"math/big"
+	"strconv"
+	"strings"
+
 	"github.com/stader-labs/stader-node/shared/services/gas"
 	"github.com/stader-labs/stader-node/shared/services/stader"
 	cliutils "github.com/stader-labs/stader-node/shared/utils/cli"
 	"github.com/stader-labs/stader-node/shared/utils/math"
 	"github.com/stader-labs/stader-node/stader-lib/utils/eth"
 	"github.com/urfave/cli"
-	"math/big"
-	"strconv"
-	"strings"
 )
 
 func ClaimSpRewards(c *cli.Context) error {
@@ -20,9 +21,12 @@ func ClaimSpRewards(c *cli.Context) error {
 	}
 	defer staderClient.Close()
 
-	_, err = staderClient.DownloadSpMerkleProofs()
+	downloadRes, err := staderClient.DownloadSpMerkleProofs()
 	if err != nil {
 		return err
+	}
+	if len(downloadRes.DownloadedCycles) != 0 {
+		fmt.Printf("Merkle proofs downloaded for cycles %v!\n", downloadRes.DownloadedCycles)
 	}
 
 	// prompt user to select the cycles to claim from
@@ -65,14 +69,13 @@ func ClaimSpRewards(c *cli.Context) error {
 			if !ok {
 				return fmt.Errorf("Unable to parse eth rewards: %s", cycleInfo.MerkleProofInfo.Eth)
 			}
-			ethRewardsConverted := math.RoundDown(eth.WeiToEth(ethRewards), 2)
+			ethRewardsConverted := math.RoundDown(eth.WeiToEth(ethRewards), 5)
 			sdRewards, ok := big.NewInt(0).SetString(cycleInfo.MerkleProofInfo.Sd, 10)
 			if !ok {
 				return fmt.Errorf("Unable to parse sd rewards: %s", cycleInfo.MerkleProofInfo.Sd)
 			}
-			sdRewardsConverted := math.RoundDown(eth.WeiToEth(sdRewards), 2)
 
-			if ethRewardsConverted == 0 && sdRewardsConverted == 0 {
+			if ethRewards.Cmp(big.NewInt(0)) == 0 && sdRewards.Cmp(big.NewInt(0)) == 0 {
 				continue
 			}
 
