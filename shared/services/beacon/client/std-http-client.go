@@ -37,6 +37,7 @@ import (
 	"golang.org/x/sync/errgroup"
 
 	"github.com/stader-labs/stader-node/shared/services/beacon"
+	"github.com/stader-labs/stader-node/shared/types/config"
 	"github.com/stader-labs/stader-node/shared/utils/eth2"
 	hexutil "github.com/stader-labs/stader-node/shared/utils/hex"
 )
@@ -439,46 +440,33 @@ func (c *StandardHttpClient) GetGenesisInfo() (beacon.GenesisInfo, error) {
 }
 
 // Get domain data for a domain type at a given epoch
-func (c *StandardHttpClient) GetDomainData(domainType []byte, epoch uint64, useGenesisFork bool) ([]byte, error) {
-
-	// Data
-	var wg errgroup.Group
+func (c *StandardHttpClient) GetExitDomainData(domainType []byte, network config.Network) ([]byte, error) {
 	var genesis GenesisResponse
-	var fork ForkResponse
 
-	// Get genesis
-	wg.Go(func() error {
-		var err error
-		genesis, err = c.getGenesis()
-		return err
-	})
-
-	// Get fork
-	wg.Go(func() error {
-		var err error
-		fork, err = c.getFork("head")
-		return err
-	})
-
-	// Wait for data
-	if err := wg.Wait(); err != nil {
-		return []byte{}, err
+	genesis, err := c.getGenesis()
+	if err != nil {
+		return []byte{}, fmt.Errorf("GetGenesis %w", err)
 	}
 
 	// Get fork version
-	var forkVersion []byte
-	if useGenesisFork {
-		forkVersion = genesis.Data.GenesisForkVersion
-	} else if epoch < uint64(fork.Data.Epoch) {
-		forkVersion = fork.Data.PreviousVersion
+	var capellaForkVersion string
+	// TODO - we currently only support mainnet and testnet envs. We will have to update this as we change n/ws
+	if network == config.Network_Mainnet {
+		capellaForkVersion = eth2.MainnetCapellaForkVersion
 	} else {
-		forkVersion = fork.Data.CurrentVersion
+		capellaForkVersion = eth2.HoleskyCapellaForkVersion
+	}
+
+	decodedForkVersion, err := hexutil.Decode(capellaForkVersion)
+	if err != nil {
+		return []byte{}, err
 	}
 
 	// Compute & return domain
 	var dt [4]byte
 	copy(dt[:], domainType[:])
-	return eth2types.Domain(dt, forkVersion, genesis.Data.GenesisValidatorsRoot), nil
+
+	return eth2types.Domain(dt, decodedForkVersion, genesis.Data.GenesisValidatorsRoot), nil
 
 }
 

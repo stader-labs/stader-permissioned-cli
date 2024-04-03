@@ -1,9 +1,6 @@
 package node
 
 import (
-	"github.com/stader-labs/stader-node/shared/utils/validator"
-	"github.com/stader-labs/stader-node/stader-lib/types"
-	eth2types "github.com/wealdtech/go-eth2-types/v2"
 	"net/http"
 	"strconv"
 	"sync"
@@ -11,14 +8,18 @@ import (
 
 	"github.com/fatih/color"
 	"github.com/stader-labs/stader-node/shared/services"
+	cfgtypes "github.com/stader-labs/stader-node/shared/types/config"
 	stader_backend "github.com/stader-labs/stader-node/shared/types/stader-backend"
 	"github.com/stader-labs/stader-node/shared/utils/crypto"
 	"github.com/stader-labs/stader-node/shared/utils/eth2"
 	"github.com/stader-labs/stader-node/shared/utils/log"
 	"github.com/stader-labs/stader-node/shared/utils/stader"
 	"github.com/stader-labs/stader-node/shared/utils/stdr"
+	"github.com/stader-labs/stader-node/shared/utils/validator"
 	"github.com/stader-labs/stader-node/stader-lib/node"
+	"github.com/stader-labs/stader-node/stader-lib/types"
 	"github.com/urfave/cli"
+	eth2types "github.com/wealdtech/go-eth2-types/v2"
 )
 
 // Config
@@ -143,6 +144,19 @@ func run(c *cli.Context) error {
 				errorLog.Printf("Could not get fork info from beacon chain: %s\n", err)
 				continue
 			}
+
+			cfg, err := services.GetConfig(c)
+			if err != nil {
+				errorLog.Printf("Failed to get config with error %s\n", err.Error())
+				continue
+			}
+
+			network, ok := cfg.StaderNode.Network.Value.(cfgtypes.Network)
+			if !ok {
+				errorLog.Printf("Failed to get network from config: %s\n", cfg.StaderNode.Network.Value)
+				continue
+			}
+
 			eth2Config, err := bc.GetEth2Config()
 			if err != nil {
 				errorLog.Printf("Could not get eth2 config from beacon chain: %s\n", err)
@@ -223,7 +237,7 @@ func run(c *cli.Context) error {
 
 					exitEpoch := currentHead.Epoch
 
-					signatureDomain, err := bc.GetDomainData(eth2types.DomainVoluntaryExit[:], exitEpoch, false)
+					signatureDomain, err := bc.GetExitDomainData(eth2types.DomainVoluntaryExit[:], network)
 					if err != nil {
 						errorLog.Printf("Failed to get the signature domain from beacon chain with err: %s\n", err.Error())
 						continue

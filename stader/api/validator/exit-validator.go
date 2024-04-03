@@ -2,15 +2,17 @@ package validator
 
 import (
 	"fmt"
+	"math/big"
+
 	"github.com/stader-labs/stader-node/shared/services"
 	"github.com/stader-labs/stader-node/shared/types/api"
+	"github.com/stader-labs/stader-node/shared/types/config"
 	"github.com/stader-labs/stader-node/shared/utils/eth2"
 	"github.com/stader-labs/stader-node/shared/utils/validator"
 	"github.com/stader-labs/stader-node/stader-lib/node"
 	"github.com/stader-labs/stader-node/stader-lib/types"
 	"github.com/urfave/cli"
 	eth2types "github.com/wealdtech/go-eth2-types/v2"
-	"math/big"
 )
 
 func canExitValidator(c *cli.Context, validatorPubKey types.ValidatorPubkey) (*api.CanExitValidatorResponse, error) {
@@ -100,6 +102,12 @@ func exitValidator(c *cli.Context, validatorPubKey types.ValidatorPubkey) (*api.
 		return nil, err
 	}
 
+	network, ok := cfg.StaderNode.Network.Value.(config.Network)
+	if !ok {
+		return nil, fmt.Errorf("invalid network configuration: %s", cfg.StaderNode.Network.Value)
+	}
+
+
 	// Get validator index
 	validatorIndex, err := bc.GetValidatorIndex(validatorPubKey)
 	if err != nil {
@@ -125,7 +133,7 @@ func exitValidator(c *cli.Context, validatorPubKey types.ValidatorPubkey) (*api.
 		return nil, err
 	}
 
-	signatureDomain, err := bc.GetDomainData(eth2types.DomainVoluntaryExit[:], head.Epoch, false)
+	signatureDomain, err := bc.GetExitDomainData(eth2types.DomainVoluntaryExit[:], network)
 	if err != nil {
 		return nil, err
 	}
