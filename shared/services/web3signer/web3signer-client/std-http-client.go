@@ -5,12 +5,14 @@ import (
 	"crypto/tls"
 	"encoding/json"
 	"fmt"
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/stader-labs/stader-node/shared/services/beacon"
 	"io/ioutil"
 	"math/big"
 	"net/http"
 	"strconv"
+
+	"github.com/ethereum/go-ethereum/common"
+	"github.com/stader-labs/stader-node/shared/services/beacon"
+	"github.com/stader-labs/stader-node/shared/utils/eth2"
 )
 
 const (
@@ -113,12 +115,13 @@ func (c *StandardHttpClient) ReloadKeys() error {
 }
 
 func (c *StandardHttpClient) GetVoluntaryExitMessageSignature(validatorPubKey string, validatorIndex uint64, epoch uint64, forkInfo beacon.ForkInfo, eth2Config beacon.Eth2Config) (string, error) {
-
 	genesisValidatorRoot := common.BytesToHash(eth2Config.GenesisValidatorsRoot)
-	previousForkVersion := common.BytesToHash(forkInfo.PreviousVersion)
-	currentForkVersion := common.BytesToHash(forkInfo.CurrentVersion)
 	epochString := strconv.FormatUint(forkInfo.Epoch, 10)
-	// Get signature
+
+	// TODO - we currently only support mainnet  We will have to update this as we support testnet
+	previousVersion := eth2.MainnetBellatrixForkVersion
+	currentVersion := eth2.MainnetCapellaForkVersion
+
 	body, status, err := c.postRequest(fmt.Sprintf(SignatureEndpoint, validatorPubKey), VoluntaryExitMessageSignatureRequest{
 		Type: "VOLUNTARY_EXIT",
 		ForkInfoData: SigningForkInfo{
@@ -127,8 +130,8 @@ func (c *StandardHttpClient) GetVoluntaryExitMessageSignature(validatorPubKey st
 				CurrentVersion  string `json:"current_version"`
 				Epoch           string `json:"epoch"`
 			}{
-				PreviousVersion: "0x" + previousForkVersion.String()[len(previousForkVersion.String())-8:],
-				CurrentVersion:  "0x" + currentForkVersion.String()[len(currentForkVersion.String())-8:],
+				PreviousVersion: previousVersion,
+				CurrentVersion:  currentVersion,
 				Epoch:           epochString,
 			},
 			GenesisValidatorRoot: genesisValidatorRoot.String(),

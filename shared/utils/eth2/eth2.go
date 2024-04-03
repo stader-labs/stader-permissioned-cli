@@ -26,8 +26,9 @@ import (
 )
 
 const (
-	MainnetCapellaForkVersion = "0x03000000"
-	HoleskyCapellaForkVersion = "0x04017000"
+	MainnetBellatrixForkVersion = "0x02000000"
+	MainnetCapellaForkVersion   = "0x03000000"
+	HoleskyCapellaForkVersion   = "0x04017000"
 )
 
 // Get an eth2 epoch number by time
