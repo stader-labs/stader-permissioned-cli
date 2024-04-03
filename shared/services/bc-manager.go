@@ -28,6 +28,7 @@ import (
 	"github.com/stader-labs/stader-node/shared/services/beacon/client"
 	"github.com/stader-labs/stader-node/shared/services/config"
 	"github.com/stader-labs/stader-node/shared/types/api"
+	cfgtypes "github.com/stader-labs/stader-node/shared/types/config"
 	"github.com/stader-labs/stader-node/shared/utils/log"
 	"github.com/stader-labs/stader-node/stader-lib/types"
 )
@@ -218,9 +219,9 @@ func (m *BeaconClientManager) GetValidatorProposerDuties(indices []uint64, epoch
 }
 
 // Get the Beacon chain's domain data
-func (m *BeaconClientManager) GetDomainData(domainType []byte, epoch uint64, useGenesisFork bool) ([]byte, error) {
+func (m *BeaconClientManager) GetExitDomainData(domainType []byte, network cfgtypes.Network) ([]byte, error) {
 	result, err := m.runFunction1(func(client beacon.Client) (interface{}, error) {
-		return client.GetDomainData(domainType, epoch, useGenesisFork)
+		return client.GetExitDomainData(domainType, network)
 	})
 	if err != nil {
 		return nil, err
