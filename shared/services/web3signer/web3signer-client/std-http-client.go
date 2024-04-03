@@ -119,8 +119,8 @@ func (c *StandardHttpClient) GetVoluntaryExitMessageSignature(validatorPubKey st
 	epochString := strconv.FormatUint(forkInfo.Epoch, 10)
 
 	// TODO - we currently only support mainnet  We will have to update this as we support testnet
-	PreviousVersion := eth2.MainnetBellatrixForkVersion
-	CurrentVersion := eth2.MainnetCapellaForkVersion
+	previousVersion := eth2.MainnetBellatrixForkVersion
+	currentVersion := eth2.MainnetCapellaForkVersion
 
 	body, status, err := c.postRequest(fmt.Sprintf(SignatureEndpoint, validatorPubKey), VoluntaryExitMessageSignatureRequest{
 		Type: "VOLUNTARY_EXIT",
@@ -130,8 +130,8 @@ func (c *StandardHttpClient) GetVoluntaryExitMessageSignature(validatorPubKey st
 				CurrentVersion  string `json:"current_version"`
 				Epoch           string `json:"epoch"`
 			}{
-				PreviousVersion: PreviousVersion,
-				CurrentVersion:  CurrentVersion,
+				PreviousVersion: previousVersion,
+				CurrentVersion:  currentVersion,
 				Epoch:           epochString,
 			},
 			GenesisValidatorRoot: genesisValidatorRoot.String(),
