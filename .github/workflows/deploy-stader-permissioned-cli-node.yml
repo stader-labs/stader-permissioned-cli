@@ -50,6 +50,18 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      - name: Build builder image
+        run: |
+          docker build -t staderdev/stader-node-builder:permissioned -f docker/stader-node-builder .
+
       - name: Build & Release Stader Node CLI
         run: |
           ./build-release.sh -a -v ${{ steps.meta.outputs.tag }}
+      
+      - name: Generate CLI checksums
+        run: |
+          VERSION=${{ steps.meta.outputs.tag }}
+          cd build/$VERSION
+          sha256sum stader-permissioned-cli-* > checksums.txt
+          echo "Generated checksums:"
+          cat checksums.txt
