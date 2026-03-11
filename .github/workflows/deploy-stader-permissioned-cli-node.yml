@@ -62,6 +62,6 @@ jobs:
         run: |
           VERSION=${{ steps.meta.outputs.tag }}
           cd build/$VERSION
-          sha256sum stader-cli-* > checksums.txt
+          sha256sum stader-permissioned-cli-* > checksums.txt
           echo "Generated checksums:"
           cat checksums.txt
