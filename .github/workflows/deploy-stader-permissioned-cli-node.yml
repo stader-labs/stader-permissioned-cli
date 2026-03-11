@@ -50,6 +50,10 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      - name: Build builder image
+        run: |
+          docker build -t staderdev/stader-node-builder:permissioned -f docker/stader-node-builder .
+
       - name: Build & Release Stader Node CLI
         run: |
           ./build-release.sh -a -v ${{ steps.meta.outputs.tag }}
